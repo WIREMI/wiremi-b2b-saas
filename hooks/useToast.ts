@@ -39,6 +39,7 @@ export function useToast() {
 
   return {
     toast,
+    showToast: toast, // Alias for compatibility
     toasts,
     dismiss,
   }
