@@ -1,59 +1,47 @@
 @import "tailwindcss";
 
-@theme {
-  /* Wiremi B2B Brand Colors */
-  --color-primary-50: #EBF5FF;
-  --color-primary-100: #D6EBFF;
-  --color-primary-200: #AED6FF;
-  --color-primary-300: #85C2FF;
-  --color-primary-400: #5DADFF;
-  --color-primary-500: #2D7EF7;
-  --color-primary-600: #1E5EDD;
-  --color-primary-700: #1647A5;
-  --color-primary-800: #0F2F6E;
-  --color-primary-900: #071837;
+/* Tailwind Directives */
+@layer base {
+  :root {
+    /* Light mode colors */
+    --bg-primary: 255, 255, 255;
+    --bg-secondary: 249, 250, 251;
+    --bg-tertiary: 243, 244, 246;
+    --text-primary: 17, 24, 39;
+    --text-secondary: 75, 85, 99;
+    --text-tertiary: 156, 163, 175;
+    --border-primary: 229, 231, 235;
+    --border-secondary: 209, 213, 219;
+  }
 
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: #EF4444;
-  --color-info: #3B82F6;
-
-  /* Dark mode colors */
-  --color-dark-bg: #0A0E1A;
-  --color-dark-surface: #151A2E;
-  --color-dark-card: #1E2337;
-  --color-dark-border: #1F2937;
-  --color-dark-elevated: #1A2033;
-
-  /* Font families */
-  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-  --font-display: "SF Pro Display", Inter, system-ui, sans-serif;
-  --font-mono: "SF Mono", Monaco, "Cascadia Code", "Courier New", monospace;
-
-  /* Spacing */
-  --spacing-18: 4.5rem;
-  --spacing-88: 22rem;
-  --spacing-128: 32rem;
-
-  /* Border radius */
-  --radius-4xl: 2rem;
-  --radius-5xl: 2.5rem;
-
-  /* Shadows */
-  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.12);
+  .dark {
+    /* Dark mode colors */
+    --bg-primary: 10, 14, 26;
+    --bg-secondary: 21, 26, 46;
+    --bg-tertiary: 30, 35, 55;
+    --text-primary: 255, 255, 255;
+    --text-secondary: 209, 213, 219;
+    --text-tertiary: 156, 163, 175;
+    --border-primary: 31, 41, 55;
+    --border-secondary: 55, 65, 81;
+  }
 }
 
 @layer base {
-  body {
-    font-feature-settings: 'rlig' 1, 'calt' 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  * {
+    @apply border-gray-200 dark:border-dark-border;
   }
 
   html {
     scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+    @apply dark:bg-dark-bg dark:text-white;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
