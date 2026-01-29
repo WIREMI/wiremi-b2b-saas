@@ -125,13 +125,14 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="flex gap-3">
-              <Button
-                variant="secondary"
-                className="bg-white text-primary-600 hover:bg-white/90"
-                onClick={() => setIsAccountActivated(true)}
-              >
-                Activate Now
-              </Button>
+              <Link href="/verification">
+                <Button
+                  variant="secondary"
+                  className="bg-white text-primary-600 hover:bg-white/90"
+                >
+                  Activate Now
+                </Button>
+              </Link>
               <Button variant="ghost" className="text-white hover:bg-white/10">
                 Learn More
               </Button>
