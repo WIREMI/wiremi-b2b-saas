@@ -28,15 +28,17 @@
     --muted-foreground: 156 163 175; /* gray-400 */
   }
 
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-gray-900;
     font-feature-settings: 'rlig' 1, 'calt' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Dark mode body override */
+  html.dark body {
+    background-color: #0A0E1A;
+    color: white;
   }
 
   html {
