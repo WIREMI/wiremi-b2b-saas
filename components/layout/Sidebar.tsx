@@ -446,12 +446,12 @@ export default function Sidebar({ className }: SidebarProps) {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-50 dark:bg-dark-surface rounded-xl shadow-lg"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-dark-surface rounded-xl shadow-lg"
       >
         {mobileOpen ? (
-          <X className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+          <X className="w-6 h-6 text-gray-300" />
         ) : (
-          <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+          <Menu className="w-6 h-6 text-gray-300" />
         )}
       </button>
 
@@ -476,7 +476,7 @@ export default function Sidebar({ className }: SidebarProps) {
         }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
         className={cn(
-          'h-screen bg-gray-50 dark:bg-dark-surface border-r border-gray-200 dark:border-dark-border flex flex-col transition-transform duration-300 shrink-0',
+          'h-screen bg-dark-surface border-r border-dark-border flex flex-col transition-transform duration-300 shrink-0',
           // Mobile: fixed positioning with slide animation
           'fixed left-0 top-0 z-40 lg:sticky lg:top-0',
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
