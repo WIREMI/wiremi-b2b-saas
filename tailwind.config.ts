@@ -6,11 +6,22 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  darkMode: 'class', // CRITICAL: Enable class-based dark mode
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        // Primary brand colors
+        border: 'rgb(var(--border) / <alpha-value>)',
+        input: 'rgb(var(--input) / <alpha-value>)',
+        background: 'rgb(var(--background) / <alpha-value>)',
+        foreground: 'rgb(var(--foreground) / <alpha-value>)',
+        card: {
+          DEFAULT: 'rgb(var(--card) / <alpha-value>)',
+          foreground: 'rgb(var(--card-foreground) / <alpha-value>)',
+        },
+        muted: {
+          DEFAULT: 'rgb(var(--muted) / <alpha-value>)',
+          foreground: 'rgb(var(--muted-foreground) / <alpha-value>)',
+        },
         primary: {
           50: '#EBF5FF',
           100: '#D6EBFF',
@@ -23,12 +34,10 @@ const config: Config = {
           800: '#0F2F6E',
           900: '#071837',
         },
-        // Status colors
         success: '#10B981',
         warning: '#F59E0B',
         error: '#EF4444',
         info: '#3B82F6',
-        // Dark mode colors
         'dark-bg': '#0A0E1A',
         'dark-surface': '#151A2E',
         'dark-card': '#1E2337',
@@ -50,9 +59,9 @@ const config: Config = {
         '5xl': '2.5rem',
       },
       boxShadow: {
-        'soft': '0 2px 8px rgba(0, 0, 0, 0.04)',
-        'medium': '0 4px 16px rgba(0, 0, 0, 0.08)',
-        'large': '0 8px 32px rgba(0, 0, 0, 0.12)',
+        soft: '0 2px 8px rgba(0, 0, 0, 0.04)',
+        medium: '0 4px 16px rgba(0, 0, 0, 0.08)',
+        large: '0 8px 32px rgba(0, 0, 0, 0.12)',
       },
     },
   },

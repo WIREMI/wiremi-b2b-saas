@@ -1,47 +1,46 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Tailwind Directives */
 @layer base {
+  /* CSS Variables for theming */
   :root {
-    /* Light mode colors */
-    --bg-primary: 255, 255, 255;
-    --bg-secondary: 249, 250, 251;
-    --bg-tertiary: 243, 244, 246;
-    --text-primary: 17, 24, 39;
-    --text-secondary: 75, 85, 99;
-    --text-tertiary: 156, 163, 175;
-    --border-primary: 229, 231, 235;
-    --border-secondary: 209, 213, 219;
+    /* Light mode - main content area */
+    --background: 255 255 255; /* white */
+    --foreground: 17 24 39; /* gray-900 */
+    --card: 255 255 255;
+    --card-foreground: 17 24 39;
+    --border: 229 231 235; /* gray-200 */
+    --input: 229 231 235;
+    --muted: 243 244 246; /* gray-100 */
+    --muted-foreground: 107 114 128; /* gray-500 */
   }
 
   .dark {
     /* Dark mode colors */
-    --bg-primary: 10, 14, 26;
-    --bg-secondary: 21, 26, 46;
-    --bg-tertiary: 30, 35, 55;
-    --text-primary: 255, 255, 255;
-    --text-secondary: 209, 213, 219;
-    --text-tertiary: 156, 163, 175;
-    --border-primary: 31, 41, 55;
-    --border-secondary: 55, 65, 81;
+    --background: 10 14 26; /* #0A0E1A */
+    --foreground: 255 255 255;
+    --card: 30 35 55; /* #1E2337 */
+    --card-foreground: 255 255 255;
+    --border: 31 41 55; /* #1F2937 */
+    --input: 31 41 55;
+    --muted: 21 26 46; /* #151A2E */
+    --muted-foreground: 156 163 175; /* gray-400 */
   }
-}
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
+  * {
+    @apply border-border;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-background text-foreground;
     font-feature-settings: 'rlig' 1, 'calt' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Dark mode body styles */
-  html.dark body {
-    @apply bg-[#0A0E1A] text-white;
+  html {
+    scroll-behavior: smooth;
   }
 }
 
@@ -67,48 +66,31 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: rgb(243 244 246);
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: var(--color-dark-bg);
+  @apply bg-gray-100 dark:bg-[#0A0E1A];
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(209 213 219);
-  border-radius: 9999px;
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(156 163 175);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: rgb(55 65 81);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgb(75 85 99);
+  @apply bg-gray-400 dark:bg-gray-600;
 }
 
 /* Selection */
 ::selection {
   background: rgba(45, 126, 247, 0.3);
-  color: rgb(17 24 39);
-}
-
-.dark ::selection {
-  color: white;
+  @apply text-gray-900 dark:text-white;
 }
 
 /* Focus Visible */
 *:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px white, 0 0 0 4px rgb(45 126 247);
+  box-shadow: 0 0 0 2px rgb(255 255 255), 0 0 0 4px rgb(45 126 247);
 }
 
 .dark *:focus-visible {
-  box-shadow: 0 0 0 2px var(--color-dark-bg), 0 0 0 4px rgb(45 126 247);
+  box-shadow: 0 0 0 2px rgb(10 14 26), 0 0 0 4px rgb(45 126 247);
 }
 
 /* Loading Skeleton */
@@ -171,82 +153,26 @@
   }
 
   .btn:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--color-primary-500);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #2D7EF7;
   }
 
   /* Button Variants */
   .btn-primary {
-    background-color: var(--color-primary-500);
-    color: white;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  }
-
-  .btn-primary:hover {
-    background-color: var(--color-primary-600);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  }
-
-  .btn-primary:active {
-    transform: scale(0.95);
+    @apply bg-primary-500 text-white shadow-md hover:bg-primary-600 hover:shadow-lg active:scale-95;
   }
 
   .btn-secondary {
-    background-color: rgb(243 244 246);
-    color: rgb(17 24 39);
-  }
-
-  .dark .btn-secondary {
-    background-color: var(--color-dark-surface);
-    color: white;
-  }
-
-  .btn-secondary:hover {
-    background-color: rgb(229 231 235);
-  }
-
-  .dark .btn-secondary:hover {
-    background-color: rgb(55 65 81);
-  }
-
-  .btn-secondary:active {
-    transform: scale(0.95);
+    @apply bg-gray-100 text-gray-900 hover:bg-gray-200 active:scale-95;
+    @apply dark:bg-dark-surface dark:text-white dark:hover:bg-gray-700;
   }
 
   .btn-outline {
-    border: 2px solid var(--color-primary-500);
-    color: var(--color-primary-500);
-    background: transparent;
-  }
-
-  .btn-outline:hover {
-    background-color: rgb(239 246 255);
-  }
-
-  .dark .btn-outline {
-    color: rgb(147 197 253);
-  }
-
-  .dark .btn-outline:hover {
-    background-color: rgba(45, 126, 247, 0.1);
-  }
-
-  .btn-outline:active {
-    transform: scale(0.95);
+    @apply border-2 border-primary-500 text-primary-500 bg-transparent hover:bg-blue-50 active:scale-95;
+    @apply dark:text-blue-300 dark:hover:bg-primary-500/10;
   }
 
   .btn-danger {
-    background-color: var(--color-error);
-    color: white;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  }
-
-  .btn-danger:hover {
-    background-color: rgb(220 38 38);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  }
-
-  .btn-danger:active {
-    transform: scale(0.95);
+    @apply bg-error text-white shadow-md hover:bg-red-600 hover:shadow-lg active:scale-95;
   }
 
   /* Button Sizes */
@@ -262,21 +188,12 @@
 
   /* Card */
   .card {
-    background-color: white;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    border: 1px solid rgb(229 231 235);
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    transition: all 0.3s;
-  }
-
-  .dark .card {
-    background-color: var(--color-dark-surface);
-    border-color: var(--color-dark-border);
+    @apply bg-white rounded-2xl p-6 border border-gray-200 shadow-sm transition-all;
+    @apply dark:bg-dark-surface dark:border-dark-border;
   }
 
   .card:hover {
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    @apply shadow-md;
   }
 
   .card-interactive {
@@ -284,7 +201,6 @@
   }
 
   .card-interactive:hover {
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    transform: scale(1.02);
+    @apply shadow-lg scale-[1.02];
   }
 }
