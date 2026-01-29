@@ -515,8 +515,8 @@ export default {
                       </button>
                     </div>
                     {config.showLogo && (
-                      <p className="text-center text-sm text-gray-500 dark:text-gray-400 dark:text-gray-400 mt-4">
-                        Secured by Wiremi
+                      <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
+                        Powered by Wiremi
                       </p>
                     )}
                   </div>

@@ -453,7 +453,7 @@ export default function CreatePaymentLinkPage() {
                     <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
                       <CheckCircle2 className="w-3 h-3 text-white" />
                     </div>
-                    <span>Secured by Wiremi Financial Core</span>
+                    <span>Powered by Wiremi</span>
                   </div>
                 </div>
               </Card>
