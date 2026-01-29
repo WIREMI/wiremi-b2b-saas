@@ -362,13 +362,13 @@ export default function Sidebar({ className }: SidebarProps) {
             onClick={() => toggleSection(item.name)}
             className={cn(
               'w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl transition-all duration-200',
-              'hover:bg-gray-100 dark:hover:bg-dark-elevated',
-              'text-gray-700 dark:text-gray-300',
+              'hover:bg-dark-elevated',
+              'text-gray-300',
               'group'
             )}
           >
             <div className="flex items-center gap-3 min-w-0">
-              <span className="shrink-0 text-gray-500 dark:text-gray-400 group-hover:text-primary-500">
+              <span className="shrink-0 text-gray-400 group-hover:text-primary-500">
                 {item.icon}
               </span>
               {!collapsed && (
@@ -378,7 +378,7 @@ export default function Sidebar({ className }: SidebarProps) {
             {!collapsed && (
               <ChevronDown
                 className={cn(
-                  'w-4 h-4 shrink-0 transition-transform duration-200',
+                  'w-4 h-4 shrink-0 transition-transform duration-200 text-gray-400',
                   isExpanded && 'transform rotate-180'
                 )}
               />
@@ -394,7 +394,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="ml-4 mt-1 space-y-1 border-l-2 border-gray-200 dark:border-dark-border pl-3">
+                <div className="ml-4 mt-1 space-y-1 border-l-2 border-dark-border pl-3">
                   {item.children!.map((child) => renderNavItem(child, level + 1))}
                 </div>
               </motion.div>
@@ -410,10 +410,10 @@ export default function Sidebar({ className }: SidebarProps) {
         href={item.href}
         className={cn(
           'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group mb-1',
-          'hover:bg-gray-100 dark:hover:bg-dark-elevated',
+          'hover:bg-dark-elevated',
           active
-            ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-            : 'text-gray-700 dark:text-gray-300',
+            ? 'bg-primary-900/30 text-primary-400'
+            : 'text-gray-300',
           level > 0 && 'text-sm'
         )}
       >
@@ -421,8 +421,8 @@ export default function Sidebar({ className }: SidebarProps) {
           className={cn(
             'shrink-0 transition-colors',
             active
-              ? 'text-primary-600 dark:text-primary-400'
-              : 'text-gray-500 dark:text-gray-400 group-hover:text-primary-500'
+              ? 'text-primary-400'
+              : 'text-gray-400 group-hover:text-primary-500'
           )}
         >
           {item.icon}
@@ -484,13 +484,13 @@ export default function Sidebar({ className }: SidebarProps) {
         )}
       >
         {/* Logo & Brand */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-dark-border shrink-0">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-dark-border shrink-0">
           <Link href="/dashboard" className="flex items-center gap-3 min-w-0">
             <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shrink-0">
               <Zap className="w-5 h-5 text-white" />
             </div>
             {!collapsed && (
-              <span className="font-bold text-gray-900 dark:text-white truncate">
+              <span className="font-bold text-white truncate">
                 WIREMI
               </span>
             )}
@@ -499,12 +499,12 @@ export default function Sidebar({ className }: SidebarProps) {
           {/* Desktop Collapse Button */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex w-8 h-8 items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-dark-elevated transition-colors"
+            className="hidden lg:flex w-8 h-8 items-center justify-center rounded-lg hover:bg-dark-elevated transition-colors"
           >
             {collapsed ? (
-              <ChevronRight className="w-4 h-4 text-gray-500" />
+              <ChevronRight className="w-4 h-4 text-gray-400" />
             ) : (
-              <ChevronLeft className="w-4 h-4 text-gray-500" />
+              <ChevronLeft className="w-4 h-4 text-gray-400" />
             )}
           </button>
         </div>
@@ -517,20 +517,20 @@ export default function Sidebar({ className }: SidebarProps) {
         </nav>
 
         {/* User Profile */}
-        <div className="p-4 border-t border-gray-200 dark:border-dark-border shrink-0">
+        <div className="p-4 border-t border-dark-border shrink-0">
           <Link
             href="/settings/account"
-            className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-dark-elevated transition-colors group"
+            className="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-elevated transition-colors group"
           >
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold shrink-0">
               JD
             </div>
             {!collapsed && (
               <div className="min-w-0 flex-1">
-                <div className="font-semibold text-sm text-gray-900 dark:text-white truncate">
+                <div className="font-semibold text-sm text-white truncate">
                   John Doe
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                <div className="text-xs text-gray-400 truncate">
                   Owner
                 </div>
               </div>
