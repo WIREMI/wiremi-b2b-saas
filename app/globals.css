@@ -29,7 +29,7 @@
 
 @layer base {
   * {
-    @apply border-gray-200 dark:border-dark-border;
+    @apply border-gray-200 dark:border-gray-700;
   }
 
   html {
@@ -38,7 +38,7 @@
 
   body {
     @apply bg-white text-gray-900;
-    @apply dark:bg-dark-bg dark:text-white;
+    @apply dark:bg-[#0A0E1A] dark:text-white;
     font-feature-settings: 'rlig' 1, 'calt' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
