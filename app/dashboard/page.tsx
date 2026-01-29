@@ -466,7 +466,7 @@ export default function DashboardPage() {
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-gray-900 dark:text-white">Integrations</h3>
-            <Badge variant="secondary" size="sm">API</Badge>
+            <Badge variant="default" size="sm">API</Badge>
           </div>
 
           <div className="space-y-3 mb-4">
