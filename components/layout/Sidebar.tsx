@@ -31,9 +31,7 @@ import {
   Shield,
   FileText,
   Coins,
-  Gift,
   Hotel,
-  Lock,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -43,17 +41,20 @@ interface NavItem {
   icon: React.ReactNode
   badge?: string
   children?: NavItem[]
+  alwaysExpanded?: boolean
 }
 
 interface SidebarProps {
   className?: string
+  organizationName?: string
 }
 
-export default function Sidebar({ className }: SidebarProps) {
+export default function Sidebar({ className, organizationName = 'Tech Solutions Ltd' }: SidebarProps) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [expandedSections, setExpandedSections] = useState<string[]>([])
+  // Financial Core is always expanded by default
+  const [expandedSections, setExpandedSections] = useState<string[]>(['Financial Core'])
 
   const navigationItems: NavItem[] = [
     {
@@ -67,6 +68,7 @@ export default function Sidebar({ className }: SidebarProps) {
     name: 'Financial Core',
     href: '#',
     icon: <Wallet className="w-5 h-5" />,
+    alwaysExpanded: true,
     children: [
       {
         name: 'Wallets & Accounts',
@@ -294,21 +296,18 @@ export default function Sidebar({ className }: SidebarProps) {
     settings,
   ]
 
-  // Auto-expand the section that contains the current active page
+  // Auto-expand Financial Core and active section on mount
   useEffect(() => {
     const findActiveSectionName = (items: NavItem[], currentPath: string): string | null => {
       for (const item of items) {
         if (item.children) {
           for (const child of item.children) {
-            // Check if the current path starts with the child href and it's not just '#'
             if (currentPath.startsWith(child.href) && child.href !== '#') {
               return item.name
             }
-            // Check nested children (3 levels deep)
             if (child.children) {
               for (const grandchild of child.children) {
                 if (currentPath.startsWith(grandchild.href) && grandchild.href !== '#') {
-                  // Return both parent and child names for nested expansion
                   return item.name
                 }
               }
@@ -320,19 +319,24 @@ export default function Sidebar({ className }: SidebarProps) {
     }
 
     const activeSectionName = findActiveSectionName(allNavigationItems, pathname)
-    if (activeSectionName) {
-      setExpandedSections((prev) => {
-        // Only update if not already expanded
-        if (!prev.includes(activeSectionName)) {
-          return [activeSectionName]
-        }
-        return prev
-      })
-    }
+    setExpandedSections((prev) => {
+      const newSections = new Set(prev)
+      // Always keep Financial Core expanded
+      newSections.add('Financial Core')
+      // Add the active section if found
+      if (activeSectionName) {
+        newSections.add(activeSectionName)
+      }
+      return Array.from(newSections)
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
-  const toggleSection = (sectionName: string) => {
+  const toggleSection = (sectionName: string, alwaysExpanded?: boolean) => {
+    // Don't collapse if it's always expanded
+    if (alwaysExpanded && expandedSections.includes(sectionName)) {
+      return
+    }
     setExpandedSections((prev) =>
       prev.includes(sectionName)
         ? prev.filter((name) => name !== sectionName)
@@ -359,7 +363,7 @@ export default function Sidebar({ className }: SidebarProps) {
       return (
         <div key={item.name} className="mb-1">
           <button
-            onClick={() => toggleSection(item.name)}
+            onClick={() => toggleSection(item.name, item.alwaysExpanded)}
             className={cn(
               'w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl transition-all duration-200',
               'hover:bg-dark-elevated',
@@ -385,7 +389,7 @@ export default function Sidebar({ className }: SidebarProps) {
             )}
           </button>
 
-          <AnimatePresence>
+          <AnimatePresence initial={false}>
             {isExpanded && !collapsed && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
@@ -394,7 +398,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="ml-4 mt-1 space-y-1 border-l-2 border-dark-border pl-3">
+                <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-dark-border pl-3">
                   {item.children!.map((child) => renderNavItem(child, level + 1))}
                 </div>
               </motion.div>
@@ -409,12 +413,12 @@ export default function Sidebar({ className }: SidebarProps) {
         key={item.name}
         href={item.href}
         className={cn(
-          'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group mb-1',
+          'flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 group mb-0.5',
           'hover:bg-dark-elevated',
           active
             ? 'bg-primary-900/30 text-primary-400'
             : 'text-gray-300',
-          level > 0 && 'text-sm'
+          level > 0 && 'text-sm py-1.5'
         )}
       >
         <span
@@ -431,7 +435,7 @@ export default function Sidebar({ className }: SidebarProps) {
           <>
             <span className="font-medium truncate">{item.name}</span>
             {item.badge && (
-              <span className="ml-auto badge badge-success text-xs px-2 py-0.5">
+              <span className="ml-auto text-[10px] px-1.5 py-0.5 bg-green-500/20 text-green-400 rounded-full font-medium">
                 {item.badge}
               </span>
             )}
@@ -477,29 +481,31 @@ export default function Sidebar({ className }: SidebarProps) {
         transition={{ duration: 0.3, ease: 'easeInOut' }}
         className={cn(
           'h-screen bg-dark-surface border-r border-dark-border flex flex-col transition-transform duration-300 shrink-0',
-          // Mobile: fixed positioning with slide animation
           'fixed left-0 top-0 z-40 lg:sticky lg:top-0',
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
           className
         )}
       >
-        {/* Logo & Brand */}
+        {/* Organization Name at Top */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-dark-border shrink-0">
-          <Link href="/dashboard" className="flex items-center gap-3 min-w-0">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shrink-0">
-              <Zap className="w-5 h-5 text-white" />
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shrink-0">
+              <Building2 className="w-4 h-4 text-white" />
             </div>
             {!collapsed && (
-              <span className="font-bold text-white truncate">
-                WIREMI
-              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-white text-sm truncate">
+                  {organizationName}
+                </p>
+                <p className="text-xs text-gray-500 truncate">Business Account</p>
+              </div>
             )}
-          </Link>
+          </div>
 
           {/* Desktop Collapse Button */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex w-8 h-8 items-center justify-center rounded-lg hover:bg-dark-elevated transition-colors"
+            className="hidden lg:flex w-8 h-8 items-center justify-center rounded-lg hover:bg-dark-elevated transition-colors shrink-0"
           >
             {collapsed ? (
               <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -510,32 +516,25 @@ export default function Sidebar({ className }: SidebarProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar-hide">
-          <div className="space-y-1">
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden p-3 scrollbar-hide">
+          <div className="space-y-0.5">
             {allNavigationItems.map((item) => renderNavItem(item))}
           </div>
         </nav>
 
-        {/* User Profile */}
+        {/* Wiremi Logo at Bottom */}
         <div className="p-4 border-t border-dark-border shrink-0">
-          <Link
-            href="/settings/account"
-            className="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-elevated transition-colors group"
-          >
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold shrink-0">
-              JD
+          <div className="flex items-center gap-3 px-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shrink-0">
+              <Zap className="w-5 h-5 text-white" />
             </div>
             {!collapsed && (
               <div className="min-w-0 flex-1">
-                <div className="font-semibold text-sm text-white truncate">
-                  John Doe
-                </div>
-                <div className="text-xs text-gray-400 truncate">
-                  Owner
-                </div>
+                <p className="text-xs text-gray-500">Powered by</p>
+                <p className="font-bold text-white text-sm">WIREMI</p>
               </div>
             )}
-          </Link>
+          </div>
         </div>
       </motion.aside>
     </>

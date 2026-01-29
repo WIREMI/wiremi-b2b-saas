@@ -2,13 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
   Building2,
   MapPin,
   Globe,
-  Users,
   ArrowRight,
   ArrowLeft,
   CheckCircle2,
@@ -16,16 +14,10 @@ import {
   Mail,
   Phone,
   FileText,
-  Upload,
   Shield,
   CreditCard,
   TrendingUp,
   Wallet,
-  Plus,
-  Trash2,
-  ChevronRight,
-  Briefcase,
-  UserCheck,
   Lock,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -36,7 +28,7 @@ import OTPInput from '@/components/ui/otp-input'
 import { useToast } from '@/components/ui/toast'
 import { isValidEmail } from '@/lib/utils'
 
-type SignUpStep = 1 | 2 | 3 | 4 | 5 | 6
+type SignUpStep = 1 | 2 | 3
 
 interface BusinessInfo {
   legalName: string
@@ -56,8 +48,6 @@ interface OwnerInfo {
   lastName: string
   email: string
   phone: string
-  dateOfBirth: string
-  nationality: string
   password: string
   confirmPassword: string
 }
@@ -66,24 +56,6 @@ interface VerificationInfo {
   otp: string
 }
 
-interface Director {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  dateOfBirth: string
-  nationality: string
-  ownershipPercentage: string
-  isUBO: boolean
-  idDocument: File | null
-}
-
-interface KYBDocuments {
-  registrationCertificate: File | null
-  proofOfAddress: File | null
-  memorandumOfAssociation: File | null
-  shareholderRegister: File | null
-}
 
 const businessTypeOptions = [
   { value: '', label: 'Select business type' },
@@ -191,53 +163,31 @@ export default function SignUpPage() {
 
   // Form data state
   const [businessInfo, setBusinessInfo] = useState<BusinessInfo>({
-    legalName: '',
-    tradingName: '',
-    registrationNumber: '',
-    businessType: '',
-    industry: '',
-    country: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    website: '',
+    legalName: 'Acme Technologies Ltd',
+    tradingName: 'Acme Tech',
+    registrationNumber: '12345678',
+    businessType: 'limited_company',
+    industry: 'technology',
+    country: 'US',
+    address: '123 Innovation Drive, Suite 400',
+    city: 'San Francisco',
+    postalCode: '94105',
+    website: 'https://acmetech.com',
   })
 
   const [ownerInfo, setOwnerInfo] = useState<OwnerInfo>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    dateOfBirth: '',
-    nationality: '',
-    password: '',
-    confirmPassword: '',
+    firstName: 'John',
+    lastName: 'Smith',
+    email: 'john.smith@acmetech.com',
+    phone: '+1 (555) 987-6543',
+    password: 'Demo@123456',
+    confirmPassword: 'Demo@123456',
   })
 
   const [verificationInfo, setVerificationInfo] = useState<VerificationInfo>({
-    otp: '',
+    otp: '123456',
   })
 
-  const [directors, setDirectors] = useState<Director[]>([
-    {
-      id: '1',
-      firstName: '',
-      lastName: '',
-      email: '',
-      dateOfBirth: '',
-      nationality: '',
-      ownershipPercentage: '',
-      isUBO: false,
-      idDocument: null,
-    },
-  ])
-
-  const [kybDocuments, setKybDocuments] = useState<KYBDocuments>({
-    registrationCertificate: null,
-    proofOfAddress: null,
-    memorandumOfAssociation: null,
-    shareholderRegister: null,
-  })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -269,8 +219,6 @@ export default function SignUpPage() {
       newErrors.email = 'Please enter a valid email address'
     }
     if (!ownerInfo.phone.trim()) newErrors.phone = 'Phone number is required'
-    if (!ownerInfo.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required'
-    if (!ownerInfo.nationality) newErrors.nationality = 'Nationality is required'
 
     if (!ownerInfo.password) {
       newErrors.password = 'Password is required'
@@ -301,65 +249,6 @@ export default function SignUpPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  const validateStep4 = () => {
-    const newErrors: Record<string, string> = {}
-
-    directors.forEach((director, index) => {
-      if (!director.firstName.trim()) newErrors[`director_${index}_firstName`] = 'First name is required'
-      if (!director.lastName.trim()) newErrors[`director_${index}_lastName`] = 'Last name is required'
-      if (!director.email.trim()) {
-        newErrors[`director_${index}_email`] = 'Email is required'
-      } else if (!isValidEmail(director.email)) {
-        newErrors[`director_${index}_email`] = 'Invalid email address'
-      }
-      if (!director.dateOfBirth) newErrors[`director_${index}_dateOfBirth`] = 'Date of birth is required'
-      if (!director.nationality) newErrors[`director_${index}_nationality`] = 'Nationality is required'
-      if (director.isUBO && !director.ownershipPercentage) {
-        newErrors[`director_${index}_ownershipPercentage`] = 'Ownership percentage is required for UBOs'
-      }
-    })
-
-    // Validate total UBO ownership
-    const totalOwnership = directors
-      .filter(d => d.isUBO)
-      .reduce((sum, d) => sum + (parseFloat(d.ownershipPercentage) || 0), 0)
-
-    if (totalOwnership > 100) {
-      newErrors.totalOwnership = 'Total UBO ownership cannot exceed 100%'
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const validateStep5 = () => {
-    const newErrors: Record<string, string> = {}
-
-    // Check if at least one UBO has uploaded ID
-    const ubosWithId = directors.filter(d => d.isUBO && d.idDocument)
-    const totalUBOs = directors.filter(d => d.isUBO)
-
-    if (totalUBOs.length > 0 && ubosWithId.length < totalUBOs.length) {
-      newErrors.uboDocuments = 'ID documents are required for all UBOs'
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const validateStep6 = () => {
-    const newErrors: Record<string, string> = {}
-
-    if (!kybDocuments.registrationCertificate) {
-      newErrors.registrationCertificate = 'Business registration certificate is required'
-    }
-    if (!kybDocuments.proofOfAddress) {
-      newErrors.proofOfAddress = 'Proof of business address is required'
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
 
   // Step handlers
   const handleNext = async () => {
@@ -386,38 +275,20 @@ export default function SignUpPage() {
         isValid = validateStep3()
         if (isValid) {
           setIsLoading(true)
-          await new Promise(resolve => setTimeout(resolve, 1500))
-          setIsLoading(false)
-          showToast({
-            type: 'success',
-            title: 'Email Verified',
-            message: 'Your email has been verified successfully',
-          })
-        }
-        break
-      case 4:
-        isValid = validateStep4()
-        break
-      case 5:
-        isValid = validateStep5()
-        break
-      case 6:
-        isValid = validateStep6()
-        if (isValid) {
-          setIsLoading(true)
           await new Promise(resolve => setTimeout(resolve, 2000))
           setIsLoading(false)
           showToast({
             type: 'success',
             title: 'Account Created!',
-            message: 'Redirecting to verification status...',
+            message: 'Welcome to Wiremi! Redirecting to your dashboard...',
           })
-          setTimeout(() => router.push('/verification'), 1500)
+          setTimeout(() => router.push('/dashboard'), 1500)
+          return
         }
         break
     }
 
-    if (isValid && currentStep < 6) {
+    if (isValid && currentStep < 3) {
       setCurrentStep((prev) => (prev + 1) as SignUpStep)
     }
   }
@@ -429,53 +300,6 @@ export default function SignUpPage() {
     }
   }
 
-  const validateFile = (file: File): string | null => {
-    const maxSize = 10 * 1024 * 1024 // 10MB
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png']
-
-    if (!allowedTypes.includes(file.type)) {
-      return 'Invalid file type. Please upload PDF, JPG, or PNG files only.'
-    }
-    if (file.size > maxSize) {
-      return 'File size exceeds 10MB limit.'
-    }
-    return null
-  }
-
-  const handleFileUpload = (field: keyof KYBDocuments, file: File | null) => {
-    if (file) {
-      const validationError = validateFile(file)
-      if (validationError) {
-        showToast({
-          type: 'error',
-          title: 'Invalid File',
-          message: validationError,
-        })
-        return
-      }
-    }
-    setKybDocuments(prev => ({ ...prev, [field]: file }))
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }))
-    }
-  }
-
-  const handleDirectorFileUpload = (directorId: string, file: File | null) => {
-    if (file) {
-      const validationError = validateFile(file)
-      if (validationError) {
-        showToast({
-          type: 'error',
-          title: 'Invalid File',
-          message: validationError,
-        })
-        return
-      }
-    }
-    setDirectors(prev => prev.map(d =>
-      d.id === directorId ? { ...d, idDocument: file } : d
-    ))
-  }
 
   const handleResendOTP = async () => {
     setIsLoading(true)
@@ -488,40 +312,12 @@ export default function SignUpPage() {
     })
   }
 
-  const addDirector = () => {
-    setDirectors(prev => [...prev, {
-      id: Date.now().toString(),
-      firstName: '',
-      lastName: '',
-      email: '',
-      dateOfBirth: '',
-      nationality: '',
-      ownershipPercentage: '',
-      isUBO: false,
-      idDocument: null,
-    }])
-  }
-
-  const removeDirector = (id: string) => {
-    if (directors.length > 1) {
-      setDirectors(prev => prev.filter(d => d.id !== id))
-    }
-  }
-
-  const updateDirector = (id: string, field: keyof Director, value: string | boolean | File | null) => {
-    setDirectors(prev => prev.map(d =>
-      d.id === id ? { ...d, [field]: value } : d
-    ))
-  }
 
   // Progress indicator
   const steps = [
     { number: 1, title: 'Business', icon: Building2 },
     { number: 2, title: 'Account', icon: User },
     { number: 3, title: 'Verify', icon: Shield },
-    { number: 4, title: 'Directors', icon: Users },
-    { number: 5, title: 'UBO ID', icon: UserCheck },
-    { number: 6, title: 'Documents', icon: FileText },
   ]
 
   const slide = carouselSlides[currentSlide]
@@ -550,16 +346,13 @@ export default function SignUpPage() {
         <div className="relative z-10 flex flex-col justify-between p-8 xl:p-12 w-full">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-              <Image
-                src="/images/wiremi-icon.png"
-                alt="Wiremi"
-                width={28}
-                height={28}
-                className="object-contain"
-              />
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-2xl font-black text-primary-600">W</span>
             </div>
-            <span className="text-2xl font-bold text-white tracking-tight">WIREMI</span>
+            <div>
+              <h2 className="text-xl font-bold text-white tracking-tight">WIREMI</h2>
+              <p className="text-xs text-gray-400">Business Finance Platform</p>
+            </div>
           </div>
 
           {/* Carousel Content */}
@@ -627,19 +420,28 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          {/* Bottom Stats */}
-          <div className="flex items-center gap-8 pt-6 border-t border-white/10">
-            <div>
-              <p className="text-2xl font-bold text-white">$2B+</p>
-              <p className="text-sm text-gray-400">Processed</p>
+          {/* Bottom Features */}
+          <div className="grid grid-cols-3 gap-6 p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
+            <div className="text-center">
+              <div className="w-10 h-10 mx-auto mb-2 bg-primary-500/20 rounded-xl flex items-center justify-center">
+                <Globe className="w-5 h-5 text-primary-400" />
+              </div>
+              <p className="text-sm font-medium text-white">150+ Countries</p>
+              <p className="text-xs text-gray-400">Global coverage</p>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-white">50K+</p>
-              <p className="text-sm text-gray-400">Businesses</p>
+            <div className="text-center border-x border-white/10">
+              <div className="w-10 h-10 mx-auto mb-2 bg-primary-500/20 rounded-xl flex items-center justify-center">
+                <Shield className="w-5 h-5 text-primary-400" />
+              </div>
+              <p className="text-sm font-medium text-white">Enterprise</p>
+              <p className="text-xs text-gray-400">Security</p>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-white">99.9%</p>
-              <p className="text-sm text-gray-400">Uptime</p>
+            <div className="text-center">
+              <div className="w-10 h-10 mx-auto mb-2 bg-primary-500/20 rounded-xl flex items-center justify-center">
+                <CreditCard className="w-5 h-5 text-primary-400" />
+              </div>
+              <p className="text-sm font-medium text-white">20+ Currencies</p>
+              <p className="text-xs text-gray-400">Supported</p>
             </div>
           </div>
         </div>
@@ -650,14 +452,8 @@ export default function SignUpPage() {
         <div className="min-h-screen flex flex-col p-6 lg:p-8 xl:p-12">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center justify-center gap-3 mb-6">
-            <div className="relative w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
-              <Image
-                src="/images/wiremi-icon.png"
-                alt="Wiremi"
-                width={28}
-                height={28}
-                className="object-contain"
-              />
+            <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
+              <span className="text-xl font-black text-white">W</span>
             </div>
             <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">WIREMI</span>
           </div>
@@ -923,44 +719,22 @@ export default function SignUpPage() {
                     required
                   />
 
-                  <Input
-                    label="Phone Number"
-                    type="tel"
-                    placeholder="+1 (555) 000-0000"
-                    value={ownerInfo.phone}
-                    onChange={(e) => {
-                      setOwnerInfo(prev => ({ ...prev, phone: e.target.value }))
-                      setErrors(prev => ({ ...prev, phone: '' }))
-                    }}
-                    error={errors.phone}
-                    icon={<Phone className="w-5 h-5" />}
-                    iconPosition="left"
-                    required
-                  />
-
-                  <Input
-                    label="Date of Birth"
-                    type="date"
-                    value={ownerInfo.dateOfBirth}
-                    onChange={(e) => {
-                      setOwnerInfo(prev => ({ ...prev, dateOfBirth: e.target.value }))
-                      setErrors(prev => ({ ...prev, dateOfBirth: '' }))
-                    }}
-                    error={errors.dateOfBirth}
-                    required
-                  />
-
-                  <Select
-                    label="Nationality"
-                    options={countryOptions}
-                    value={ownerInfo.nationality}
-                    onChange={(e) => {
-                      setOwnerInfo(prev => ({ ...prev, nationality: e.target.value }))
-                      setErrors(prev => ({ ...prev, nationality: '' }))
-                    }}
-                    error={errors.nationality}
-                    required
-                  />
+                  <div className="md:col-span-2">
+                    <Input
+                      label="Phone Number"
+                      type="tel"
+                      placeholder="+1 (555) 000-0000"
+                      value={ownerInfo.phone}
+                      onChange={(e) => {
+                        setOwnerInfo(prev => ({ ...prev, phone: e.target.value }))
+                        setErrors(prev => ({ ...prev, phone: '' }))
+                      }}
+                      error={errors.phone}
+                      icon={<Phone className="w-5 h-5" />}
+                      iconPosition="left"
+                      required
+                    />
+                  </div>
 
                   <div className="md:col-span-2">
                     <PasswordInput
@@ -1041,458 +815,6 @@ export default function SignUpPage() {
               </div>
             )}
 
-            {/* Step 4: Directors & UBOs */}
-            {currentStep === 4 && (
-              <div className="space-y-5">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                    Directors & Shareholders
-                  </h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Add company directors and Ultimate Beneficial Owners (UBOs) - individuals who own 25% or more
-                  </p>
-                </div>
-
-                {errors.totalOwnership && (
-                  <div className="p-3 bg-error/10 border border-error/20 rounded-xl">
-                    <p className="text-sm text-error">{errors.totalOwnership}</p>
-                  </div>
-                )}
-
-                <div className="space-y-4">
-                  {directors.map((director, index) => (
-                    <div
-                      key={director.id}
-                      className="p-4 bg-gray-50 dark:bg-dark-bg rounded-xl border border-gray-200 dark:border-dark-border"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <Briefcase className="w-5 h-5 text-primary-500" />
-                          <span className="font-medium text-gray-900 dark:text-white">
-                            {director.isUBO ? 'Director & UBO' : 'Director'} {index + 1}
-                          </span>
-                        </div>
-                        {directors.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => removeDirector(director.id)}
-                            className="p-1 text-gray-400 hover:text-error transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <Input
-                          label="First Name"
-                          placeholder="John"
-                          value={director.firstName}
-                          onChange={(e) => updateDirector(director.id, 'firstName', e.target.value)}
-                          error={errors[`director_${index}_firstName`]}
-                          required
-                        />
-
-                        <Input
-                          label="Last Name"
-                          placeholder="Doe"
-                          value={director.lastName}
-                          onChange={(e) => updateDirector(director.id, 'lastName', e.target.value)}
-                          error={errors[`director_${index}_lastName`]}
-                          required
-                        />
-
-                        <Input
-                          label="Email"
-                          type="email"
-                          placeholder="john@company.com"
-                          value={director.email}
-                          onChange={(e) => updateDirector(director.id, 'email', e.target.value)}
-                          error={errors[`director_${index}_email`]}
-                          required
-                        />
-
-                        <Input
-                          label="Date of Birth"
-                          type="date"
-                          value={director.dateOfBirth}
-                          onChange={(e) => updateDirector(director.id, 'dateOfBirth', e.target.value)}
-                          error={errors[`director_${index}_dateOfBirth`]}
-                          required
-                        />
-
-                        <Select
-                          label="Nationality"
-                          options={countryOptions}
-                          value={director.nationality}
-                          onChange={(e) => updateDirector(director.id, 'nationality', e.target.value)}
-                          error={errors[`director_${index}_nationality`]}
-                          required
-                        />
-
-                        <div className="flex items-end gap-3">
-                          <div className="flex-1">
-                            <Input
-                              label="Ownership %"
-                              type="number"
-                              placeholder="25"
-                              value={director.ownershipPercentage}
-                              onChange={(e) => updateDirector(director.id, 'ownershipPercentage', e.target.value)}
-                              error={errors[`director_${index}_ownershipPercentage`]}
-                              disabled={!director.isUBO}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 flex items-center gap-3">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={director.isUBO}
-                            onChange={(e) => updateDirector(director.id, 'isUBO', e.target.checked)}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-500"></div>
-                        </label>
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
-                          Ultimate Beneficial Owner (UBO) - owns 25% or more
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="md"
-                  onClick={addDirector}
-                  icon={<Plus className="w-4 h-4" />}
-                  iconPosition="left"
-                  className="w-full"
-                >
-                  Add Another Director
-                </Button>
-
-                <div className="p-4 bg-primary-50 dark:bg-primary-500/10 rounded-xl border border-primary-100 dark:border-primary-500/20">
-                  <p className="text-sm text-primary-900 dark:text-primary-300">
-                    <strong>What is a UBO?</strong> An Ultimate Beneficial Owner is any individual who directly or indirectly owns 25% or more of the company's shares or voting rights, or otherwise exercises control over the company.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Step 5: UBO ID Documents */}
-            {currentStep === 5 && (
-              <div className="space-y-5">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                    UBO Identity Verification
-                  </h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Upload ID documents for all Ultimate Beneficial Owners
-                  </p>
-                </div>
-
-                {errors.uboDocuments && (
-                  <div className="p-3 bg-error/10 border border-error/20 rounded-xl">
-                    <p className="text-sm text-error">{errors.uboDocuments}</p>
-                  </div>
-                )}
-
-                <div className="space-y-4">
-                  {directors.filter(d => d.isUBO).length === 0 ? (
-                    <div className="p-6 text-center bg-gray-50 dark:bg-dark-bg rounded-xl border border-gray-200 dark:border-dark-border">
-                      <UserCheck className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                      <p className="font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        No Ultimate Beneficial Owners designated
-                      </p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        If no individual owns 25% or more of your company, you can proceed to the next step.
-                      </p>
-                    </div>
-                  ) : (
-                    directors.filter(d => d.isUBO).map((director) => (
-                      <div
-                        key={director.id}
-                        className="p-4 bg-gray-50 dark:bg-dark-bg rounded-xl border border-gray-200 dark:border-dark-border"
-                      >
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="w-10 h-10 bg-primary-100 dark:bg-primary-500/20 rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5 text-primary-500" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900 dark:text-white">
-                              {director.firstName} {director.lastName}
-                            </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {director.ownershipPercentage}% ownership
-                            </p>
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Government-Issued ID <span className="text-error">*</span>
-                          </label>
-                          <div className="relative">
-                            <input
-                              type="file"
-                              accept=".pdf,.jpg,.jpeg,.png"
-                              onChange={(e) => handleDirectorFileUpload(director.id, e.target.files?.[0] || null)}
-                              className="hidden"
-                              id={`ubo-id-${director.id}`}
-                              aria-label={`Upload ID document for ${director.firstName || 'UBO'} ${director.lastName || ''}`}
-                            />
-                            <label
-                              htmlFor={`ubo-id-${director.id}`}
-                              className={`flex items-center justify-center gap-3 px-4 py-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
-                                director.idDocument
-                                  ? 'border-success bg-success/5'
-                                  : 'border-gray-300 dark:border-dark-border hover:border-primary-500 bg-white dark:bg-dark-surface'
-                              }`}
-                            >
-                              <Upload className="w-5 h-5 text-gray-400" />
-                              <div className="text-center">
-                                {director.idDocument ? (
-                                  <p className="text-sm font-medium text-success">
-                                    {director.idDocument.name}
-                                  </p>
-                                ) : (
-                                  <>
-                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                      Upload ID document
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                      Passport, National ID, or Driver's License
-                                    </p>
-                                  </>
-                                )}
-                              </div>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-
-                <div className="p-4 bg-gray-100 dark:bg-dark-border/50 rounded-xl">
-                  <div className="flex items-start gap-3">
-                    <Lock className="w-5 h-5 text-gray-500 mt-0.5" />
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      All documents are encrypted and stored securely. They are used solely for identity verification and regulatory compliance.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Step 6: Business Documentation */}
-            {currentStep === 6 && (
-              <div className="space-y-5">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                    Business Documents
-                  </h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Upload required documents to complete KYB verification
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  {/* Registration Certificate */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Certificate of Incorporation <span className="text-error">*</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        onChange={(e) => handleFileUpload('registrationCertificate', e.target.files?.[0] || null)}
-                        className="hidden"
-                        id="registration-cert"
-                        aria-label="Upload Certificate of Incorporation"
-                      />
-                      <label
-                        htmlFor="registration-cert"
-                        className={`flex items-center justify-center gap-3 px-4 py-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
-                          errors.registrationCertificate
-                            ? 'border-error bg-error/5'
-                            : kybDocuments.registrationCertificate
-                            ? 'border-success bg-success/5'
-                            : 'border-gray-300 dark:border-dark-border hover:border-primary-500 bg-gray-50 dark:bg-dark-bg'
-                        }`}
-                      >
-                        <Upload className="w-5 h-5 text-gray-400" />
-                        <div className="text-center">
-                          {kybDocuments.registrationCertificate ? (
-                            <p className="text-sm font-medium text-success">
-                              {kybDocuments.registrationCertificate.name}
-                            </p>
-                          ) : (
-                            <>
-                              <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                Click to upload
-                              </p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
-                                PDF, JPG, or PNG (max 10MB)
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-                    {errors.registrationCertificate && (
-                      <p className="mt-2 text-sm text-error">{errors.registrationCertificate}</p>
-                    )}
-                  </div>
-
-                  {/* Proof of Address */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Proof of Business Address <span className="text-error">*</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        onChange={(e) => handleFileUpload('proofOfAddress', e.target.files?.[0] || null)}
-                        className="hidden"
-                        id="proof-address"
-                        aria-label="Upload Proof of Business Address"
-                      />
-                      <label
-                        htmlFor="proof-address"
-                        className={`flex items-center justify-center gap-3 px-4 py-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
-                          errors.proofOfAddress
-                            ? 'border-error bg-error/5'
-                            : kybDocuments.proofOfAddress
-                            ? 'border-success bg-success/5'
-                            : 'border-gray-300 dark:border-dark-border hover:border-primary-500 bg-gray-50 dark:bg-dark-bg'
-                        }`}
-                      >
-                        <Upload className="w-5 h-5 text-gray-400" />
-                        <div className="text-center">
-                          {kybDocuments.proofOfAddress ? (
-                            <p className="text-sm font-medium text-success">
-                              {kybDocuments.proofOfAddress.name}
-                            </p>
-                          ) : (
-                            <>
-                              <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                Click to upload
-                              </p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
-                                Utility bill, bank statement (max 10MB)
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-                    {errors.proofOfAddress && (
-                      <p className="mt-2 text-sm text-error">{errors.proofOfAddress}</p>
-                    )}
-                  </div>
-
-                  {/* Memorandum of Association (Optional) */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Memorandum of Association (Optional)
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        onChange={(e) => handleFileUpload('memorandumOfAssociation', e.target.files?.[0] || null)}
-                        className="hidden"
-                        id="memorandum"
-                        aria-label="Upload Memorandum of Association"
-                      />
-                      <label
-                        htmlFor="memorandum"
-                        className={`flex items-center justify-center gap-3 px-4 py-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
-                          kybDocuments.memorandumOfAssociation
-                            ? 'border-success bg-success/5'
-                            : 'border-gray-300 dark:border-dark-border hover:border-primary-500 bg-gray-50 dark:bg-dark-bg'
-                        }`}
-                      >
-                        <Upload className="w-5 h-5 text-gray-400" />
-                        <div className="text-center">
-                          {kybDocuments.memorandumOfAssociation ? (
-                            <p className="text-sm font-medium text-success">
-                              {kybDocuments.memorandumOfAssociation.name}
-                            </p>
-                          ) : (
-                            <>
-                              <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                Click to upload
-                              </p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
-                                PDF, JPG, or PNG (max 10MB)
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Shareholder Register (Optional) */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Shareholder Register (Optional)
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        onChange={(e) => handleFileUpload('shareholderRegister', e.target.files?.[0] || null)}
-                        className="hidden"
-                        id="shareholder-register"
-                        aria-label="Upload Shareholder Register"
-                      />
-                      <label
-                        htmlFor="shareholder-register"
-                        className={`flex items-center justify-center gap-3 px-4 py-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
-                          kybDocuments.shareholderRegister
-                            ? 'border-success bg-success/5'
-                            : 'border-gray-300 dark:border-dark-border hover:border-primary-500 bg-gray-50 dark:bg-dark-bg'
-                        }`}
-                      >
-                        <Upload className="w-5 h-5 text-gray-400" />
-                        <div className="text-center">
-                          {kybDocuments.shareholderRegister ? (
-                            <p className="text-sm font-medium text-success">
-                              {kybDocuments.shareholderRegister.name}
-                            </p>
-                          ) : (
-                            <>
-                              <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                Click to upload
-                              </p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
-                                PDF, JPG, or PNG (max 10MB)
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-primary-50 dark:bg-primary-500/10 rounded-xl border border-primary-100 dark:border-primary-500/20">
-                  <p className="text-sm text-primary-900 dark:text-primary-300">
-                    <strong>Note:</strong> All documents are securely stored and encrypted. They are used only to verify your business identity and comply with regulatory requirements.
-                  </p>
-                </div>
-              </div>
-            )}
-
             {/* Action Buttons */}
             <div className="mt-6 flex gap-3">
               {currentStep > 1 && (
@@ -1516,10 +838,10 @@ export default function SignUpPage() {
                 className="flex-1"
                 onClick={handleNext}
                 loading={isLoading}
-                icon={currentStep === 6 ? <CheckCircle2 className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />}
+                icon={currentStep === 3 ? <CheckCircle2 className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />}
                 iconPosition="right"
               >
-                {currentStep === 6 ? 'Complete Registration' : 'Continue'}
+                {currentStep === 3 ? 'Create Account' : 'Continue'}
               </Button>
             </div>
           </div>

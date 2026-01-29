@@ -12,13 +12,10 @@ import {
   CreditCard,
   Send,
   BarChart3,
-  Users,
-  Zap,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Lock,
-  Sparkles,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Input from '@/components/ui/input'
@@ -82,10 +79,10 @@ export default function SignInPage() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email')
   const [formData, setFormData] = useState({
-    email: '',
-    phone: '',
-    password: '',
-    rememberMe: false,
+    email: 'demo@wiremi.com',
+    phone: '+1 (555) 123-4567',
+    password: 'Demo@123456',
+    rememberMe: true,
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
@@ -196,8 +193,8 @@ export default function SignInPage() {
         <div className="relative z-10 flex flex-col justify-between p-8 xl:p-12 w-full">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25">
-              <Zap className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-2xl font-black text-primary-600">W</span>
             </div>
             <div>
               <h2 className="text-xl font-bold text-white tracking-tight">WIREMI</h2>
@@ -302,19 +299,28 @@ export default function SignInPage() {
             </div>
           </div>
 
-          {/* Bottom Stats Bar */}
+          {/* Bottom Features Bar */}
           <div className="grid grid-cols-3 gap-6 p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
             <div className="text-center">
-              <p className="text-2xl font-bold text-white">$2B+</p>
-              <p className="text-sm text-gray-400">Processed annually</p>
+              <div className="w-10 h-10 mx-auto mb-2 bg-primary-500/20 rounded-xl flex items-center justify-center">
+                <Globe className="w-5 h-5 text-primary-400" />
+              </div>
+              <p className="text-sm font-medium text-white">150+ Countries</p>
+              <p className="text-xs text-gray-400">Global coverage</p>
             </div>
             <div className="text-center border-x border-white/10">
-              <p className="text-2xl font-bold text-white">50K+</p>
-              <p className="text-sm text-gray-400">Active businesses</p>
+              <div className="w-10 h-10 mx-auto mb-2 bg-primary-500/20 rounded-xl flex items-center justify-center">
+                <Shield className="w-5 h-5 text-primary-400" />
+              </div>
+              <p className="text-sm font-medium text-white">Enterprise</p>
+              <p className="text-xs text-gray-400">Security</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-white">99.9%</p>
-              <p className="text-sm text-gray-400">Platform uptime</p>
+              <div className="w-10 h-10 mx-auto mb-2 bg-primary-500/20 rounded-xl flex items-center justify-center">
+                <CreditCard className="w-5 h-5 text-primary-400" />
+              </div>
+              <p className="text-sm font-medium text-white">20+ Currencies</p>
+              <p className="text-xs text-gray-400">Supported</p>
             </div>
           </div>
         </div>
@@ -325,8 +331,8 @@ export default function SignInPage() {
         {/* Mobile Logo Header */}
         <div className="lg:hidden p-6 border-b border-gray-100 dark:border-dark-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
+              <span className="text-xl font-black text-white">W</span>
             </div>
             <span className="text-xl font-bold text-gray-900 dark:text-white">WIREMI</span>
           </div>
@@ -500,8 +506,8 @@ export default function SignInPage() {
         <div className="p-6 border-t border-gray-100 dark:border-dark-border">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                <Zap className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                <span className="text-sm font-black text-white">W</span>
               </div>
               <div>
                 <p className="text-xs text-gray-400">Powered by</p>
