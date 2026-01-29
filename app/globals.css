@@ -47,9 +47,16 @@
 
 @layer base {
   body {
+    background: white;
+    color: rgb(17 24 39);
     font-feature-settings: 'rlig' 1, 'calt' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  html.dark body {
+    background: var(--color-dark-bg);
+    color: white;
   }
 
   html {
