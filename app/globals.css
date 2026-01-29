@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode */
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Wiremi B2B Brand Colors */
   --color-primary-50: #EBF5FF;

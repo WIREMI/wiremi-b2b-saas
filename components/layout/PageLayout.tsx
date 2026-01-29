@@ -17,7 +17,7 @@ export default function PageLayout({
   maxWidth = 'wide',
 }: PageLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50/50 dark:bg-dark-bg flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg flex">
       {/* Sidebar */}
       <Sidebar />
 
@@ -29,7 +29,7 @@ export default function PageLayout({
         {/* Page Content */}
         <main
           className={cn(
-            'p-6 md:p-8 flex-1 bg-gray-50/50 dark:bg-dark-bg',
+            'p-6 md:p-8 flex-1 bg-gray-50 dark:bg-dark-bg',
             maxWidth === 'full' && 'max-w-full',
             maxWidth === 'wide' && 'max-w-7xl mx-auto w-full',
             maxWidth === 'normal' && 'max-w-5xl mx-auto w-full',
