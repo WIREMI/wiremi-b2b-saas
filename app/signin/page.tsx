@@ -26,7 +26,7 @@ import PasswordInput from '@/components/ui/password-input'
 import { useToast } from '@/components/ui/toast'
 import { isValidEmail, cn } from '@/lib/utils'
 
-// Carousel slides showcasing Wiremi features
+// Carousel slides showcasing Wiremi features - using consistent primary color scheme
 const carouselSlides = [
   {
     id: 1,
@@ -34,7 +34,7 @@ const carouselSlides = [
     subtitle: 'Receive payments in 20+ currencies',
     description: 'Open local currency accounts instantly. Receive payments like a local business in any market.',
     icon: <Globe className="w-8 h-8" />,
-    gradient: 'from-blue-600 to-cyan-500',
+    gradient: 'from-primary-500 to-primary-600',
     features: ['Unique account details', 'No conversion fees', 'Same-day settlements'],
     stat: '150+',
     statLabel: 'Countries supported',
@@ -45,7 +45,7 @@ const carouselSlides = [
     subtitle: 'Control spending in real-time',
     description: 'Issue virtual and physical cards for your team. Set limits, track expenses, and manage budgets effortlessly.',
     icon: <CreditCard className="w-8 h-8" />,
-    gradient: 'from-purple-600 to-pink-500',
+    gradient: 'from-primary-600 to-indigo-600',
     features: ['Instant virtual cards', 'Custom spend limits', 'Receipt capture'],
     stat: '0%',
     statLabel: 'International fees',
@@ -56,7 +56,7 @@ const carouselSlides = [
     subtitle: 'Pay anyone, anywhere',
     description: 'Send payments to 150+ countries in 60+ currencies. Batch payments, vendor management, and more.',
     icon: <Send className="w-8 h-8" />,
-    gradient: 'from-emerald-600 to-teal-500',
+    gradient: 'from-indigo-500 to-primary-600',
     features: ['Same-day delivery', 'Batch transfers', 'Interbank rates'],
     stat: '60+',
     statLabel: 'Currencies',
@@ -67,7 +67,7 @@ const carouselSlides = [
     subtitle: 'AI-powered insights',
     description: 'Get real-time visibility into your finances. AI-powered forecasting and actionable insights.',
     icon: <BarChart3 className="w-8 h-8" />,
-    gradient: 'from-orange-600 to-amber-500',
+    gradient: 'from-primary-400 to-primary-600',
     features: ['Cash flow forecasting', 'Expense analytics', 'Custom reports'],
     stat: '99.9%',
     statLabel: 'Uptime SLA',

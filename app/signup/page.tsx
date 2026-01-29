@@ -123,7 +123,7 @@ const countryOptions = [
   { value: 'KE', label: 'Kenya' },
 ]
 
-// Carousel slides for the left panel
+// Carousel slides for the left panel - using consistent primary color scheme
 const carouselSlides = [
   {
     id: 1,
@@ -131,7 +131,7 @@ const carouselSlides = [
     subtitle: 'Receive payments in 20+ currencies',
     description: 'Open local currency accounts instantly. Collect payments like a local in major markets worldwide.',
     icon: <Globe className="w-8 h-8" />,
-    gradient: 'from-blue-600 to-cyan-500',
+    gradient: 'from-primary-500 to-primary-600',
     features: ['Unique account details', 'No conversion fees', 'Same-day settlements'],
     stat: '150+',
     statLabel: 'Countries supported',
@@ -142,7 +142,7 @@ const carouselSlides = [
     subtitle: 'Smart spending for your team',
     description: 'Issue virtual and physical cards with built-in controls. Track expenses in real-time.',
     icon: <CreditCard className="w-8 h-8" />,
-    gradient: 'from-purple-600 to-pink-500',
+    gradient: 'from-primary-600 to-indigo-600',
     features: ['Instant virtual cards', 'Spending limits', 'Receipt matching'],
     stat: '3%',
     statLabel: 'Cashback on spend',
@@ -153,7 +153,7 @@ const carouselSlides = [
     subtitle: 'Pay anyone, anywhere',
     description: 'Send payments to 180+ countries. Competitive FX rates with transparent pricing.',
     icon: <TrendingUp className="w-8 h-8" />,
-    gradient: 'from-emerald-600 to-teal-500',
+    gradient: 'from-indigo-500 to-primary-600',
     features: ['Batch payments', 'Scheduled transfers', 'Real-time tracking'],
     stat: '0.5%',
     statLabel: 'FX markup',
@@ -164,7 +164,7 @@ const carouselSlides = [
     subtitle: 'Insights that drive growth',
     description: 'AI-powered analytics to understand your cash flow and optimize financial operations.',
     icon: <Wallet className="w-8 h-8" />,
-    gradient: 'from-orange-600 to-amber-500',
+    gradient: 'from-primary-400 to-primary-600',
     features: ['Cash flow forecasting', 'Expense analytics', 'Custom reports'],
     stat: '40%',
     statLabel: 'Time saved',
