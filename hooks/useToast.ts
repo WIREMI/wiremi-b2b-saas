@@ -6,7 +6,9 @@ export interface Toast {
   id: string
   title: string
   description?: string
+  message?: string // Alias for description
   variant?: 'default' | 'success' | 'error' | 'warning'
+  type?: 'default' | 'success' | 'error' | 'warning' // Alias for variant
   duration?: number
 }
 
