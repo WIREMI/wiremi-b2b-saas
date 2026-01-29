@@ -29,7 +29,8 @@
   }
 
   body {
-    @apply bg-white text-gray-900;
+    background-color: white;
+    color: rgb(17 24 39);
     font-feature-settings: 'rlig' 1, 'calt' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
