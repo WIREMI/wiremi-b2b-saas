@@ -187,7 +187,7 @@ export default function HostedCheckoutPage() {
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-lg">W</span>
             </div>
             <div>
@@ -229,17 +229,17 @@ export default function HostedCheckoutPage() {
                     className={cn(
                       "p-4 rounded-xl border-2 transition-all text-left",
                       selectedMethod === method.id
-                        ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10"
+                        ? "border-primary-500 bg-primary-50 dark:bg-primary-500/10"
                         : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                     )}
                   >
                     <method.icon className={cn(
                       "w-6 h-6 mb-2",
-                      selectedMethod === method.id ? "text-indigo-500" : "text-gray-400"
+                      selectedMethod === method.id ? "text-primary-500" : "text-gray-400"
                     )} />
                     <p className={cn(
                       "font-medium text-sm",
-                      selectedMethod === method.id ? "text-indigo-600 dark:text-indigo-400" : "text-gray-900 dark:text-white"
+                      selectedMethod === method.id ? "text-primary-600 dark:text-primary-400" : "text-gray-900 dark:text-white"
                     )}>{method.name}</p>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{method.description}</p>
                   </button>
@@ -260,7 +260,7 @@ export default function HostedCheckoutPage() {
                         onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
                         maxLength={19}
                         placeholder="1234 5678 9012 3456"
-                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400"
                       />
                       {cardType && (
                         <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -283,7 +283,7 @@ export default function HostedCheckoutPage() {
                         onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
                         maxLength={5}
                         placeholder="MM/YY"
-                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400"
                       />
                     </div>
                     <div>
@@ -296,7 +296,7 @@ export default function HostedCheckoutPage() {
                         onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
                         maxLength={4}
                         placeholder="123"
-                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400"
                       />
                     </div>
                   </div>
@@ -319,7 +319,7 @@ export default function HostedCheckoutPage() {
                       type="checkbox"
                       checked={saveCard}
                       onChange={(e) => setSaveCard(e.target.checked)}
-                      className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-indigo-500 focus:ring-indigo-500"
+                      className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-primary-500 focus:ring-primary-500"
                     />
                     <span className="text-sm text-gray-700 dark:text-gray-300">Save card for future payments</span>
                   </label>
@@ -341,7 +341,7 @@ export default function HostedCheckoutPage() {
                           className={cn(
                             "p-3 rounded-xl border-2 flex items-center gap-3 transition-all",
                             mobileProvider === provider.id
-                              ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10"
+                              ? "border-primary-500 bg-primary-50 dark:bg-primary-500/10"
                               : "border-gray-200 dark:border-gray-700"
                           )}
                         >
@@ -388,7 +388,7 @@ export default function HostedCheckoutPage() {
                           className={cn(
                             "p-3 rounded-xl border-2 flex items-center gap-3 transition-all",
                             selectedBank === bank.id
-                              ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10"
+                              ? "border-primary-500 bg-primary-50 dark:bg-primary-500/10"
                               : "border-gray-200 dark:border-gray-700"
                           )}
                         >
@@ -440,7 +440,7 @@ export default function HostedCheckoutPage() {
                         className={cn(
                           "p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all",
                           walletType === wallet.id
-                            ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10"
+                            ? "border-primary-500 bg-primary-50 dark:bg-primary-500/10"
                             : "border-gray-200 dark:border-gray-700"
                         )}
                       >
@@ -475,7 +475,7 @@ export default function HostedCheckoutPage() {
                           className={cn(
                             "p-3 rounded-xl border-2 text-center transition-all",
                             cryptoType === crypto.id
-                              ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10"
+                              ? "border-primary-500 bg-primary-50 dark:bg-primary-500/10"
                               : "border-gray-200 dark:border-gray-700"
                           )}
                         >
@@ -512,7 +512,7 @@ export default function HostedCheckoutPage() {
             <button
               onClick={handleSubmit}
               disabled={isProcessing}
-              className="w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-4 px-6 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isProcessing ? (
                 <>

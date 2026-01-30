@@ -129,8 +129,8 @@ export default function SubscriptionCheckoutPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-primary-900 to-gray-900">
       {/* Background Pattern */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl" />
       </div>
 
       {/* Header */}
@@ -202,7 +202,7 @@ export default function SubscriptionCheckoutPage() {
                   )}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary-500 to-purple-500 rounded-full text-sm font-medium text-white flex items-center gap-1">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full text-sm font-medium text-white flex items-center gap-1">
                       <Sparkles className="w-3 h-3" />
                       Most Popular
                     </div>

@@ -148,7 +148,7 @@ export default function TicketCheckoutPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-dark-bg">
       {/* Event Banner */}
-      <div className="relative h-48 md:h-64 bg-gradient-to-r from-purple-600 to-pink-600 overflow-hidden">
+      <div className="relative h-48 md:h-64 bg-gradient-to-r from-primary-500 to-primary-600 overflow-hidden">
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-6">
           <div className="text-white">
@@ -582,7 +582,7 @@ export default function TicketCheckoutPage() {
             </p>
 
             {/* Ticket Card */}
-            <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-6 text-white text-left mb-6">
+            <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 text-white text-left mb-6">
               <div className="flex items-start justify-between mb-6">
                 <div>
                   <p className="text-sm opacity-80 mb-1">{event.organizer}</p>

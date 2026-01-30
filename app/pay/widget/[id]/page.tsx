@@ -186,7 +186,7 @@ export default function WidgetPaymentPage() {
       {/* Header */}
       <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">W</span>
           </div>
           <span className="font-semibold text-gray-900 dark:text-white">{config.merchantName}</span>
@@ -210,7 +210,7 @@ export default function WidgetPaymentPage() {
           </p>
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="mt-2 text-sm text-indigo-600 dark:text-indigo-400 flex items-center gap-1 mx-auto"
+            className="mt-2 text-sm text-primary-600 dark:text-primary-400 flex items-center gap-1 mx-auto"
           >
             {showDetails ? 'Hide' : 'Show'} details
             {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -269,7 +269,7 @@ export default function WidgetPaymentPage() {
                   onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
                   maxLength={19}
                   placeholder="1234 5678 9012 3456"
-                  className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
+                  className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
                 />
                 {cardType && (
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400 bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded">
@@ -290,7 +290,7 @@ export default function WidgetPaymentPage() {
                   onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
                   maxLength={5}
                   placeholder="MM/YY"
-                  className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
+                  className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
                 />
               </div>
               <div>
@@ -303,7 +303,7 @@ export default function WidgetPaymentPage() {
                   onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
                   maxLength={4}
                   placeholder="123"
-                  className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
+                  className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
                 />
               </div>
             </div>
@@ -317,7 +317,7 @@ export default function WidgetPaymentPage() {
                 value={cardName}
                 onChange={(e) => setCardName(e.target.value)}
                 placeholder="John Doe"
-                className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
+                className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
               />
             </div>
           </div>
@@ -338,7 +338,7 @@ export default function WidgetPaymentPage() {
                     className={cn(
                       "py-2.5 px-3 rounded-xl border-2 text-sm font-medium transition-all",
                       mobileProvider === provider.id
-                        ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
+                        ? "border-primary-500 bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400"
                         : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300"
                     )}
                   >
@@ -357,7 +357,7 @@ export default function WidgetPaymentPage() {
                 value={mobileNumber}
                 onChange={(e) => setMobileNumber(e.target.value)}
                 placeholder="+254 7XX XXX XXX"
-                className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
+                className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 text-sm"
               />
             </div>
 
@@ -420,7 +420,7 @@ export default function WidgetPaymentPage() {
               ].map((wallet) => (
                 <button
                   key={wallet.id}
-                  className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all flex items-center gap-3"
+                  className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all flex items-center gap-3"
                 >
                   <span className="text-xl">{wallet.icon}</span>
                   <span className="font-medium text-gray-900 dark:text-white">{wallet.name}</span>
@@ -442,7 +442,7 @@ export default function WidgetPaymentPage() {
                   className={cn(
                     "py-2.5 px-3 rounded-xl border-2 text-sm font-medium transition-all",
                     cryptoType === crypto.id
-                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
+                      ? "border-primary-500 bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400"
                       : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300"
                   )}
                 >
@@ -478,7 +478,7 @@ export default function WidgetPaymentPage() {
         <button
           onClick={handleSubmit}
           disabled={isProcessing}
-          className="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-3 px-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isProcessing ? (
             <>
