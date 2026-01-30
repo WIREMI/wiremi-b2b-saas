@@ -519,6 +519,84 @@ function Sparkline({
 }
 
 // ============================================================================
+// SHARED COMPONENTS
+// ============================================================================
+
+// System Signals Drawer - Subtle, collapsible alert system
+function SystemSignalsDrawer({ alerts }: { alerts: typeof activeAlerts }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  const criticalCount = alerts.filter(a => a.type === 'critical').length
+  const warningCount = alerts.filter(a => a.type === 'warning').length
+
+  const getAlertIcon = (type: string) => {
+    switch (type) {
+      case 'critical': return <span className="w-2 h-2 bg-red-500 rounded-full" />
+      case 'warning': return <span className="w-2 h-2 bg-amber-500 rounded-full" />
+      case 'info': return <span className="w-2 h-2 bg-gray-400 rounded-full" />
+      case 'success': return <span className="w-2 h-2 bg-green-500 rounded-full" />
+      default: return <span className="w-2 h-2 bg-gray-400 rounded-full" />
+    }
+  }
+
+  return (
+    <Card className="overflow-hidden">
+      {/* Collapsed Header */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+            <Activity className="w-4 h-4 text-gray-500" />
+          </div>
+          <div className="text-left">
+            <p className="text-sm font-medium text-gray-900 dark:text-white">System Signals</p>
+            <p className="text-xs text-gray-500">
+              {criticalCount > 0 && <span className="text-red-500 mr-2">{criticalCount} critical</span>}
+              {warningCount > 0 && <span className="text-amber-500 mr-2">{warningCount} warning</span>}
+              {criticalCount === 0 && warningCount === 0 && 'All systems normal'}
+            </p>
+          </div>
+        </div>
+        <ChevronDown className={cn(
+          "w-5 h-5 text-gray-400 transition-transform",
+          isExpanded && "rotate-180"
+        )} />
+      </button>
+
+      {/* Expanded Content */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="px-4 pb-4 space-y-2 border-t border-gray-100 dark:border-gray-800 pt-3">
+              {alerts.map(alert => (
+                <div
+                  key={alert.id}
+                  className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                >
+                  <div className="mt-1.5">{getAlertIcon(alert.type)}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-900 dark:text-white">{alert.message}</p>
+                    <p className="text-xs text-gray-500 mt-1">{alert.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </Card>
+  )
+}
+
+// ============================================================================
 // TAB COMPONENTS
 // ============================================================================
 
@@ -530,10 +608,10 @@ function OverviewTab() {
 
   return (
     <div className="space-y-6">
-      {/* Executive Summary */}
-      <Card className="p-6 bg-gradient-to-br from-primary-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border-primary-200 dark:border-primary-800">
+      {/* Executive Summary - Clean, minimal design */}
+      <Card className="p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-violet-500 rounded-xl flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center flex-shrink-0">
             <Brain className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
@@ -542,22 +620,22 @@ function OverviewTab() {
             </h3>
             <div className="prose prose-sm dark:prose-invert">
               <p className="text-gray-700 dark:text-gray-300 mb-3">
-                Your business is performing <span className="font-semibold text-green-600">above average</span> this week.
+                Your business is performing <span className="font-semibold text-primary-600 dark:text-primary-400">above average</span> this week.
                 Revenue is up {revenueChange.toFixed(1)}% compared to last month, driven primarily by
                 strong performance in the Enterprise segment (+23%). However, I've detected some patterns
                 that need attention:
               </p>
               <ul className="space-y-2 text-gray-600 dark:text-gray-400">
                 <li className="flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                  <span className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-500 rounded-full mt-2 flex-shrink-0" />
                   <span>3 enterprise accounts showing pre-churn behavior patterns</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <TrendingUp className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-500 rounded-full mt-2 flex-shrink-0" />
                   <span>Weekend revenue increased 34% - unusual but positive trend</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <LightbulbIcon className="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" />
+                  <span className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-500 rounded-full mt-2 flex-shrink-0" />
                   <span>234 accounts qualify for Corporate Cards upsell</span>
                 </li>
               </ul>
@@ -657,36 +735,8 @@ function OverviewTab() {
         </Card>
       </div>
 
-      {/* Active Alerts */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Active Alerts</h3>
-          <Badge variant="default">{activeAlerts.length} alerts</Badge>
-        </div>
-        <div className="space-y-3">
-          {activeAlerts.map(alert => (
-            <div
-              key={alert.id}
-              className={cn(
-                "flex items-start gap-3 p-3 rounded-lg",
-                alert.type === 'critical' && "bg-red-50 dark:bg-red-900/20",
-                alert.type === 'warning' && "bg-amber-50 dark:bg-amber-900/20",
-                alert.type === 'info' && "bg-blue-50 dark:bg-blue-900/20",
-                alert.type === 'success' && "bg-green-50 dark:bg-green-900/20",
-              )}
-            >
-              {alert.type === 'critical' && <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />}
-              {alert.type === 'warning' && <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0" />}
-              {alert.type === 'info' && <Info className="w-5 h-5 text-blue-500 flex-shrink-0" />}
-              {alert.type === 'success' && <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />}
-              <div className="flex-1">
-                <p className="text-sm text-gray-900 dark:text-white">{alert.message}</p>
-                <p className="text-xs text-gray-500 mt-1">{alert.time}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Card>
+      {/* System Signals - Subtle, collapsible drawer */}
+      <SystemSignalsDrawer alerts={activeAlerts} />
 
       {/* Priority Insights */}
       <div>
@@ -701,37 +751,29 @@ function OverviewTab() {
   )
 }
 
-// Insight Card Component
+// Insight Card Component - Using consistent, subtle colors
 function InsightCard({ insight }: { insight: typeof businessInsights[0] }) {
   const [expanded, setExpanded] = useState(false)
 
-  const iconConfigs = {
-    opportunity: { icon: Target, color: 'text-green-500', bg: 'bg-green-100 dark:bg-green-900/30' },
-    warning: { icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-100 dark:bg-red-900/30' },
-    trend: { icon: TrendingUp, color: 'text-blue-500', bg: 'bg-blue-100 dark:bg-blue-900/30' },
-    anomaly: { icon: Zap, color: 'text-amber-500', bg: 'bg-amber-100 dark:bg-amber-900/30' },
-  }
-
-  const iconConfig = iconConfigs[insight.type as keyof typeof iconConfigs] || iconConfigs.trend
-  const Icon = iconConfig.icon
+  // Unified styling - all cards use the same neutral background with a subtle left border for priority
+  const priorityBorder = insight.priority === 'high' ? 'border-l-primary-500' : 'border-l-gray-300 dark:border-l-gray-600'
 
   return (
-    <Card className="p-4 hover:shadow-lg transition-shadow">
+    <Card className={cn("p-4 hover:shadow-md transition-shadow border-l-4", priorityBorder)}>
       <div className="flex items-start gap-3">
-        <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0", iconConfig.bg)}>
-          <Icon className={cn("w-5 h-5", iconConfig.color)} />
+        <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
+          <Brain className="w-5 h-5 text-primary-500" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-1">
             <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
               {insight.title}
             </h4>
-            <Badge
-              variant={insight.priority === 'high' ? 'error' : 'warning'}
-              size="sm"
-            >
-              {insight.priority}
-            </Badge>
+            {insight.priority === 'high' && (
+              <Badge variant="default" size="sm" className="bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300">
+                Priority
+              </Badge>
+            )}
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
             {insight.summary}
@@ -749,14 +791,14 @@ function InsightCard({ insight }: { insight: typeof businessInsights[0] }) {
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                   {insight.detail}
                 </p>
-                <div className="p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg mb-3">
+                <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg mb-3 border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-2 mb-1">
                     <Brain className="w-4 h-4 text-primary-500" />
-                    <span className="text-xs font-medium text-primary-700 dark:text-primary-300">
-                      AI Recommendation
+                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                      Recommendation
                     </span>
                   </div>
-                  <p className="text-sm text-primary-800 dark:text-primary-200">{insight.action}</p>
+                  <p className="text-sm text-gray-800 dark:text-gray-200">{insight.action}</p>
                 </div>
               </motion.div>
             )}
@@ -764,7 +806,7 @@ function InsightCard({ insight }: { insight: typeof businessInsights[0] }) {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-xs text-green-600 font-medium">{insight.impact}</span>
+              <span className="text-xs text-primary-600 dark:text-primary-400 font-medium">{insight.impact}</span>
               <span className="text-xs text-gray-500">{insight.confidence}% confidence</span>
             </div>
             <button
@@ -819,12 +861,12 @@ function BusinessAnalyticsTab() {
             height={240}
           />
         </div>
-        <div className="mt-4 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+        <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-start gap-2">
             <Brain className="w-4 h-4 text-primary-500 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-primary-800 dark:text-primary-200">AI Analysis</p>
-              <p className="text-sm text-primary-700 dark:text-primary-300">
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-200">AI Analysis</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {selectedMetric === 'revenue' && "Revenue shows consistent growth with seasonal peaks in Q4. The 15% YoY growth rate exceeds industry average of 8%."}
                 {selectedMetric === 'transactions' && "Transaction volume correlates strongly with marketing spend. Peak hours are shifting 1.5 hours later, suggesting changing customer behavior."}
                 {selectedMetric === 'customers' && "Customer acquisition is accelerating. Net new customers increased 23% this quarter, primarily from organic channels."}
@@ -938,10 +980,10 @@ function BusinessAnalyticsTab() {
           <span>6pm</span>
           <span>12am</span>
         </div>
-        <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+        <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-start gap-2">
-            <LightbulbIcon className="w-4 h-4 text-amber-500 mt-0.5" />
-            <p className="text-sm text-amber-800 dark:text-amber-200">
+            <Brain className="w-4 h-4 text-primary-500 mt-0.5" />
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               Peak activity hours: 3-6 PM. Consider scheduling promotions during 8-11 AM to capture morning traffic.
             </p>
           </div>
@@ -1211,10 +1253,10 @@ function FinanceAccountingTab() {
             height={180}
           />
         </div>
-        <div className="p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-start gap-2">
             <Brain className="w-4 h-4 text-primary-500 mt-0.5" />
-            <p className="text-sm text-primary-800 dark:text-primary-200">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               Operating expenses increased 12% this month, primarily due to increased logistics costs.
               Consider renegotiating vendor contracts to achieve 8-10% savings.
             </p>
@@ -1357,9 +1399,9 @@ function OperationsAdvisorTab() {
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               Weekend sales are significantly lower than weekdays. This appears to be seasonal.
             </p>
-            <div className="p-2 bg-primary-50 dark:bg-primary-900/20 rounded">
-              <p className="text-xs text-primary-700 dark:text-primary-300">
-                <Brain className="w-3 h-3 inline mr-1" />
+            <div className="p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                <Brain className="w-3 h-3 inline mr-1 text-primary-500" />
                 Recommendation: Launch weekend-specific promotions to boost engagement.
               </p>
             </div>
@@ -1373,9 +1415,9 @@ function OperationsAdvisorTab() {
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               1.8% of transactions failed due to expired cards. Automated retry recovered 45%.
             </p>
-            <div className="p-2 bg-primary-50 dark:bg-primary-900/20 rounded">
-              <p className="text-xs text-primary-700 dark:text-primary-300">
-                <Brain className="w-3 h-3 inline mr-1" />
+            <div className="p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                <Brain className="w-3 h-3 inline mr-1 text-primary-500" />
                 Recommendation: Enable card updater service to reduce failures by estimated 60%.
               </p>
             </div>
@@ -1389,9 +1431,9 @@ function OperationsAdvisorTab() {
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               45% of APAC customers transact during US night hours. Support availability is limited.
             </p>
-            <div className="p-2 bg-primary-50 dark:bg-primary-900/20 rounded">
-              <p className="text-xs text-primary-700 dark:text-primary-300">
-                <Brain className="w-3 h-3 inline mr-1" />
+            <div className="p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                <Brain className="w-3 h-3 inline mr-1 text-primary-500" />
                 Recommendation: Add APAC-hours support coverage to capture $8K+ potential revenue.
               </p>
             </div>
@@ -1416,259 +1458,467 @@ function OperationsAdvisorTab() {
   )
 }
 
-// Content & Design Studio Tab
-function ContentStudioTab() {
+// Digital Marketing Hub Tab - Complete redesign with 4 subsections
+function DigitalMarketingHubTab() {
+  const [activeSubSection, setActiveSubSection] = useState<'accounts' | 'planning' | 'creation' | 'tracking'>('accounts')
   const [generating, setGenerating] = useState(false)
-  const [selectedType, setSelectedType] = useState<string | null>(null)
+  const [selectedAdType, setSelectedAdType] = useState<string | null>(null)
 
-  const assetTypes = [
-    { type: 'Social Post', icon: MessageSquare, desc: 'LinkedIn, Twitter, Facebook' },
-    { type: 'Email', icon: Mail, desc: 'Newsletter, Promotional, Transactional' },
-    { type: 'Ad Copy', icon: Megaphone, desc: 'Google, Facebook, Display' },
-    { type: 'Flyer', icon: Image, desc: 'Print or digital flyers' },
-    { type: 'Banner', icon: Palette, desc: 'Website or social banners' },
-    { type: 'Press Release', icon: FileText, desc: 'Company announcements' },
+  // Connected social accounts state
+  const [connectedAccounts, setConnectedAccounts] = useState<Record<string, boolean>>({
+    facebook: true,
+    instagram: true,
+    linkedin: false,
+    twitter: false,
+    google: false,
+  })
+
+  const socialPlatforms = [
+    { id: 'facebook', name: 'Facebook', icon: '📘', color: 'bg-blue-500' },
+    { id: 'instagram', name: 'Instagram', icon: '📷', color: 'bg-gradient-to-br from-purple-500 to-pink-500' },
+    { id: 'linkedin', name: 'LinkedIn', icon: '💼', color: 'bg-blue-700' },
+    { id: 'twitter', name: 'X (Twitter)', icon: '𝕏', color: 'bg-gray-900 dark:bg-white dark:text-gray-900' },
+    { id: 'google', name: 'Google Business', icon: '🔵', color: 'bg-blue-600' },
+  ]
+
+  const adTypes = [
+    { id: 'google-search', name: 'Google Search Ads', desc: 'Text ads for search results', platform: 'Google Ads' },
+    { id: 'google-display', name: 'Google Display Ads', desc: 'Visual banner ads across the web', platform: 'Google Ads' },
+    { id: 'meta-feed', name: 'Meta Feed Ads', desc: 'Photo & video ads for Facebook/Instagram', platform: 'Meta Ads' },
+    { id: 'meta-stories', name: 'Meta Stories Ads', desc: 'Full-screen vertical ads', platform: 'Meta Ads' },
+    { id: 'linkedin-sponsored', name: 'LinkedIn Sponsored', desc: 'B2B professional ads', platform: 'LinkedIn' },
+  ]
+
+  // Calendar data for content planning
+  const scheduledPosts = [
+    { date: '2026-02-03', platform: 'linkedin', title: 'Industry Report Launch', time: '09:00' },
+    { date: '2026-02-05', platform: 'instagram', title: 'Customer Spotlight', time: '12:00' },
+    { date: '2026-02-07', platform: 'facebook', title: 'Weekend Sale Announcement', time: '10:00' },
+    { date: '2026-02-10', platform: 'twitter', title: 'Product Update Thread', time: '14:00' },
+  ]
+
+  // Performance metrics
+  const performanceData = {
+    totalReach: 124500,
+    reachChange: 18.5,
+    engagement: 8420,
+    engagementChange: 12.3,
+    clicks: 3240,
+    clicksChange: 25.1,
+    conversions: 186,
+    conversionChange: 8.7,
+  }
+
+  const subSections = [
+    { id: 'accounts' as const, label: 'Social Accounts', icon: Globe },
+    { id: 'planning' as const, label: 'Content Planning', icon: Calendar },
+    { id: 'creation' as const, label: 'Content Creation', icon: Sparkles },
+    { id: 'tracking' as const, label: 'Performance', icon: BarChart3 },
   ]
 
   return (
     <div className="space-y-6">
-      {/* Asset Type Selection */}
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">What Would You Like to Create?</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {assetTypes.map(asset => {
-            const Icon = asset.icon
-            return (
-              <button
-                key={asset.type}
-                onClick={() => setSelectedType(asset.type)}
-                className={cn(
-                  "p-4 rounded-xl border-2 text-left transition-all",
-                  selectedType === asset.type
-                    ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
-                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
-                )}
-              >
-                <Icon className={cn(
-                  "w-6 h-6 mb-2",
-                  selectedType === asset.type ? "text-primary-500" : "text-gray-400"
-                )} />
-                <p className="font-medium text-gray-900 dark:text-white">{asset.type}</p>
-                <p className="text-xs text-gray-500 mt-1">{asset.desc}</p>
-              </button>
-            )
-          })}
-        </div>
-      </Card>
+      {/* Subsection Navigation */}
+      <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+        {subSections.map(section => {
+          const Icon = section.icon
+          return (
+            <button
+              key={section.id}
+              onClick={() => setActiveSubSection(section.id)}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all",
+                activeSubSection === section.id
+                  ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              )}
+            >
+              <Icon className="w-4 h-4" />
+              {section.label}
+            </button>
+          )
+        })}
+      </div>
 
-      {/* Content Generation Form */}
-      {selectedType && (
+      {/* Social Accounts Setup */}
+      {activeSubSection === 'accounts' && (
         <Card className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Generate {selectedType}
-          </h3>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Connected Accounts</h3>
+              <p className="text-sm text-gray-500">Connect your social media accounts to enable AI-powered posting</p>
+            </div>
+          </div>
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Topic / Subject
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., New feature launch, Holiday promotion"
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Target Audience
-              </label>
-              <select className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                <option>Small Business Owners</option>
-                <option>Enterprise Decision Makers</option>
-                <option>Developers</option>
-                <option>General Audience</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Tone
-              </label>
-              <div className="flex gap-2">
-                {['Professional', 'Friendly', 'Urgent', 'Exciting'].map(tone => (
-                  <button
-                    key={tone}
-                    className="px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:border-primary-500 hover:text-primary-600 transition-colors"
-                  >
-                    {tone}
-                  </button>
-                ))}
+            {socialPlatforms.map(platform => (
+              <div
+                key={platform.id}
+                className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-xl"
+              >
+                <div className="flex items-center gap-4">
+                  <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl", platform.color)}>
+                    {platform.icon}
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-white">{platform.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {connectedAccounts[platform.id] ? 'Connected' : 'Not connected'}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant={connectedAccounts[platform.id] ? "outline" : "primary"}
+                  size="sm"
+                  onClick={() => setConnectedAccounts(prev => ({
+                    ...prev,
+                    [platform.id]: !prev[platform.id]
+                  }))}
+                >
+                  {connectedAccounts[platform.id] ? 'Disconnect' : 'Connect'}
+                </Button>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+            <div className="flex items-start gap-3">
+              <Brain className="w-5 h-5 text-primary-500 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">AI Recommendation</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  Connect LinkedIn to reach 45% more B2B decision makers. Based on your customer profile,
+                  LinkedIn could generate 2.3x higher quality leads.
+                </p>
               </div>
             </div>
-            <Button
-              variant="primary"
-              size="md"
-              icon={generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-              onClick={() => {
-                setGenerating(true)
-                setTimeout(() => setGenerating(false), 2000)
-              }}
-              loading={generating}
-            >
-              Generate Content
-            </Button>
           </div>
         </Card>
       )}
 
-      {/* Content Suggestions */}
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Suggested Content</h3>
-        <div className="space-y-3">
-          {contentSuggestions.map((suggestion, i) => (
-            <div key={i} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+      {/* Content Planning Calendar */}
+      {activeSubSection === 'planning' && (
+        <div className="space-y-6">
+          <Card className="p-6">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <p className="font-medium text-gray-900 dark:text-white">{suggestion.topic}</p>
-                <p className="text-sm text-gray-500">{suggestion.type} • {suggestion.platform} • {suggestion.tone}</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Content Calendar</h3>
+                <p className="text-sm text-gray-500">Schedule and plan your content across platforms</p>
               </div>
-              <Button variant="outline" size="sm" icon={<Sparkles className="w-4 h-4" />}>
-                Create
+              <Button variant="primary" size="sm" icon={<Calendar className="w-4 h-4" />}>
+                Schedule Post
               </Button>
             </div>
-          ))}
+
+            {/* Calendar View - Simplified Week View */}
+            <div className="grid grid-cols-7 gap-2 mb-6">
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
+                <div key={day} className="text-center">
+                  <p className="text-xs font-medium text-gray-500 mb-2">{day}</p>
+                  <div className="h-24 border border-gray-200 dark:border-gray-700 rounded-lg p-1">
+                    {/* Show posts for this day */}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Upcoming Posts */}
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-3">Upcoming Posts</h4>
+              <div className="space-y-3">
+                {scheduledPosts.map((post, i) => (
+                  <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                        {socialPlatforms.find(p => p.id === post.platform)?.icon}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{post.title}</p>
+                        <p className="text-xs text-gray-500">{post.date} at {post.time}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="ghost" size="sm" icon={<Eye className="w-4 h-4" />} />
+                      <Button variant="ghost" size="sm" icon={<Settings className="w-4 h-4" />} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-start gap-3">
+              <Brain className="w-5 h-5 text-primary-500 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">AI-Suggested Posting Times</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  Based on your audience engagement patterns, the best times to post are:
+                </p>
+                <div className="flex gap-4 mt-3">
+                  <div className="px-3 py-2 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+                    <p className="text-xs text-gray-500">LinkedIn</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">Tue-Thu, 9-11 AM</p>
+                  </div>
+                  <div className="px-3 py-2 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+                    <p className="text-xs text-gray-500">Instagram</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">Wed-Fri, 12-2 PM</p>
+                  </div>
+                  <div className="px-3 py-2 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+                    <p className="text-xs text-gray-500">Facebook</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">Sat-Sun, 10 AM</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
         </div>
-      </Card>
+      )}
+
+      {/* Content Creation */}
+      {activeSubSection === 'creation' && (
+        <div className="space-y-6">
+          {/* Ad Copy Types */}
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create Ad Copy</h3>
+            <p className="text-sm text-gray-500 mb-4">Select the ad type you want to create</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {adTypes.map(adType => (
+                <button
+                  key={adType.id}
+                  onClick={() => setSelectedAdType(adType.id)}
+                  className={cn(
+                    "p-4 rounded-xl border-2 text-left transition-all",
+                    selectedAdType === adType.id
+                      ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
+                      : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                  )}
+                >
+                  <p className="font-medium text-gray-900 dark:text-white">{adType.name}</p>
+                  <p className="text-xs text-gray-500 mt-1">{adType.desc}</p>
+                  <Badge variant="default" size="sm" className="mt-2">{adType.platform}</Badge>
+                </button>
+              ))}
+            </div>
+          </Card>
+
+          {/* Content Generation Form */}
+          {selectedAdType && (
+            <Card className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Generate {adTypes.find(a => a.id === selectedAdType)?.name}
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Product / Service
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Payment processing for SMBs"
+                    className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Key Benefits (comma separated)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Fast setup, Low fees, 24/7 support"
+                    className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Target Audience
+                  </label>
+                  <select className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none">
+                    <option>Small Business Owners</option>
+                    <option>Enterprise Decision Makers</option>
+                    <option>E-commerce Merchants</option>
+                    <option>Freelancers & Contractors</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Tone
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {['Professional', 'Friendly', 'Urgent', 'Confident', 'Innovative'].map(tone => (
+                      <button
+                        key={tone}
+                        className="px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                      >
+                        {tone}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex gap-3 pt-2">
+                  <Button
+                    variant="primary"
+                    size="md"
+                    icon={generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                    onClick={() => {
+                      setGenerating(true)
+                      setTimeout(() => setGenerating(false), 2000)
+                    }}
+                    loading={generating}
+                  >
+                    Generate Ad Copy
+                  </Button>
+                  <Button variant="outline" size="md">
+                    View Examples
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {/* Quick Social Post Creation */}
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Social Post</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  What do you want to share?
+                </label>
+                <textarea
+                  rows={3}
+                  placeholder="Describe your post idea and let AI help you craft it..."
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none resize-none"
+                />
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-gray-500">Post to:</span>
+                <div className="flex gap-2">
+                  {socialPlatforms.filter(p => connectedAccounts[p.id]).map(platform => (
+                    <button
+                      key={platform.id}
+                      className="w-10 h-10 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 flex items-center justify-center text-lg transition-colors"
+                    >
+                      {platform.icon}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <Button variant="primary" size="md" icon={<Sparkles className="w-4 h-4" />}>
+                Generate Post
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Performance Tracking */}
+      {activeSubSection === 'tracking' && (
+        <div className="space-y-6">
+          {/* Key Metrics */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="p-4">
+              <p className="text-sm text-gray-500 mb-1">Total Reach</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {formatNumber(performanceData.totalReach)}
+              </p>
+              <div className="flex items-center gap-1 mt-1">
+                <TrendingUp className="w-3 h-3 text-green-500" />
+                <span className="text-xs text-green-600">+{performanceData.reachChange}%</span>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <p className="text-sm text-gray-500 mb-1">Engagement</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {formatNumber(performanceData.engagement)}
+              </p>
+              <div className="flex items-center gap-1 mt-1">
+                <TrendingUp className="w-3 h-3 text-green-500" />
+                <span className="text-xs text-green-600">+{performanceData.engagementChange}%</span>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <p className="text-sm text-gray-500 mb-1">Link Clicks</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {formatNumber(performanceData.clicks)}
+              </p>
+              <div className="flex items-center gap-1 mt-1">
+                <TrendingUp className="w-3 h-3 text-green-500" />
+                <span className="text-xs text-green-600">+{performanceData.clicksChange}%</span>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <p className="text-sm text-gray-500 mb-1">Conversions</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {performanceData.conversions}
+              </p>
+              <div className="flex items-center gap-1 mt-1">
+                <TrendingUp className="w-3 h-3 text-green-500" />
+                <span className="text-xs text-green-600">+{performanceData.conversionChange}%</span>
+              </div>
+            </Card>
+          </div>
+
+          {/* Platform Performance */}
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Performance by Platform</h3>
+            <div className="space-y-4">
+              {socialPlatforms.filter(p => connectedAccounts[p.id]).map(platform => (
+                <div key={platform.id} className="flex items-center gap-4">
+                  <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center text-white", platform.color)}>
+                    {platform.icon}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">{platform.name}</span>
+                      <span className="text-sm text-gray-500">
+                        {Math.round(Math.random() * 30 + 20)}k reach
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div
+                        className="h-2 rounded-full bg-primary-500"
+                        style={{ width: `${Math.round(Math.random() * 40 + 40)}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* AI Insights */}
+          <Card className="p-6">
+            <div className="flex items-start gap-3">
+              <Brain className="w-5 h-5 text-primary-500 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">AI Performance Insights</p>
+                <ul className="mt-3 space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0" />
+                    <span>Video content is driving 2.4x more engagement than static images. Consider increasing video production.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0" />
+                    <span>Posts with customer testimonials have 68% higher conversion rates.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0" />
+                    <span>Your LinkedIn audience engages most with thought leadership content. Consider weekly industry insights.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   )
 }
 
 // Ask Anything Tab
-function AskAnythingTab() {
-  const [query, setQuery] = useState('')
-  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([
-    {
-      role: 'assistant',
-      content: "Hello! I'm your AI Business Assistant. I have full access to your business data and can help you with:\n\n• Writing emails and proposals\n• Analyzing business performance\n• Answering questions about your data\n• Drafting responses to customers\n• General business advice\n\nWhat can I help you with today?"
-    }
-  ])
-  const [isTyping, setIsTyping] = useState(false)
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!query.trim()) return
-
-    setMessages(prev => [...prev, { role: 'user', content: query }])
-    setQuery('')
-    setIsTyping(true)
-
-    // Simulate AI response
-    setTimeout(() => {
-      const response = generateAIResponse(query)
-      setMessages(prev => [...prev, { role: 'assistant', content: response }])
-      setIsTyping(false)
-    }, 1500)
-  }
-
-  const generateAIResponse = (q: string): string => {
-    const lowerQ = q.toLowerCase()
-
-    if (lowerQ.includes('revenue') || lowerQ.includes('sales')) {
-      return `Based on your current data:\n\n• **This Month's Revenue:** ${formatCurrency(monthlyData[monthlyData.length - 1].revenue, 'USD')}\n• **YoY Growth:** +15.2%\n• **Top Performing Segment:** Enterprise (+23%)\n\nRevenue has been trending upward, with particularly strong performance in weekday afternoons (3-6 PM). Would you like me to dive deeper into any specific aspect?`
-    }
-
-    if (lowerQ.includes('customer') || lowerQ.includes('churn')) {
-      return `Here's your customer health overview:\n\n• **Active Customers:** ${formatNumber(monthlyData[monthlyData.length - 1].customers)}\n• **Churn Rate:** ${monthlyData[monthlyData.length - 1].churn}%\n• **At-Risk Accounts:** 3 enterprise customers\n\nI've identified 3 enterprise accounts showing pre-churn behavior patterns. Would you like me to prepare a retention strategy?`
-    }
-
-    if (lowerQ.includes('email') || lowerQ.includes('write')) {
-      return `I'd be happy to help you write that! Please share:\n\n1. **Recipient:** Who is this for?\n2. **Purpose:** What's the goal?\n3. **Tone:** Formal, friendly, or urgent?\n4. **Key Points:** What must be included?\n\nOnce you provide these details, I'll draft a professional email for your review.`
-    }
-
-    return `I understand you're asking about "${q}". Let me analyze your business data to provide relevant insights.\n\nBased on my analysis:\n\n• Your overall business health score is **87/100**\n• Key metrics are performing above industry average\n• There are 5 actionable insights waiting for your review\n\nWould you like me to elaborate on any specific area?`
-  }
-
-  return (
-    <div className="h-[600px] flex flex-col">
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message, i) => (
-          <div
-            key={i}
-            className={cn(
-              "flex gap-3",
-              message.role === 'user' && "flex-row-reverse"
-            )}
-          >
-            <div className={cn(
-              "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
-              message.role === 'assistant'
-                ? "bg-gradient-to-br from-primary-500 to-violet-500"
-                : "bg-gray-200 dark:bg-gray-700"
-            )}>
-              {message.role === 'assistant'
-                ? <Brain className="w-4 h-4 text-white" />
-                : <Users className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-              }
-            </div>
-            <div className={cn(
-              "max-w-[80%] p-4 rounded-2xl",
-              message.role === 'assistant'
-                ? "bg-gray-100 dark:bg-gray-800"
-                : "bg-primary-500 text-white"
-            )}>
-              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-            </div>
-          </div>
-        ))}
-
-        {isTyping && (
-          <div className="flex gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-violet-500 flex items-center justify-center">
-              <Brain className="w-4 h-4 text-white" />
-            </div>
-            <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Input */}
-      <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask anything about your business..."
-            className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-            icon={<Send className="w-4 h-4" />}
-            disabled={!query.trim() || isTyping}
-          >
-            Send
-          </Button>
-        </div>
-        <p className="text-xs text-gray-500 mt-2 text-center">
-          AI has access to your business data and can provide context-aware responses.
-        </p>
-      </form>
-    </div>
-  )
-}
-
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 
-type TabType = 'overview' | 'analytics' | 'sales' | 'finance' | 'tax' | 'operations' | 'content' | 'ask'
+type TabType = 'overview' | 'analytics' | 'sales' | 'finance' | 'tax' | 'operations' | 'content'
 
 export default function AIBusinessAgentPage() {
   const [activeTab, setActiveTab] = useState<TabType>('overview')
@@ -1681,8 +1931,7 @@ export default function AIBusinessAgentPage() {
     { id: 'finance' as const, label: 'Finance & Accounting', icon: Wallet },
     { id: 'tax' as const, label: 'Tax & Compliance', icon: Scale },
     { id: 'operations' as const, label: 'Operations Advisor', icon: Cpu },
-    { id: 'content' as const, label: 'Content Studio', icon: Palette },
-    { id: 'ask' as const, label: 'Ask Anything', icon: MessageSquare },
+    { id: 'content' as const, label: 'Digital Marketing Hub', icon: Palette },
   ]
 
   const handleRefresh = () => {
@@ -1697,7 +1946,7 @@ export default function AIBusinessAgentPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 via-violet-500 to-purple-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -1767,8 +2016,7 @@ export default function AIBusinessAgentPage() {
             {activeTab === 'finance' && <FinanceAccountingTab />}
             {activeTab === 'tax' && <TaxComplianceTab />}
             {activeTab === 'operations' && <OperationsAdvisorTab />}
-            {activeTab === 'content' && <ContentStudioTab />}
-            {activeTab === 'ask' && <AskAnythingTab />}
+            {activeTab === 'content' && <DigitalMarketingHubTab />}
           </motion.div>
         </AnimatePresence>
       </div>

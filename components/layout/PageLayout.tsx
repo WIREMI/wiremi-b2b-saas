@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 import Sidebar from './Sidebar'
 import TopBar from './TopBar'
+import GlobalAIChat from '@/components/ai/GlobalAIChat'
 import { cn } from '@/lib/utils'
 
 interface PageLayoutProps {
@@ -39,6 +40,9 @@ export default function PageLayout({
           {children}
         </main>
       </div>
+
+      {/* Global AI Chat Button */}
+      <GlobalAIChat />
     </div>
   )
 }
