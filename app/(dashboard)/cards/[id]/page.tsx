@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import PageLayout from '@/components/layout/PageLayout'
 import {
   CreditCard,
   ArrowLeft,
@@ -50,18 +51,20 @@ export default function CardDetailPage() {
 
   if (!card) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-dark-bg flex items-center justify-center">
-        <div className="text-center">
-          <CreditCard className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Card not found
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The card you're looking for doesn't exist
-          </p>
-          <Button onClick={() => router.push('/cards')}>Back to Cards</Button>
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <CreditCard className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Card not found
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              The card you're looking for doesn't exist
+            </p>
+            <Button onClick={() => router.push('/cards')}>Back to Cards</Button>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     )
   }
 
@@ -71,62 +74,54 @@ export default function CardDetailPage() {
   const dailyProgress = dailyLimit ? getSpendingLimitProgress(dailyLimit) : null
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg">
-      {/* Header */}
-      <div className="bg-white dark:bg-dark-surface border-b border-gray-200 dark:border-dark-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                icon={<ArrowLeft className="w-4 h-4" />}
-                iconPosition="left"
-              onClick={() => router.push('/cards')}
+    <PageLayout maxWidth="full">
+      <div className="max-w-[1400px] mx-auto space-y-6">
+        {/* Back Navigation */}
+        <div className="mb-2">
+          <button
+            onClick={() => router.push('/cards')}
+            className="text-[13px] text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors flex items-center gap-1.5"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to Corporate Cards</span>
+          </button>
+        </div>
+
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              {card.cardholderName}
+            </h1>
+            <p className="text-[13px] text-gray-500 mt-0.5">
+              {card.department} · {card.type.replace('_', ' ')}
+            </p>
+          </div>
+          <div className="flex gap-3">
+            {card.status === 'ACTIVE' && (
+              <button
+                className="text-[13px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium transition-colors flex items-center gap-1.5 px-4 py-2 border border-gray-200 dark:border-gray-700/50 rounded-lg"
               >
-                Back
-              </Button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {card.cardholderName}
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {card.department} · {card.type.replace('_', ' ')}
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              {card.status === 'ACTIVE' && (
-                <Button
-                  variant="outline"
-                  icon={<Lock className="w-4 h-4" />}
-                  iconPosition="left"
-                >
-                  Freeze Card
-                </Button>
-              )}
-              {card.status === 'FROZEN' && (
-                <Button
-                  variant="outline"
-                  icon={<Unlock className="w-4 h-4" />}
-                  iconPosition="left"
-                >
-                  Unfreeze Card
-                </Button>
-              )}
-              <Button
-                variant="outline"
-                icon={<Settings className="w-4 h-4" />}
-                iconPosition="left"
+                <Lock className="w-3.5 h-3.5" />
+                Freeze Card
+              </button>
+            )}
+            {card.status === 'FROZEN' && (
+              <button
+                className="text-[13px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium transition-colors flex items-center gap-1.5 px-4 py-2 border border-gray-200 dark:border-gray-700/50 rounded-lg"
               >
-                Settings
-              </Button>
-            </div>
+                <Unlock className="w-3.5 h-3.5" />
+                Unfreeze Card
+              </button>
+            )}
+            <button
+              className="text-[13px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium transition-colors flex items-center gap-1.5 px-4 py-2 border border-gray-200 dark:border-gray-700/50 rounded-lg"
+            >
+              <Settings className="w-3.5 h-3.5" />
+              Settings
+            </button>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Card Visual */}
           <div className="lg:col-span-1">
@@ -639,6 +634,6 @@ export default function CardDetailPage() {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }

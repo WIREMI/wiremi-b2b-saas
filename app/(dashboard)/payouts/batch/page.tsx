@@ -11,7 +11,13 @@ import {
   Clock,
   Eye,
   Download,
+  X,
+  User,
+  DollarSign,
+  Calendar,
+  ArrowRight,
 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import PageLayout from '@/components/layout/PageLayout'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -20,9 +26,12 @@ import Input from '@/components/ui/input'
 import { formatCurrency, formatDate, formatNumber } from '@/lib/utils'
 import { MOCK_BATCH_PAYOUTS } from '@/lib/mock-data/payouts'
 
+type BatchPayout = typeof MOCK_BATCH_PAYOUTS[0]
+
 export default function BatchPayoutsPage() {
   const router = useRouter()
   const [showUpload, setShowUpload] = useState(false)
+  const [selectedBatch, setSelectedBatch] = useState<BatchPayout | null>(null)
 
   const totalBatches = MOCK_BATCH_PAYOUTS.length
   const completedBatches = MOCK_BATCH_PAYOUTS.filter((b) => b.status === 'completed').length
@@ -204,7 +213,8 @@ export default function BatchPayoutsPage() {
               {MOCK_BATCH_PAYOUTS.map((batch) => (
                 <tr
                   key={batch.id}
-                  className="border-b border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-surface hover:bg-gray-50 dark:hover:bg-dark-hover transition-colors"
+                  className="border-b border-gray-200 dark:border-dark-border hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+                  onClick={() => setSelectedBatch(batch)}
                 >
                   <td className="py-4 px-6">
                     <div className="font-medium text-gray-900 dark:text-white">
@@ -252,11 +262,16 @@ export default function BatchPayoutsPage() {
                         variant="ghost"
                         size="sm"
                         icon={<Eye className="w-4 h-4" />}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedBatch(batch)
+                        }}
                       />
                       <Button
                         variant="ghost"
                         size="sm"
                         icon={<Download className="w-4 h-4" />}
+                        onClick={(e) => e.stopPropagation()}
                       />
                     </div>
                   </td>
@@ -266,6 +281,166 @@ export default function BatchPayoutsPage() {
           </table>
         </div>
       </Card>
+
+      {/* Batch Details Modal */}
+      <AnimatePresence>
+        {selectedBatch && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4"
+            onClick={() => setSelectedBatch(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {selectedBatch.name}
+                  </h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {selectedBatch.batchNumber}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedBatch(null)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 overflow-auto max-h-[calc(90vh-180px)]">
+                {/* Status and Date */}
+                <div className="flex items-center gap-3 mb-6">
+                  <Badge variant={getStatusVariant(selectedBatch.status)} size="sm">
+                    {selectedBatch.status}
+                  </Badge>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {formatDate(selectedBatch.scheduledDate)}
+                  </span>
+                </div>
+
+                {/* Description */}
+                {selectedBatch.description && (
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    {selectedBatch.description}
+                  </p>
+                )}
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <DollarSign className="w-4 h-4 text-green-500" />
+                      <span className="text-xs text-gray-500 dark:text-gray-400">Total Amount</span>
+                    </div>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                      {formatCurrency(selectedBatch.totalAmount, selectedBatch.currency)}
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <User className="w-4 h-4 text-blue-500" />
+                      <span className="text-xs text-gray-500 dark:text-gray-400">Total Payouts</span>
+                    </div>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                      {selectedBatch.totalPayouts}
+                    </p>
+                  </div>
+                  {selectedBatch.successCount !== undefined && (
+                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                        <span className="text-xs text-gray-500 dark:text-gray-400">Successful</span>
+                      </div>
+                      <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                        {selectedBatch.successCount}
+                      </p>
+                    </div>
+                  )}
+                  {selectedBatch.failedCount !== undefined && (
+                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <X className="w-4 h-4 text-red-500" />
+                        <span className="text-xs text-gray-500 dark:text-gray-400">Failed</span>
+                      </div>
+                      <p className="text-lg font-bold text-red-600 dark:text-red-400">
+                        {selectedBatch.failedCount}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Progress Bar */}
+                {selectedBatch.successCount !== undefined && selectedBatch.totalPayouts > 0 && (
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Completion</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        {Math.round((selectedBatch.successCount / selectedBatch.totalPayouts) * 100)}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div
+                        className="bg-green-500 rounded-full h-2 transition-all"
+                        style={{ width: `${(selectedBatch.successCount / selectedBatch.totalPayouts) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Created By */}
+                {selectedBatch.createdBy && (
+                  <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                    <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      {selectedBatch.createdBy.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        Created by {selectedBatch.createdBy}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {formatDate(selectedBatch.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer */}
+              <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700">
+                <Button
+                  variant="outline"
+                  icon={<Download className="w-4 h-4" />}
+                  iconPosition="left"
+                >
+                  Export Report
+                </Button>
+                <Button
+                  variant="primary"
+                  icon={<ArrowRight className="w-4 h-4" />}
+                  iconPosition="right"
+                  onClick={() => {
+                    setSelectedBatch(null)
+                    router.push(`/payouts/batch/${selectedBatch.id}`)
+                  }}
+                >
+                  View Full Details
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </PageLayout>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import PageLayout from '@/components/layout/PageLayout'
 import {
   ArrowLeft,
   Plus,
@@ -53,50 +54,44 @@ export default function CardholdersPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg">
-      {/* Header */}
-      <div className="bg-white dark:bg-dark-surface border-b border-gray-200 dark:border-dark-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                icon={<ArrowLeft className="w-4 h-4" />}
-                iconPosition="left"
-                onClick={() => router.push('/cards')}
-              >
-                Back
-              </Button>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  Cardholders
-                </h1>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  Manage cardholders and their assigned cards
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                icon={<Download className="w-4 h-4" />}
-                iconPosition="left"
-              >
-                Export
-              </Button>
-              <Button
-                icon={<Plus className="w-4 h-4" />}
-                iconPosition="left"
-              >
-                Add Cardholder
-              </Button>
-            </div>
+    <PageLayout maxWidth="full">
+      <div className="max-w-[1400px] mx-auto space-y-5">
+        {/* Back Navigation */}
+        <div className="mb-2">
+          <button
+            onClick={() => router.push('/cards')}
+            className="text-[13px] text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors flex items-center gap-1.5"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to Corporate Cards</span>
+          </button>
+        </div>
+
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              Cardholders
+            </h1>
+            <p className="text-[13px] text-gray-500 mt-0.5">
+              Manage cardholders and their assigned cards
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <button
+              className="text-[13px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium transition-colors flex items-center gap-1.5 px-4 py-2 border border-gray-200 dark:border-gray-700/50 rounded-lg"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Export
+            </button>
+            <button
+              className="px-4 py-2 text-[13px] font-medium bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors flex items-center gap-1.5"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Add Cardholder
+            </button>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="p-6">
@@ -313,6 +308,6 @@ export default function CardholdersPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }

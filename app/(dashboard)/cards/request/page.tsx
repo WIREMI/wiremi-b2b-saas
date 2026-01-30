@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import PageLayout from '@/components/layout/PageLayout'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Input from '@/components/ui/input'
@@ -56,52 +57,52 @@ export default function RequestCardPage() {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <Card className="max-w-md w-full p-8 text-center">
-          <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Request Submitted!
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Your card request has been submitted for approval. You'll be notified once it's reviewed.
-          </p>
-          <Button onClick={() => router.push('/cards')} fullWidth>
-            Back to Cards
-          </Button>
-        </Card>
-      </div>
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Card className="max-w-md w-full p-8 text-center">
+            <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Request Submitted!
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Your card request has been submitted for approval. You'll be notified once it's reviewed.
+            </p>
+            <Button onClick={() => router.push('/cards')} fullWidth>
+              Back to Cards
+            </Button>
+          </Card>
+        </div>
+      </PageLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => router.push('/cards')}
-              className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Back to Cards"
-            >
-              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-            </button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Request New Card
-              </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Submit a request for a new corporate card
-              </p>
-            </div>
-          </div>
+    <PageLayout>
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Back Navigation */}
+        <div className="mb-2">
+          <button
+            onClick={() => router.push('/cards')}
+            className="text-[13px] text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors flex items-center gap-1.5"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to Corporate Cards</span>
+          </button>
         </div>
-      </div>
 
-      {/* Form */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+            Request New Card
+          </h1>
+          <p className="text-[13px] text-gray-500 mt-0.5">
+            Submit a request for a new corporate card
+          </p>
+        </div>
+
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Card Type Selection */}
           <Card className="p-6">
@@ -275,6 +276,6 @@ export default function RequestCardPage() {
           </div>
         </form>
       </div>
-    </div>
+    </PageLayout>
   )
 }
