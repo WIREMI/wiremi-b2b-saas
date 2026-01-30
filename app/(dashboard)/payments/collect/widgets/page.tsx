@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Code,
   Plus,
@@ -18,6 +19,14 @@ import {
   Sparkles,
   Globe,
   Layers,
+  X,
+  CreditCard,
+  Lock,
+  Heart,
+  ShoppingCart,
+  Smartphone,
+  Monitor,
+  ExternalLink,
 } from 'lucide-react'
 import PageLayout from '@/components/layout/PageLayout'
 import { Button } from '@/components/ui/button'
@@ -89,10 +98,427 @@ const MOCK_WIDGETS = [
 type WidgetType = 'inline' | 'modal' | 'button'
 type WidgetPlatform = 'React' | 'Vue' | 'JavaScript' | 'WordPress' | 'Webflow'
 
+// Widget Preview Modal Component
+function WidgetPreviewModal({
+  widget,
+  onClose,
+}: {
+  widget: typeof MOCK_WIDGETS[0]
+  onClose: () => void
+}) {
+  const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop')
+
+  // Determine widget preview type
+  const isDonation = widget.name.toLowerCase().includes('donation')
+  const isSubscription = widget.name.toLowerCase().includes('subscription')
+  const isWordPress = widget.platform === 'WordPress'
+  const isProduct = widget.name.toLowerCase().includes('product')
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Modal Header */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
+              <Code className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                {widget.name} Preview
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                How this widget will appear on your website
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {/* View Mode Toggle */}
+            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('desktop')}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  viewMode === 'desktop'
+                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400'
+                }`}
+              >
+                <Monitor className="w-4 h-4" />
+                Desktop
+              </button>
+              <button
+                onClick={() => setViewMode('mobile')}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  viewMode === 'mobile'
+                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400'
+                }`}
+              >
+                <Smartphone className="w-4 h-4" />
+                Mobile
+              </button>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+          </div>
+        </div>
+
+        {/* Preview Content */}
+        <div className="p-6 bg-gray-100 dark:bg-gray-800 overflow-auto max-h-[calc(90vh-80px)]">
+          <div
+            className={`mx-auto transition-all duration-300 ${
+              viewMode === 'mobile' ? 'max-w-[375px]' : 'max-w-3xl'
+            }`}
+          >
+            {/* Website Context */}
+            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl overflow-hidden">
+              {/* Fake website header */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-lg" />
+                  <div className="flex-1">
+                    <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24" />
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-12" />
+                    <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-12" />
+                    <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-12" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Page content with embedded widget */}
+              <div className={`p-6 ${viewMode === 'mobile' ? 'p-4' : 'p-8'}`}>
+                {/* Fake page content */}
+                <div className="space-y-3 mb-6">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
+                </div>
+
+                {/* Widget Preview */}
+                <div className="border-2 border-dashed border-primary-300 dark:border-primary-700 rounded-xl p-4 bg-primary-50/50 dark:bg-primary-900/10">
+                  <p className="text-xs text-primary-600 dark:text-primary-400 mb-3 font-medium text-center">
+                    ↓ Your Embedded Widget ↓
+                  </p>
+
+                  {isDonation && <DonationWidgetPreview viewMode={viewMode} />}
+                  {isProduct && <ProductWidgetPreview viewMode={viewMode} />}
+                  {isWordPress && <WordPressWidgetPreview viewMode={viewMode} />}
+                  {isSubscription && <SubscriptionWidgetPreview viewMode={viewMode} />}
+                  {!isDonation && !isProduct && !isWordPress && !isSubscription && (
+                    <ProductWidgetPreview viewMode={viewMode} />
+                  )}
+                </div>
+
+                {/* More fake content */}
+                <div className="space-y-3 mt-6">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+// Product checkout widget preview
+function ProductWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) {
+  return (
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <div className="flex items-center gap-2">
+          <ShoppingCart className="w-5 h-5 text-primary-500" />
+          <span className="font-semibold text-gray-900 dark:text-white">Quick Checkout</span>
+        </div>
+      </div>
+      <div className={`p-4 ${viewMode === 'mobile' ? 'space-y-3' : 'space-y-4'}`}>
+        {/* Product info */}
+        <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+            <ShoppingCart className="w-6 h-6 text-gray-400" />
+          </div>
+          <div className="flex-1">
+            <p className="font-medium text-gray-900 dark:text-white">Premium Widget Pro</p>
+            <p className="text-sm text-gray-500">1x item</p>
+          </div>
+          <p className="font-bold text-gray-900 dark:text-white">$99.99</p>
+        </div>
+
+        {/* Payment methods */}
+        <div className="flex gap-2">
+          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
+            <CreditCard className="w-4 h-4" />
+            Card
+          </button>
+          <button className="flex-1 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
+            </svg>
+            PayPal
+          </button>
+        </div>
+
+        {/* Card input */}
+        <div className="space-y-2">
+          <input
+            type="text"
+            placeholder="Card number"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm"
+            readOnly
+          />
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              type="text"
+              placeholder="MM/YY"
+              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm"
+              readOnly
+            />
+            <input
+              type="text"
+              placeholder="CVC"
+              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm"
+              readOnly
+            />
+          </div>
+        </div>
+
+        {/* Pay button */}
+        <button className="w-full py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors">
+          <Lock className="w-4 h-4" />
+          Pay $99.99
+        </button>
+
+        <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
+          <Lock className="w-3 h-3" />
+          Secured by Wiremi
+        </p>
+      </div>
+    </div>
+  )
+}
+
+// Donation modal widget preview
+function DonationWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) {
+  return (
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="p-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-center">
+        <Heart className="w-10 h-10 mx-auto mb-2" />
+        <h3 className="font-bold text-lg">Support Our Cause</h3>
+        <p className="text-sm opacity-90">Every donation makes a difference</p>
+      </div>
+      <div className={`p-4 ${viewMode === 'mobile' ? 'space-y-3' : 'space-y-4'}`}>
+        {/* Preset amounts */}
+        <div className="grid grid-cols-3 gap-2">
+          {['$10', '$25', '$50'].map((amount, i) => (
+            <button
+              key={amount}
+              className={`py-2 px-3 rounded-lg text-sm font-semibold transition-colors ${
+                i === 1
+                  ? 'bg-rose-500 text-white'
+                  : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+              }`}
+            >
+              {amount}
+            </button>
+          ))}
+        </div>
+
+        {/* Custom amount */}
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+          <input
+            type="text"
+            placeholder="Custom amount"
+            className="w-full pl-7 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm"
+            readOnly
+          />
+        </div>
+
+        {/* Recurring option */}
+        <label className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg cursor-pointer">
+          <input type="checkbox" className="w-4 h-4 text-rose-500" />
+          <span className="text-sm text-gray-700 dark:text-gray-300">Make this a monthly donation</span>
+        </label>
+
+        {/* Payment methods */}
+        <div className="flex gap-2">
+          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-rose-500 bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-rose-700 dark:text-rose-300">
+            <CreditCard className="w-4 h-4" />
+            Card
+          </button>
+          <button className="flex-1 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
+            </svg>
+            PayPal
+          </button>
+        </div>
+
+        {/* Donate button */}
+        <button className="w-full py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors hover:opacity-90">
+          <Heart className="w-4 h-4" />
+          Donate $25
+        </button>
+
+        <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
+          <Lock className="w-3 h-3" />
+          Secured by Wiremi
+        </p>
+      </div>
+    </div>
+  )
+}
+
+// WordPress WooCommerce widget preview
+function WordPressWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) {
+  return (
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 bg-[#7B68EE] rounded flex items-center justify-center">
+            <span className="text-white text-xs font-bold">W</span>
+          </div>
+          <span className="font-semibold text-gray-900 dark:text-white">WooCommerce Checkout</span>
+        </div>
+      </div>
+      <div className={`p-4 ${viewMode === 'mobile' ? 'space-y-3' : 'space-y-4'}`}>
+        {/* Order summary */}
+        <div className="space-y-2">
+          {[
+            { name: 'Blue T-Shirt (L)', price: 29.99, qty: 1 },
+            { name: 'Canvas Sneakers', price: 89.99, qty: 1 },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800">
+              <div>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</p>
+                <p className="text-xs text-gray-500">Qty: {item.qty}</p>
+              </div>
+              <p className="text-sm font-semibold text-gray-900 dark:text-white">${item.price}</p>
+            </div>
+          ))}
+          <div className="flex justify-between pt-2">
+            <span className="font-bold text-gray-900 dark:text-white">Total</span>
+            <span className="font-bold text-primary-600">$119.98</span>
+          </div>
+        </div>
+
+        {/* Payment options */}
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Payment method</p>
+          <div className="grid grid-cols-2 gap-2">
+            <button className="py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
+              <CreditCard className="w-4 h-4" />
+              Card
+            </button>
+            <button className="py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
+              </svg>
+              PayPal
+            </button>
+          </div>
+        </div>
+
+        {/* Place order button */}
+        <button className="w-full py-3 bg-[#7B68EE] hover:bg-[#6B5BD2] text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors">
+          <Lock className="w-4 h-4" />
+          Place Order - $119.98
+        </button>
+
+        <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
+          <Lock className="w-3 h-3" />
+          Powered by Wiremi
+        </p>
+      </div>
+    </div>
+  )
+}
+
+// Subscription button widget preview
+function SubscriptionWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) {
+  return (
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="p-4 bg-gradient-to-r from-violet-500 to-purple-500 text-white text-center">
+        <Sparkles className="w-10 h-10 mx-auto mb-2" />
+        <h3 className="font-bold text-lg">Pro Membership</h3>
+        <div className="mt-2">
+          <span className="text-3xl font-bold">$9.99</span>
+          <span className="text-sm opacity-90">/month</span>
+        </div>
+      </div>
+      <div className={`p-4 ${viewMode === 'mobile' ? 'space-y-3' : 'space-y-4'}`}>
+        {/* Features */}
+        <ul className="space-y-2">
+          {['Unlimited access', 'Priority support', 'Custom branding', 'API access'].map((feature) => (
+            <li key={feature} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <CheckCircle2 className="w-4 h-4 text-green-500" />
+              {feature}
+            </li>
+          ))}
+        </ul>
+
+        {/* Email input */}
+        <input
+          type="email"
+          placeholder="your@email.com"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm"
+          readOnly
+        />
+
+        {/* Payment methods */}
+        <div className="flex gap-2">
+          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-violet-500 bg-violet-50 dark:bg-violet-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-violet-700 dark:text-violet-300">
+            <CreditCard className="w-4 h-4" />
+            Card
+          </button>
+          <button className="flex-1 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
+            </svg>
+            PayPal
+          </button>
+        </div>
+
+        {/* Subscribe button */}
+        <button className="w-full py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors hover:opacity-90">
+          <Zap className="w-4 h-4" />
+          Subscribe Now
+        </button>
+
+        <p className="text-xs text-center text-gray-500">
+          Cancel anytime. No commitment.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export default function EmbeddableWidgetsPage() {
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [platformFilter, setPlatformFilter] = useState<WidgetPlatform | 'all'>('all')
+  const [previewWidget, setPreviewWidget] = useState<typeof MOCK_WIDGETS[0] | null>(null)
 
   // Calculate statistics
   const stats = {
@@ -327,11 +753,11 @@ export default function EmbeddableWidgetsPage() {
                       icon={<Eye className="w-4 h-4" />}
                       onClick={(e) => {
                         e.stopPropagation()
-                        router.push(`/payments/collect/widgets/${widget.id}`)
+                        setPreviewWidget(widget)
                       }}
                       className="flex-1"
                     >
-                      View
+                      Preview
                     </Button>
                   </div>
                 </div>
@@ -482,6 +908,16 @@ export default function EmbeddableWidgetsPage() {
           </div>
         </Card>
       </div>
+
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {previewWidget && (
+          <WidgetPreviewModal
+            widget={previewWidget}
+            onClose={() => setPreviewWidget(null)}
+          />
+        )}
+      </AnimatePresence>
     </PageLayout>
   )
 }

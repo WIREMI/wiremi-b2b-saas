@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   QrCode,
   Plus,
@@ -18,6 +19,12 @@ import {
   Share2,
   Sparkles,
   FileImage,
+  X,
+  CreditCard,
+  Lock,
+  Smartphone,
+  Scan,
+  Heart,
 } from 'lucide-react'
 import PageLayout from '@/components/layout/PageLayout'
 import { Button } from '@/components/ui/button'
@@ -93,10 +100,284 @@ const MOCK_QR_CODES = [
 type QRType = 'static' | 'dynamic'
 type QRStatus = 'active' | 'paused' | 'expired'
 
+// Elegant QR Code Design with Wiremi Logo
+function StyledQRCode({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+  const sizeClasses = {
+    sm: 'w-24 h-24',
+    md: 'w-32 h-32',
+    lg: 'w-48 h-48',
+  }
+
+  const logoSizeClasses = {
+    sm: 'w-8 h-8',
+    md: 'w-12 h-12',
+    lg: 'w-16 h-16',
+  }
+
+  const textSizeClasses = {
+    sm: 'text-sm',
+    md: 'text-lg',
+    lg: 'text-2xl',
+  }
+
+  return (
+    <div className={`${sizeClasses[size]} relative`}>
+      {/* QR Code Pattern Background */}
+      <div className="absolute inset-0 bg-white rounded-2xl overflow-hidden">
+        {/* Simulated QR pattern */}
+        <svg viewBox="0 0 100 100" className="w-full h-full">
+          {/* Position detection patterns - corners */}
+          {/* Top-left */}
+          <rect x="4" y="4" width="20" height="20" fill="#1a1a2e" rx="2" />
+          <rect x="7" y="7" width="14" height="14" fill="white" rx="1" />
+          <rect x="10" y="10" width="8" height="8" fill="#1a1a2e" rx="1" />
+
+          {/* Top-right */}
+          <rect x="76" y="4" width="20" height="20" fill="#1a1a2e" rx="2" />
+          <rect x="79" y="7" width="14" height="14" fill="white" rx="1" />
+          <rect x="82" y="10" width="8" height="8" fill="#1a1a2e" rx="1" />
+
+          {/* Bottom-left */}
+          <rect x="4" y="76" width="20" height="20" fill="#1a1a2e" rx="2" />
+          <rect x="7" y="79" width="14" height="14" fill="white" rx="1" />
+          <rect x="10" y="82" width="8" height="8" fill="#1a1a2e" rx="1" />
+
+          {/* Data modules - scattered pattern */}
+          {[
+            [28, 4], [32, 4], [40, 4], [48, 4], [52, 4], [56, 4], [64, 4], [68, 4],
+            [28, 8], [36, 8], [44, 8], [56, 8], [60, 8], [68, 8],
+            [4, 28], [8, 28], [12, 32], [16, 28], [20, 32],
+            [76, 28], [80, 32], [84, 28], [88, 32], [92, 28],
+            [4, 56], [8, 52], [12, 60], [16, 56], [20, 52],
+            [76, 56], [80, 60], [84, 52], [88, 56], [92, 60],
+            [28, 92], [32, 88], [40, 92], [48, 88], [52, 92], [56, 88], [64, 92], [68, 88],
+          ].map(([x, y], i) => (
+            <rect key={i} x={x} y={y} width="4" height="4" fill="#1a1a2e" rx="0.5" />
+          ))}
+
+          {/* Gradient overlay for modern look */}
+          <defs>
+            <linearGradient id="qrGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.1" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="100" height="100" fill="url(#qrGradient)" />
+        </svg>
+      </div>
+
+      {/* Center Logo */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className={`${logoSizeClasses[size]} bg-gradient-to-br from-primary-400 via-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30 ring-4 ring-white`}>
+          <span className={`text-white font-black ${textSizeClasses[size]} tracking-tight`}>W</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// QR Code Preview Modal - Shows what appears when scanned
+function QRPreviewModal({
+  qr,
+  onClose,
+}: {
+  qr: typeof MOCK_QR_CODES[0]
+  onClose: () => void
+}) {
+  const [showScanAnimation, setShowScanAnimation] = useState(true)
+
+  // Determine the type of payment screen
+  const isDonation = qr.name.toLowerCase().includes('donation')
+  const isEvent = qr.name.toLowerCase().includes('event') || qr.name.toLowerCase().includes('ticket')
+  const isTable = qr.name.toLowerCase().includes('table')
+  const isProduct = qr.name.toLowerCase().includes('product')
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Modal Header */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
+              <QrCode className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                QR Code Scan Preview
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                What customers see when they scan this QR code
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5 text-gray-500" />
+          </button>
+        </div>
+
+        {/* Preview Content */}
+        <div className="p-6 bg-gray-100 dark:bg-gray-800 overflow-auto max-h-[calc(90vh-80px)]">
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            {/* QR Code Display */}
+            <div className="flex flex-col items-center">
+              <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
+                <StyledQRCode size="lg" />
+              </div>
+              <p className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+                <Scan className="w-4 h-4 inline mr-1" />
+                Scan with any camera app
+              </p>
+              <div className="mt-4 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  icon={<Download className="w-4 h-4" />}
+                >
+                  Download
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  icon={<Printer className="w-4 h-4" />}
+                >
+                  Print
+                </Button>
+              </div>
+            </div>
+
+            {/* Phone Preview */}
+            <div className="flex flex-col items-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 flex items-center gap-2">
+                <Smartphone className="w-4 h-4" />
+                Customer&apos;s phone will show:
+              </p>
+
+              {/* Phone Frame */}
+              <div className="relative">
+                {/* Phone outline */}
+                <div className="w-[280px] h-[560px] bg-gray-900 rounded-[40px] p-2 shadow-2xl">
+                  {/* Screen */}
+                  <div className="w-full h-full bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden">
+                    {/* Status bar */}
+                    <div className="h-8 bg-gray-100 dark:bg-gray-900 flex items-center justify-between px-6">
+                      <span className="text-xs text-gray-600 dark:text-gray-400">9:41</span>
+                      <div className="flex gap-1">
+                        <div className="w-4 h-2 bg-gray-400 rounded-sm" />
+                        <div className="w-4 h-2 bg-gray-400 rounded-sm" />
+                        <div className="w-6 h-3 bg-green-500 rounded-sm" />
+                      </div>
+                    </div>
+
+                    {/* Payment Screen Content */}
+                    <div className="p-4 space-y-4">
+                      {/* Wiremi Header */}
+                      <div className="flex items-center justify-center gap-2 py-2">
+                        <div className="w-6 h-6 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center">
+                          <span className="text-white font-bold text-xs">W</span>
+                        </div>
+                        <span className="text-xs text-gray-500">Powered by Wiremi</span>
+                      </div>
+
+                      {/* Payment Info */}
+                      <div className="text-center py-4">
+                        {isDonation && <Heart className="w-12 h-12 mx-auto text-rose-500 mb-2" />}
+                        {!isDonation && !isEvent && (
+                          <div className="w-12 h-12 mx-auto bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mb-2">
+                            <DollarSign className="w-6 h-6 text-primary-600" />
+                          </div>
+                        )}
+                        <h4 className="font-bold text-gray-900 dark:text-white text-lg">{qr.name}</h4>
+                        <p className="text-sm text-gray-500">{qr.description}</p>
+                      </div>
+
+                      {/* Amount */}
+                      <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 text-center">
+                        {qr.amount ? (
+                          <>
+                            <p className="text-xs text-gray-500 mb-1">Amount to pay</p>
+                            <p className="text-3xl font-bold text-primary-600">
+                              {formatCurrency(qr.amount, qr.currency)}
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-xs text-gray-500 mb-2">Enter amount</p>
+                            <div className="relative">
+                              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">$</span>
+                              <input
+                                type="text"
+                                placeholder="0.00"
+                                className="w-full text-center text-2xl font-bold py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                                readOnly
+                              />
+                            </div>
+                          </>
+                        )}
+                      </div>
+
+                      {/* Payment Methods */}
+                      <div className="space-y-2">
+                        <p className="text-xs text-gray-500">Pay with</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button className="py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-xs font-medium text-primary-700 dark:text-primary-300">
+                            <CreditCard className="w-3 h-3" />
+                            Card
+                          </button>
+                          <button className="py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-300">
+                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
+                            </svg>
+                            PayPal
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Pay Button */}
+                      <button className="w-full py-3 bg-primary-500 text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
+                        <Lock className="w-3 h-3" />
+                        {qr.amount ? `Pay ${formatCurrency(qr.amount, qr.currency)}` : 'Continue to Pay'}
+                      </button>
+
+                      <p className="text-[10px] text-center text-gray-400 flex items-center justify-center gap-1">
+                        <Lock className="w-2.5 h-2.5" />
+                        Secured by Wiremi Payment Gateway
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dynamic notch */}
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-full" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 export default function QRCodesPage() {
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [typeFilter, setTypeFilter] = useState<QRType | 'all'>('all')
+  const [previewQR, setPreviewQR] = useState<typeof MOCK_QR_CODES[0] | null>(null)
 
   // Calculate statistics
   const stats = {
@@ -260,11 +541,9 @@ export default function QRCodesPage() {
                   onClick={() => router.push(`/payments/collect/qr/${qr.id}`)}
                 >
                   <div className="p-6">
-                    {/* QR Code Preview */}
-                    <div className="mb-4 bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center">
-                      <div className="w-32 h-32 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                        <QrCode className="w-20 h-20 text-white" />
-                      </div>
+                    {/* QR Code Preview with Wiremi Logo */}
+                    <div className="mb-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center">
+                      <StyledQRCode size="md" />
                     </div>
 
                     {/* Header */}
@@ -325,7 +604,19 @@ export default function QRCodesPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-4 gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        icon={<Eye className="w-4 h-4" />}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setPreviewQR(qr)
+                        }}
+                        title="Preview"
+                      >
+                        <span className="sr-only">Preview</span>
+                      </Button>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -333,6 +624,7 @@ export default function QRCodesPage() {
                         onClick={(e) => {
                           e.stopPropagation()
                         }}
+                        title="Download"
                       >
                         <span className="sr-only">Download</span>
                       </Button>
@@ -343,6 +635,7 @@ export default function QRCodesPage() {
                         onClick={(e) => {
                           e.stopPropagation()
                         }}
+                        title="Print"
                       >
                         <span className="sr-only">Print</span>
                       </Button>
@@ -353,6 +646,7 @@ export default function QRCodesPage() {
                         onClick={(e) => {
                           e.stopPropagation()
                         }}
+                        title="Share"
                       >
                         <span className="sr-only">Share</span>
                       </Button>
@@ -447,6 +741,16 @@ export default function QRCodesPage() {
           </Card>
         </div>
       </div>
+
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {previewQR && (
+          <QRPreviewModal
+            qr={previewQR}
+            onClose={() => setPreviewQR(null)}
+          />
+        )}
+      </AnimatePresence>
     </PageLayout>
   )
 }

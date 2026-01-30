@@ -32,6 +32,7 @@ import {
   FileText,
   Coins,
   Hotel,
+  Brain,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -229,10 +230,16 @@ export default function Sidebar({ className, organizationName = 'Tech Solutions 
   }
 
   const aiInsights: NavItem = {
-    name: 'AI Insights',
+    name: 'AI Business Agent',
     href: '#',
-    icon: <Sparkles className="w-5 h-5" />,
+    icon: <Brain className="w-5 h-5" />,
     children: [
+      {
+        name: 'Agent Dashboard',
+        href: '/ai/agent',
+        icon: <Sparkles className="w-4 h-4" />,
+        badge: 'New',
+      },
       {
         name: 'Business Analytics',
         href: '/ai/analytics',
@@ -524,14 +531,18 @@ export default function Sidebar({ className, organizationName = 'Tech Solutions 
 
         {/* Wiremi Logo at Bottom */}
         <div className="p-4 border-t border-dark-border shrink-0">
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shrink-0">
-              <Zap className="w-5 h-5 text-white" />
+          <div className={cn(
+            "flex items-center gap-3",
+            collapsed ? "justify-center" : "px-2"
+          )}>
+            {/* Wiremi Logo */}
+            <div className="w-9 h-9 bg-gradient-to-br from-primary-400 via-primary-500 to-primary-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary-500/20">
+              <span className="text-white font-black text-lg tracking-tight">W</span>
             </div>
             {!collapsed && (
               <div className="min-w-0 flex-1">
-                <p className="text-xs text-gray-500">Powered by</p>
-                <p className="font-bold text-white text-sm">WIREMI</p>
+                <p className="text-[10px] text-gray-500 uppercase tracking-wider">powered by</p>
+                <p className="font-black text-white text-lg tracking-tight -mt-0.5">WIREMI</p>
               </div>
             )}
           </div>
