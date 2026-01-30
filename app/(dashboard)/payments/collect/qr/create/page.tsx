@@ -90,7 +90,7 @@ export default function CreateQRCodePage() {
             Back to QR Codes
           </Button>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
               <QrCode className="w-5 h-5 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
