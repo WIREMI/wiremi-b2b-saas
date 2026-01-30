@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import PageLayout from '@/components/layout/PageLayout'
 import {
   Plus,
   Search,
@@ -35,40 +36,35 @@ export default function ClientsPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg">
+    <PageLayout maxWidth="wide">
       {/* Header */}
-      <div className="bg-white dark:bg-dark-surface border-b border-gray-200 dark:border-dark-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                icon={<ArrowLeft className="w-4 h-4" />}
-                onClick={() => router.push('/invoicing')}
-              >
-                Back
-              </Button>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  Clients
-                </h1>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  Manage your clients and their billing information
-                </p>
-              </div>
-            </div>
-            <Button
-              icon={<Plus className="w-4 h-4" />}
-              onClick={() => router.push('/invoicing/clients/new')}
-            >
-              Add Client
-            </Button>
+      <div className="mb-8">
+        <button
+          onClick={() => router.push('/invoicing')}
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Invoices</span>
+        </button>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Clients
+            </h1>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              Manage your clients and their billing information
+            </p>
           </div>
+          <Button
+            icon={<Plus className="w-4 h-4" />}
+            onClick={() => router.push('/invoicing/clients/new')}
+          >
+            Add Client
+          </Button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="p-6">
@@ -287,6 +283,6 @@ export default function ClientsPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }

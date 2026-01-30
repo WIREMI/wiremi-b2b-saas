@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import PageLayout from '@/components/layout/PageLayout'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Input from '@/components/ui/input'
@@ -21,6 +22,7 @@ import {
   Save,
   Send,
   Eye,
+  ArrowLeft,
 } from 'lucide-react'
 import { getAllClients } from '@/lib/mock-data/invoicing'
 import { InvoiceItem, DiscountType, TaxType, PaymentMethod } from '@/types/invoicing'
@@ -158,35 +160,37 @@ export default function CreateInvoicePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <PageLayout maxWidth="wide">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Create Invoice</h1>
-              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Generate a new invoice for your client
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="secondary" onClick={() => router.push('/invoicing')}>
-                Cancel
-              </Button>
-              <Button variant="secondary" onClick={handleSaveDraft}>
-                <Save className="w-4 h-4 mr-2" />
-                Save Draft
-              </Button>
-              <Button onClick={handleSendInvoice} disabled={!invoiceData.clientId || items.some(i => !i.description)}>
-                <Send className="w-4 h-4 mr-2" />
-                Send Invoice
-              </Button>
-            </div>
+      <div className="mb-8">
+        <button
+          onClick={() => router.push('/invoicing')}
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Invoices</span>
+        </button>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Create Invoice</h1>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              Generate a new invoice for your client
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="secondary" onClick={handleSaveDraft}>
+              <Save className="w-4 h-4 mr-2" />
+              Save Draft
+            </Button>
+            <Button onClick={handleSendInvoice} disabled={!invoiceData.clientId || items.some(i => !i.description)}>
+              <Send className="w-4 h-4 mr-2" />
+              Send Invoice
+            </Button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
@@ -597,6 +601,6 @@ export default function CreateInvoicePage() {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }

@@ -184,7 +184,7 @@ export default function POSPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
                 <Smartphone className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -297,7 +297,7 @@ export default function POSPage() {
                 <div className="p-6">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
                       <Smartphone className="w-6 h-6 text-white" />
                     </div>
                     {getStatusBadge(terminal.status)}
@@ -475,44 +475,44 @@ export default function POSPage() {
 
         {/* POS Features */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                 <QrCode className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
                 QR Payments
               </h3>
             </div>
-            <p className="text-sm text-blue-800 dark:text-blue-200">
+            <p className="text-sm text-primary-800 dark:text-primary-200">
               Customers scan QR codes to pay instantly via mobile wallets, no card reader needed
             </p>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-800">
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                 <CreditCard className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
                 Card Payments
               </h3>
             </div>
-            <p className="text-sm text-purple-800 dark:text-purple-200">
+            <p className="text-sm text-primary-800 dark:text-primary-200">
               Accept chip cards, contactless payments, and tap-to-pay from all major card networks
             </p>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 border-green-200 dark:border-green-800">
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                 <Zap className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-green-900 dark:text-green-100">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
                 Offline Mode
               </h3>
             </div>
-            <p className="text-sm text-green-800 dark:text-green-200">
+            <p className="text-sm text-primary-800 dark:text-primary-200">
               Queue payments when offline and sync automatically when connection is restored
             </p>
           </Card>

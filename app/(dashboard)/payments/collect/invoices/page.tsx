@@ -204,7 +204,7 @@ export default function InvoicesPage() {
               size="md"
               icon={<Plus className="w-5 h-5" />}
               iconPosition="left"
-              onClick={() => router.push('/payments/collect/invoices/create')}
+              onClick={() => router.push('/invoicing/create')}
             >
               Create Invoice
             </Button>
@@ -309,7 +309,7 @@ export default function InvoicesPage() {
                       <tr
                         key={invoice.id}
                         className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
-                        onClick={() => router.push(`/payments/collect/invoices/${invoice.id}`)}
+                        onClick={() => router.push(`/invoicing/${invoice.id}`)}
                       >
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-3">
@@ -381,7 +381,7 @@ export default function InvoicesPage() {
                               icon={<Eye className="w-4 h-4" />}
                               onClick={(e) => {
                                 e.stopPropagation()
-                                router.push(`/payments/collect/invoices/${invoice.id}`)
+                                router.push(`/invoicing/${invoice.id}`)
                               }}
                               title="View invoice"
                             >
@@ -413,7 +413,7 @@ export default function InvoicesPage() {
                   variant="primary"
                   icon={<Plus className="w-4 h-4" />}
                   iconPosition="left"
-                  onClick={() => router.push('/payments/collect/invoices/create')}
+                  onClick={() => router.push('/invoicing/create')}
                 >
                   Create Invoice
                 </Button>

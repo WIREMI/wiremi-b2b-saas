@@ -440,33 +440,33 @@ export default function WalletsPage() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-4 gap-4">
-          <button className="group flex flex-col items-center gap-3 p-5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-sm transition-all">
+          <Link href="/wallets/send-money" className="group flex flex-col items-center gap-3 p-5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-sm transition-all">
             <div className="w-12 h-12 bg-primary-50 dark:bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-primary-500/20 transition-colors">
               <Send className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             </div>
             <span className="text-sm font-medium text-gray-900 dark:text-white">Send Money</span>
-          </button>
+          </Link>
 
-          <button className="group flex flex-col items-center gap-3 p-5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-sm transition-all">
-            <div className="w-12 h-12 bg-green-50 dark:bg-green-500/10 rounded-xl flex items-center justify-center group-hover:bg-green-100 dark:group-hover:bg-green-500/20 transition-colors">
-              <ArrowDownRight className="w-5 h-5 text-green-600 dark:text-green-400" />
+          <Link href="/wallets/add-funds" className="group flex flex-col items-center gap-3 p-5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-sm transition-all">
+            <div className="w-12 h-12 bg-primary-50 dark:bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-primary-500/20 transition-colors">
+              <ArrowDownRight className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             </div>
             <span className="text-sm font-medium text-gray-900 dark:text-white">Add Funds</span>
-          </button>
+          </Link>
 
-          <button className="group flex flex-col items-center gap-3 p-5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-sm transition-all">
-            <div className="w-12 h-12 bg-purple-50 dark:bg-purple-500/10 rounded-xl flex items-center justify-center group-hover:bg-purple-100 dark:group-hover:bg-purple-500/20 transition-colors">
-              <ArrowRightLeft className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+          <Link href="/transfer" className="group flex flex-col items-center gap-3 p-5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-sm transition-all">
+            <div className="w-12 h-12 bg-primary-50 dark:bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-primary-500/20 transition-colors">
+              <ArrowRightLeft className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             </div>
             <span className="text-sm font-medium text-gray-900 dark:text-white">Convert</span>
-          </button>
+          </Link>
 
-          <button className="group flex flex-col items-center gap-3 p-5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-sm transition-all">
-            <div className="w-12 h-12 bg-orange-50 dark:bg-orange-500/10 rounded-xl flex items-center justify-center group-hover:bg-orange-100 dark:group-hover:bg-orange-500/20 transition-colors">
-              <QrCode className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+          <Link href="/payments/collect/qr" className="group flex flex-col items-center gap-3 p-5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-sm transition-all">
+            <div className="w-12 h-12 bg-primary-50 dark:bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-primary-500/20 transition-colors">
+              <QrCode className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             </div>
             <span className="text-sm font-medium text-gray-900 dark:text-white">Receive</span>
-          </button>
+          </Link>
         </div>
 
         {/* Tabs */}

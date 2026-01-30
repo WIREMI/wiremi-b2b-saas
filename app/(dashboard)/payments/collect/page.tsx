@@ -41,7 +41,7 @@ export default function PaymentCollectionStudioPage() {
       useCases: ['Freelancers', 'Social sellers', 'Churches', 'NGOs'],
       difficulty: 'No-code',
       badge: 'Most Popular',
-      color: 'from-blue-500 to-blue-600',
+      color: 'from-primary-500 to-primary-600',
     },
     {
       id: 'pages',
@@ -51,7 +51,7 @@ export default function PaymentCollectionStudioPage() {
       useCases: ['E-commerce', 'Service providers', 'Subscriptions'],
       difficulty: 'No-code',
       badge: 'Recommended',
-      color: 'from-purple-500 to-purple-600',
+      color: 'from-primary-500 to-primary-600',
     },
     {
       id: 'widgets',
@@ -61,7 +61,7 @@ export default function PaymentCollectionStudioPage() {
       useCases: ['Websites', 'React apps', 'WordPress', 'Webflow'],
       difficulty: 'Low-code',
       badge: null,
-      color: 'from-green-500 to-green-600',
+      color: 'from-primary-500 to-primary-600',
     },
     {
       id: 'pos',
@@ -71,7 +71,7 @@ export default function PaymentCollectionStudioPage() {
       useCases: ['Retail', 'Restaurants', 'Events', 'Markets'],
       difficulty: 'No-code',
       badge: null,
-      color: 'from-orange-500 to-orange-600',
+      color: 'from-primary-500 to-primary-600',
     },
     {
       id: 'qr',
@@ -81,7 +81,7 @@ export default function PaymentCollectionStudioPage() {
       useCases: ['Table tents', 'Posters', 'Product labels', 'Invoices'],
       difficulty: 'No-code',
       badge: null,
-      color: 'from-pink-500 to-pink-600',
+      color: 'from-primary-500 to-primary-600',
     },
     {
       id: 'invoices',
@@ -91,7 +91,7 @@ export default function PaymentCollectionStudioPage() {
       useCases: ['B2B', 'Contractors', 'Agencies', 'Schools'],
       difficulty: 'No-code',
       badge: null,
-      color: 'from-indigo-500 to-indigo-600',
+      color: 'from-primary-500 to-primary-600',
     },
     {
       id: 'api',
@@ -101,7 +101,7 @@ export default function PaymentCollectionStudioPage() {
       useCases: ['Platforms', 'SaaS', 'Marketplaces', 'Integrations'],
       difficulty: 'Full-code',
       badge: 'Advanced',
-      color: 'from-yellow-500 to-yellow-600',
+      color: 'from-primary-500 to-primary-600',
     },
   ]
 
@@ -125,22 +125,22 @@ export default function PaymentCollectionStudioPage() {
       icon: Globe,
       title: 'Cross-Border Ready',
       description: 'Multi-currency support, automatic conversion, and local payment methods in every market.',
-      color: 'text-blue-600',
-      bg: 'bg-blue-100 dark:bg-blue-900/30',
+      color: 'text-primary-600',
+      bg: 'bg-primary-100 dark:bg-primary-900/30',
     },
     {
       icon: Settings,
       title: 'No-Code to Full-Code',
       description: 'Start with simple links, grow into custom integrations. Same platform, infinite flexibility.',
-      color: 'text-purple-600',
-      bg: 'bg-purple-100 dark:bg-purple-900/30',
+      color: 'text-primary-600',
+      bg: 'bg-primary-100 dark:bg-primary-900/30',
     },
     {
       icon: CheckCircle2,
       title: 'Instant Reconciliation',
       description: 'Automatic ledgering, real-time settlement tracking, and unified reporting across all channels.',
-      color: 'text-green-600',
-      bg: 'bg-green-100 dark:bg-green-900/30',
+      color: 'text-primary-600',
+      bg: 'bg-primary-100 dark:bg-primary-900/30',
     },
   ]
 
@@ -164,7 +164,7 @@ export default function PaymentCollectionStudioPage() {
       <div className="space-y-8">
         {/* Hero Section */}
         <div className="text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-full mb-6 border border-primary-200 dark:border-primary-800">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-full mb-6 border border-primary-200 dark:border-primary-800">
             <Sparkles className="w-4 h-4 text-primary-600 dark:text-primary-400" />
             <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
               Powered by Wiremi Financial Core
@@ -301,7 +301,7 @@ export default function PaymentCollectionStudioPage() {
         </div>
 
         {/* Quick Start Guide */}
-        <Card className="p-8 bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border-primary-200 dark:border-primary-800">
+        <Card className="p-8 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-4">
@@ -415,10 +415,10 @@ export default function PaymentCollectionStudioPage() {
           </div>
 
           {/* Integration Guide CTA */}
-          <div className="mt-6 p-6 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-2xl border border-purple-200 dark:border-purple-800">
+          <div className="mt-6 p-6 bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-2xl border border-primary-200 dark:border-primary-800">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Code className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -443,7 +443,7 @@ export default function PaymentCollectionStudioPage() {
         </Card>
 
         {/* CTA Section */}
-        <Card className="p-8 text-center bg-gradient-to-r from-primary-500 to-blue-500 text-white border-0">
+        <Card className="p-8 text-center bg-gradient-to-r from-primary-500 to-primary-600 text-white border-0">
           <h2 className="text-3xl font-bold mb-4">
             Ready to Start Collecting Payments?
           </h2>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import PageLayout from '@/components/layout/PageLayout'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -59,13 +60,15 @@ export default function PayInvoicePage() {
 
   if (!invoice) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Invoice Not Found</h1>
-          <Button onClick={() => router.push('/invoicing')}>Back to Invoices</Button>
+      <PageLayout maxWidth="wide">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Invoice Not Found</h1>
+            <Button onClick={() => router.push('/invoicing')}>Back to Invoices</Button>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     )
   }
 
@@ -85,8 +88,9 @@ export default function PayInvoicePage() {
 
   if (paymentComplete) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
-        <Card className="max-w-2xl w-full p-8 text-center">
+      <PageLayout maxWidth="wide">
+        <div className="flex items-center justify-center min-h-[60vh] p-4">
+          <Card className="max-w-2xl w-full p-8 text-center">
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
           </div>
@@ -138,28 +142,28 @@ export default function PayInvoicePage() {
           </div>
         </Card>
       </div>
+      </PageLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <button
-            onClick={() => router.push(`/invoicing/${invoice.id}`)}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Invoice</span>
-          </button>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Pay Invoice</h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Complete payment for {invoice.invoiceNumber}
-          </p>
-        </div>
+    <PageLayout maxWidth="wide">
+      {/* Header */}
+      <div className="mb-8">
+        <button
+          onClick={() => router.push(`/invoicing/${invoice.id}`)}
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Invoice</span>
+        </button>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pay Invoice</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Complete payment for {invoice.invoiceNumber}
+        </p>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Payment Method Selection */}
@@ -441,7 +445,6 @@ export default function PayInvoicePage() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </PageLayout>
   )
 }

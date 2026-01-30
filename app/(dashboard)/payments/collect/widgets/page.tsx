@@ -134,7 +134,7 @@ export default function EmbeddableWidgetsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
                 <Code className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -261,7 +261,7 @@ export default function EmbeddableWidgetsPage() {
                 <div className="p-6">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
                       <Code className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -296,12 +296,12 @@ export default function EmbeddableWidgetsPage() {
                     </div>
                   </div>
 
-                  <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                  <div className="p-3 bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-lg border border-primary-200 dark:border-primary-800">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-green-700 dark:text-green-300 font-medium">
+                      <span className="text-xs text-primary-700 dark:text-primary-300 font-medium">
                         Total Collected
                       </span>
-                      <span className="text-sm font-bold text-green-900 dark:text-green-100">
+                      <span className="text-sm font-bold text-primary-900 dark:text-primary-100">
                         {formatCurrency(widget.totalCollected, widget.currency)}
                       </span>
                     </div>
@@ -366,19 +366,19 @@ export default function EmbeddableWidgetsPage() {
 
         {/* Integration Examples */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                 <Layers className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
                 Inline Widgets
               </h3>
             </div>
-            <p className="text-sm text-blue-800 dark:text-blue-200 mb-4">
+            <p className="text-sm text-primary-800 dark:text-primary-200 mb-4">
               Embed payment forms directly into your page content
             </p>
-            <ul className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
+            <ul className="space-y-2 text-sm text-primary-700 dark:text-primary-300">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <span>Seamless user experience</span>
@@ -390,19 +390,19 @@ export default function EmbeddableWidgetsPage() {
             </ul>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-800">
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                 <Zap className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
                 Modal Widgets
               </h3>
             </div>
-            <p className="text-sm text-purple-800 dark:text-purple-200 mb-4">
+            <p className="text-sm text-primary-800 dark:text-primary-200 mb-4">
               Trigger payment overlays with button clicks
             </p>
-            <ul className="space-y-2 text-sm text-purple-700 dark:text-purple-300">
+            <ul className="space-y-2 text-sm text-primary-700 dark:text-primary-300">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <span>Clean, focused checkout</span>
@@ -414,19 +414,19 @@ export default function EmbeddableWidgetsPage() {
             </ul>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 border-green-200 dark:border-green-800">
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-green-900 dark:text-green-100">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
                 Button Widgets
               </h3>
             </div>
-            <p className="text-sm text-green-800 dark:text-green-200 mb-4">
+            <p className="text-sm text-primary-800 dark:text-primary-200 mb-4">
               One-click payment buttons for quick checkouts
             </p>
-            <ul className="space-y-2 text-sm text-green-700 dark:text-green-300">
+            <ul className="space-y-2 text-sm text-primary-700 dark:text-primary-300">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <span>Fastest integration</span>

@@ -147,7 +147,7 @@ export default function QRCodesPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
                 <QrCode className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -262,7 +262,7 @@ export default function QRCodesPage() {
                   <div className="p-6">
                     {/* QR Code Preview */}
                     <div className="mb-4 bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center">
-                      <div className="w-32 h-32 bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
+                      <div className="w-32 h-32 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
                         <QrCode className="w-20 h-20 text-white" />
                       </div>
                     </div>
@@ -313,12 +313,12 @@ export default function QRCodesPage() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-lg border border-pink-200 dark:border-pink-800 mb-4">
+                    <div className="p-3 bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-lg border border-primary-200 dark:border-primary-800 mb-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-pink-700 dark:text-pink-300 font-medium">
+                        <span className="text-xs text-primary-700 dark:text-primary-300 font-medium">
                           Total Collected
                         </span>
-                        <span className="text-sm font-bold text-pink-900 dark:text-pink-100">
+                        <span className="text-sm font-bold text-primary-900 dark:text-primary-100">
                           {formatCurrency(qr.totalCollected, qr.currency)}
                         </span>
                       </div>
@@ -390,19 +390,19 @@ export default function QRCodesPage() {
 
         {/* Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                 <QrCode className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
                 Static QR Codes
               </h3>
             </div>
-            <p className="text-sm text-blue-800 dark:text-blue-200 mb-4">
+            <p className="text-sm text-primary-800 dark:text-primary-200 mb-4">
               Generate once, use forever. Perfect for physical locations like tables, products, or donation boxes.
             </p>
-            <ul className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
+            <ul className="space-y-2 text-sm text-primary-700 dark:text-primary-300">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <span>Fixed or flexible amounts</span>
@@ -418,19 +418,19 @@ export default function QRCodesPage() {
             </ul>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-800">
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
                 Dynamic QR Codes
               </h3>
             </div>
-            <p className="text-sm text-purple-800 dark:text-purple-200 mb-4">
+            <p className="text-sm text-primary-800 dark:text-primary-200 mb-4">
               Update amounts and details without reprinting. Ideal for products with changing prices.
             </p>
-            <ul className="space-y-2 text-sm text-purple-700 dark:text-purple-300">
+            <ul className="space-y-2 text-sm text-primary-700 dark:text-primary-300">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <span>Update price anytime</span>

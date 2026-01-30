@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import PageLayout from '@/components/layout/PageLayout'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -37,16 +38,18 @@ export default function InvoiceDetailPage() {
 
   if (!invoice) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Invoice Not Found</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The invoice you are looking for does not exist.
-          </p>
-          <Button onClick={() => router.push('/invoicing')}>Back to Invoices</Button>
+      <PageLayout maxWidth="wide">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Invoice Not Found</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              The invoice you are looking for does not exist.
+            </p>
+            <Button onClick={() => router.push('/invoicing')}>Back to Invoices</Button>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     )
   }
 
@@ -54,82 +57,78 @@ export default function InvoiceDetailPage() {
   const overdueCheck = isOverdue(invoice)
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <PageLayout maxWidth="wide">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => router.push('/invoicing')}
-                className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                aria-label="Back to Invoices"
+      <div className="mb-8">
+        <button
+          onClick={() => router.push('/invoicing')}
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Invoices</span>
+        </button>
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {invoice.invoiceNumber}
+              </h1>
+              <Badge
+                className={
+                  statusColor === 'green'
+                    ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                    : statusColor === 'blue'
+                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
+                    : statusColor === 'yellow'
+                    ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
+                    : statusColor === 'red'
+                    ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                    : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
+                }
               >
-                <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              </button>
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {invoice.invoiceNumber}
-                  </h1>
-                  <Badge
-                    className={
-                      statusColor === 'green'
-                        ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                        : statusColor === 'blue'
-                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
-                        : statusColor === 'yellow'
-                        ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
-                        : statusColor === 'red'
-                        ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-                        : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
-                    }
-                  >
-                    {invoice.status}
-                  </Badge>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Issued {new Date(invoice.issueDate).toLocaleDateString('en-US', {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </p>
-              </div>
+                {invoice.status}
+              </Badge>
             </div>
-            <div className="flex gap-2">
-              {invoice.status === 'DRAFT' && (
-                <Button variant="secondary" onClick={() => router.push(`/invoicing/${invoice.id}/edit`)}>
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
-              )}
-              {invoice.status !== 'PAID' && invoice.status !== 'CANCELLED' && (
-                <Button onClick={() => setShowPaymentModal(true)}>
-                  <CreditCard className="w-4 h-4 mr-2" />
-                  Record Payment
-                </Button>
-              )}
-              <Button variant="secondary">
-                <Download className="w-4 h-4 mr-2" />
-                Download
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Issued {new Date(invoice.issueDate).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {invoice.status === 'DRAFT' && (
+              <Button variant="secondary" onClick={() => router.push(`/invoicing/${invoice.id}/edit`)}>
+                <Edit className="w-4 h-4 mr-2" />
+                Edit
               </Button>
-              <Button variant="secondary">
-                <Printer className="w-4 h-4 mr-2" />
-                Print
+            )}
+            {invoice.status !== 'PAID' && invoice.status !== 'CANCELLED' && (
+              <Button onClick={() => setShowPaymentModal(true)}>
+                <CreditCard className="w-4 h-4 mr-2" />
+                Record Payment
               </Button>
-              {invoice.status === 'DRAFT' && (
-                <Button>
-                  <Send className="w-4 h-4 mr-2" />
-                  Send
-                </Button>
-              )}
-            </div>
+            )}
+            <Button variant="secondary">
+              <Download className="w-4 h-4 mr-2" />
+              Download
+            </Button>
+            <Button variant="secondary">
+              <Printer className="w-4 h-4 mr-2" />
+              Print
+            </Button>
+            {invoice.status === 'DRAFT' && (
+              <Button>
+                <Send className="w-4 h-4 mr-2" />
+                Send
+              </Button>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content - Invoice Preview */}
           <div className="lg:col-span-2">
@@ -457,6 +456,6 @@ export default function InvoiceDetailPage() {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }

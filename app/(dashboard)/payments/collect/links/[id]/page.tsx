@@ -22,6 +22,12 @@ import {
   Mail,
   MessageSquare,
   BarChart3,
+  X,
+  CreditCard,
+  Smartphone,
+  Building,
+  Bitcoin,
+  Wallet,
 } from 'lucide-react'
 import PageLayout from '@/components/layout/PageLayout'
 import { Button } from '@/components/ui/button'
@@ -68,6 +74,7 @@ export default function PaymentLinkDetailPage() {
   const router = useRouter()
   const params = useParams()
   const [copied, setCopied] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
   const [activeTab, setActiveTab] = useState<'overview' | 'transactions' | 'analytics'>('overview')
 
   // Mock link data
@@ -380,7 +387,7 @@ export default function PaymentLinkDetailPage() {
                     size="md"
                     icon={<Eye className="w-5 h-5" />}
                     iconPosition="left"
-                    onClick={() => window.open(link.url, '_blank')}
+                    onClick={() => setShowPreview(true)}
                     className="w-full"
                   >
                     Preview Link
@@ -569,6 +576,122 @@ export default function PaymentLinkDetailPage() {
                 </div>
               </div>
             </Card>
+          </div>
+        )}
+
+        {/* Preview Modal */}
+        {showPreview && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-auto shadow-2xl">
+              {/* Modal Header */}
+              <div className="sticky top-0 bg-white dark:bg-gray-900 p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Eye className="w-5 h-5 text-primary-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Payment Link Preview</h3>
+                </div>
+                <button
+                  onClick={() => setShowPreview(false)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+
+              {/* Preview Content - Simulates the payment page */}
+              <div className="p-6">
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                  {/* Merchant Header */}
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
+                      <Link2 className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                        {link.name}
+                      </div>
+                      <div className="text-xs text-gray-500">Wiremi-powered payment</div>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                    {link.description}
+                  </p>
+
+                  {/* Amount */}
+                  <div className="mb-6">
+                    {link.type === 'fixed' ? (
+                      <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                        {formatCurrency(link.amount, link.currency)}
+                      </div>
+                    ) : (
+                      <div className="p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600">
+                        <input
+                          type="text"
+                          placeholder="Enter amount"
+                          className="w-full text-2xl font-bold bg-transparent border-none focus:outline-none text-gray-900 dark:text-white"
+                          disabled
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Payment Methods */}
+                  <div className="space-y-2 mb-6">
+                    {link.enabledMethods.card && (
+                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <CreditCard className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">Credit/Debit Card</span>
+                      </div>
+                    )}
+                    {link.enabledMethods.mobileMoney && (
+                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <Smartphone className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">Mobile Money</span>
+                      </div>
+                    )}
+                    {link.enabledMethods.bankTransfer && (
+                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <Building className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">Bank Transfer</span>
+                      </div>
+                    )}
+                    {link.enabledMethods.crypto && (
+                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <Bitcoin className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">Cryptocurrency</span>
+                      </div>
+                    )}
+                    {link.enabledMethods.wallet && (
+                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <Wallet className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">Wallet Balance</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Pay Button */}
+                  <Button className="w-full" size="lg">
+                    Pay {link.type === 'fixed' ? formatCurrency(link.amount, link.currency) : 'Now'}
+                  </Button>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                    <div className="w-4 h-4 bg-primary-500 rounded-full flex items-center justify-center">
+                      <CheckCircle2 className="w-2.5 h-2.5 text-white" />
+                    </div>
+                    <span>Secured by Wiremi</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="sticky bottom-0 bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                  This is a preview of how your payment link will appear to customers
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>

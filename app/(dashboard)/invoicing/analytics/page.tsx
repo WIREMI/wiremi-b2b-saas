@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import PageLayout from '@/components/layout/PageLayout'
 import {
   ArrowLeft,
   TrendingUp,
@@ -42,49 +43,44 @@ export default function InvoiceAnalyticsPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg">
+    <PageLayout maxWidth="wide">
       {/* Header */}
-      <div className="bg-white dark:bg-dark-surface border-b border-gray-200 dark:border-dark-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                icon={<ArrowLeft className="w-4 h-4" />}
-                onClick={() => router.push('/invoicing')}
-              >
-                Back
-              </Button>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  Invoice Analytics
-                </h1>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  Detailed insights into your invoicing performance
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <select
-                value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value as any)}
-                className="px-4 py-3 bg-gray-50 dark:bg-dark-surface border border-gray-300 dark:border-dark-border rounded-xl text-gray-900 dark:text-white"
-              >
-                <option value="7d">Last 7 days</option>
-                <option value="30d">Last 30 days</option>
-                <option value="90d">Last 90 days</option>
-                <option value="1y">Last year</option>
-              </select>
-              <Button variant="outline" icon={<Download className="w-4 h-4" />}>
-                Export Report
-              </Button>
-            </div>
+      <div className="mb-8">
+        <button
+          onClick={() => router.push('/invoicing')}
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Invoices</span>
+        </button>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Invoice Analytics
+            </h1>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              Detailed insights into your invoicing performance
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <select
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value as any)}
+              className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white text-sm"
+            >
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+              <option value="90d">Last 90 days</option>
+              <option value="1y">Last year</option>
+            </select>
+            <Button variant="secondary" icon={<Download className="w-4 h-4" />}>
+              Export Report
+            </Button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="p-6">
@@ -350,6 +346,6 @@ export default function InvoiceAnalyticsPage() {
           </div>
         </Card>
       </div>
-    </div>
+    </PageLayout>
   )
 }
