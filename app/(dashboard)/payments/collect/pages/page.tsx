@@ -133,10 +133,7 @@ function HostedPagePreviewModal({
         {/* Modal Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: page.theme.primaryColor }}
-            >
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-600">
               {isSubscription ? (
                 <Calendar className="w-5 h-5 text-white" />
               ) : isEvent ? (
@@ -219,36 +216,20 @@ function HostedPagePreviewModal({
 
             {/* Page Preview */}
             <div className="bg-white dark:bg-gray-900 rounded-b-xl shadow-xl overflow-hidden">
-              {/* Page Header with Wiremi branding */}
-              <div
-                className="p-4 text-center"
-                style={{ backgroundColor: `${page.theme.primaryColor}10` }}
-              >
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <div className="w-6 h-6 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-xs">W</span>
-                  </div>
-                  <span className="text-xs text-gray-500">Powered by Wiremi</span>
-                </div>
-              </div>
-
               {/* Specific Page Content */}
               <div className={`p-6 ${viewMode === 'mobile' ? 'p-4' : 'p-8'}`}>
                 {isEcommerce && (
                   <EcommerceCheckoutPreview
-                    primaryColor={page.theme.primaryColor}
                     viewMode={viewMode}
                   />
                 )}
                 {isSubscription && (
                   <SubscriptionCheckoutPreview
-                    primaryColor={page.theme.primaryColor}
                     viewMode={viewMode}
                   />
                 )}
                 {isEvent && (
                   <EventTicketPreview
-                    primaryColor={page.theme.primaryColor}
                     viewMode={viewMode}
                   />
                 )}
@@ -263,10 +244,8 @@ function HostedPagePreviewModal({
 
 // E-commerce checkout preview
 function EcommerceCheckoutPreview({
-  primaryColor,
   viewMode,
 }: {
-  primaryColor: string
   viewMode: 'desktop' | 'mobile'
 }) {
   return (
@@ -309,7 +288,7 @@ function EcommerceCheckoutPreview({
           </div>
           <div className="flex justify-between font-bold text-lg mt-2">
             <span className="text-gray-900 dark:text-white">Total</span>
-            <span style={{ color: primaryColor }}>$237.57</span>
+            <span className="text-primary-600">$237.57</span>
           </div>
         </div>
       </div>
@@ -317,18 +296,15 @@ function EcommerceCheckoutPreview({
       {/* Payment Form */}
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">Payment Details</h2>
-        <PaymentMethodsPreview primaryColor={primaryColor} />
-        <PaymentFormPreview primaryColor={primaryColor} />
-        <button
-          className="w-full py-3 rounded-xl text-white font-semibold flex items-center justify-center gap-2 transition-all hover:opacity-90"
-          style={{ backgroundColor: primaryColor }}
-        >
+        <PaymentMethodsPreview />
+        <PaymentFormPreview />
+        <button className="w-full py-3 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold flex items-center justify-center gap-2 transition-all hover:opacity-90">
           <Lock className="w-4 h-4" />
           Pay $237.57
         </button>
         <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
           <Lock className="w-3 h-3" />
-          Secured by Wiremi Payment Gateway
+          Powered by Wiremi
         </p>
       </div>
     </div>
@@ -337,25 +313,17 @@ function EcommerceCheckoutPreview({
 
 // Subscription checkout preview
 function SubscriptionCheckoutPreview({
-  primaryColor,
   viewMode,
 }: {
-  primaryColor: string
   viewMode: 'desktop' | 'mobile'
 }) {
   return (
     <div className={`${viewMode === 'mobile' ? 'space-y-4' : 'grid grid-cols-2 gap-8'}`}>
       {/* Plan Details */}
       <div className="space-y-4">
-        <div
-          className="p-6 rounded-2xl border-2"
-          style={{ borderColor: primaryColor, backgroundColor: `${primaryColor}05` }}
-        >
+        <div className="p-6 rounded-2xl border-2 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10">
           <div className="flex items-center gap-2 mb-4">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: primaryColor }}
-            >
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-600">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -364,7 +332,7 @@ function SubscriptionCheckoutPreview({
             </div>
           </div>
           <div className="mb-4">
-            <span className="text-4xl font-bold" style={{ color: primaryColor }}>
+            <span className="text-4xl font-bold text-primary-600">
               $29.99
             </span>
             <span className="text-gray-500">/month</span>
@@ -378,7 +346,7 @@ function SubscriptionCheckoutPreview({
               'API access',
             ].map((feature, i) => (
               <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                <CheckCircle className="w-4 h-4" style={{ color: primaryColor }} />
+                <CheckCircle className="w-4 h-4 text-primary-500" />
                 {feature}
               </li>
             ))}
@@ -387,10 +355,7 @@ function SubscriptionCheckoutPreview({
         <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
           <p className="text-xs text-gray-500 mb-2">Billing cycle</p>
           <div className="flex gap-2">
-            <button
-              className="flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2"
-              style={{ borderColor: primaryColor, color: primaryColor }}
-            >
+            <button className="flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2 border-primary-500 text-primary-600">
               Monthly
             </button>
             <button className="flex-1 py-2 px-3 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400">
@@ -414,17 +379,15 @@ function SubscriptionCheckoutPreview({
             />
           </div>
         </div>
-        <PaymentMethodsPreview primaryColor={primaryColor} />
-        <PaymentFormPreview primaryColor={primaryColor} />
-        <button
-          className="w-full py-3 rounded-xl text-white font-semibold flex items-center justify-center gap-2 transition-all hover:opacity-90"
-          style={{ backgroundColor: primaryColor }}
-        >
+        <PaymentMethodsPreview />
+        <PaymentFormPreview />
+        <button className="w-full py-3 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold flex items-center justify-center gap-2 transition-all hover:opacity-90">
           <Lock className="w-4 h-4" />
           Subscribe - $29.99/mo
         </button>
-        <p className="text-xs text-center text-gray-500">
-          Cancel anytime. First charge today.
+        <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
+          <Lock className="w-3 h-3" />
+          Powered by Wiremi
         </p>
       </div>
     </div>
@@ -433,17 +396,15 @@ function SubscriptionCheckoutPreview({
 
 // Event ticket preview
 function EventTicketPreview({
-  primaryColor,
   viewMode,
 }: {
-  primaryColor: string
   viewMode: 'desktop' | 'mobile'
 }) {
   return (
     <div className={`${viewMode === 'mobile' ? 'space-y-4' : 'grid grid-cols-2 gap-8'}`}>
       {/* Event Details */}
       <div className="space-y-4">
-        <div className="relative h-40 rounded-2xl overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600">
+        <div className="relative h-40 rounded-2xl overflow-hidden bg-gradient-to-br from-primary-500 to-primary-600">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white">
               <Calendar className="w-12 h-12 mx-auto mb-2" />
@@ -479,7 +440,7 @@ function EventTicketPreview({
               key={i}
               className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
                 ticket.selected
-                  ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20'
+                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
                   : 'border-gray-200 dark:border-gray-700'
               }`}
             >
@@ -510,22 +471,19 @@ function EventTicketPreview({
           <div className="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
             <div className="flex justify-between font-bold">
               <span className="text-gray-900 dark:text-white">Total</span>
-              <span style={{ color: primaryColor }}>$209.00</span>
+              <span className="text-primary-600">$209.00</span>
             </div>
           </div>
         </div>
-        <PaymentMethodsPreview primaryColor={primaryColor} />
-        <PaymentFormPreview primaryColor={primaryColor} />
-        <button
-          className="w-full py-3 rounded-xl text-white font-semibold flex items-center justify-center gap-2 transition-all hover:opacity-90"
-          style={{ backgroundColor: primaryColor }}
-        >
+        <PaymentMethodsPreview />
+        <PaymentFormPreview />
+        <button className="w-full py-3 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold flex items-center justify-center gap-2 transition-all hover:opacity-90">
           <Ticket className="w-4 h-4" />
           Purchase Tickets - $209.00
         </button>
         <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
           <Lock className="w-3 h-3" />
-          Tickets will be emailed instantly
+          Powered by Wiremi
         </p>
       </div>
     </div>
@@ -533,15 +491,12 @@ function EventTicketPreview({
 }
 
 // Shared payment methods preview
-function PaymentMethodsPreview({ primaryColor }: { primaryColor: string }) {
+function PaymentMethodsPreview() {
   return (
     <div className="space-y-2">
       <p className="text-sm text-gray-600 dark:text-gray-400">Payment method</p>
       <div className="flex gap-2">
-        <button
-          className="flex-1 py-2 px-3 rounded-lg border-2 flex items-center justify-center gap-2 text-sm font-medium"
-          style={{ borderColor: primaryColor, color: primaryColor }}
-        >
+        <button className="flex-1 py-2 px-3 rounded-lg border-2 border-primary-500 text-primary-600 flex items-center justify-center gap-2 text-sm font-medium">
           <CreditCard className="w-4 h-4" />
           Card
         </button>
@@ -563,7 +518,7 @@ function PaymentMethodsPreview({ primaryColor }: { primaryColor: string }) {
 }
 
 // Shared payment form preview
-function PaymentFormPreview({ primaryColor }: { primaryColor: string }) {
+function PaymentFormPreview() {
   return (
     <div className="space-y-3">
       <div>

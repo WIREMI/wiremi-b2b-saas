@@ -286,17 +286,9 @@ function QRPreviewModal({
 
                     {/* Payment Screen Content */}
                     <div className="p-4 space-y-4">
-                      {/* Wiremi Header */}
-                      <div className="flex items-center justify-center gap-2 py-2">
-                        <div className="w-6 h-6 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center">
-                          <span className="text-white font-bold text-xs">W</span>
-                        </div>
-                        <span className="text-xs text-gray-500">Powered by Wiremi</span>
-                      </div>
-
                       {/* Payment Info */}
                       <div className="text-center py-4">
-                        {isDonation && <Heart className="w-12 h-12 mx-auto text-rose-500 mb-2" />}
+                        {isDonation && <Heart className="w-12 h-12 mx-auto text-primary-500 mb-2" />}
                         {!isDonation && !isEvent && (
                           <div className="w-12 h-12 mx-auto bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mb-2">
                             <DollarSign className="w-6 h-6 text-primary-600" />
@@ -356,7 +348,7 @@ function QRPreviewModal({
 
                       <p className="text-[10px] text-center text-gray-400 flex items-center justify-center gap-1">
                         <Lock className="w-2.5 h-2.5" />
-                        Secured by Wiremi Payment Gateway
+                        Powered by Wiremi
                       </p>
                     </div>
                   </div>

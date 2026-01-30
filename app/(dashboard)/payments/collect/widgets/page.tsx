@@ -311,7 +311,7 @@ function ProductWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) 
 
         <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
           <Lock className="w-3 h-3" />
-          Secured by Wiremi
+          Powered by Wiremi
         </p>
       </div>
     </div>
@@ -322,7 +322,7 @@ function ProductWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) 
 function DonationWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-      <div className="p-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-center">
+      <div className="p-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-center">
         <Heart className="w-10 h-10 mx-auto mb-2" />
         <h3 className="font-bold text-lg">Support Our Cause</h3>
         <p className="text-sm opacity-90">Every donation makes a difference</p>
@@ -335,7 +335,7 @@ function DonationWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' })
               key={amount}
               className={`py-2 px-3 rounded-lg text-sm font-semibold transition-colors ${
                 i === 1
-                  ? 'bg-rose-500 text-white'
+                  ? 'bg-primary-500 text-white'
                   : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
               }`}
             >
@@ -357,13 +357,13 @@ function DonationWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' })
 
         {/* Recurring option */}
         <label className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg cursor-pointer">
-          <input type="checkbox" className="w-4 h-4 text-rose-500" />
+          <input type="checkbox" className="w-4 h-4 text-primary-500" />
           <span className="text-sm text-gray-700 dark:text-gray-300">Make this a monthly donation</span>
         </label>
 
         {/* Payment methods */}
         <div className="flex gap-2">
-          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-rose-500 bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-rose-700 dark:text-rose-300">
+          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
             <CreditCard className="w-4 h-4" />
             Card
           </button>
@@ -376,14 +376,14 @@ function DonationWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' })
         </div>
 
         {/* Donate button */}
-        <button className="w-full py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors hover:opacity-90">
+        <button className="w-full py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors hover:opacity-90">
           <Heart className="w-4 h-4" />
           Donate $25
         </button>
 
         <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
           <Lock className="w-3 h-3" />
-          Secured by Wiremi
+          Powered by Wiremi
         </p>
       </div>
     </div>
@@ -396,7 +396,7 @@ function WordPressWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }
     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
       <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-[#7B68EE] rounded flex items-center justify-center">
+          <div className="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded flex items-center justify-center">
             <span className="text-white text-xs font-bold">W</span>
           </div>
           <span className="font-semibold text-gray-900 dark:text-white">WooCommerce Checkout</span>
@@ -441,7 +441,7 @@ function WordPressWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }
         </div>
 
         {/* Place order button */}
-        <button className="w-full py-3 bg-[#7B68EE] hover:bg-[#6B5BD2] text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors">
+        <button className="w-full py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:opacity-90 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors">
           <Lock className="w-4 h-4" />
           Place Order - $119.98
         </button>
@@ -459,7 +459,7 @@ function WordPressWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }
 function SubscriptionWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-      <div className="p-4 bg-gradient-to-r from-violet-500 to-purple-500 text-white text-center">
+      <div className="p-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-center">
         <Sparkles className="w-10 h-10 mx-auto mb-2" />
         <h3 className="font-bold text-lg">Pro Membership</h3>
         <div className="mt-2">
@@ -472,7 +472,7 @@ function SubscriptionWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile
         <ul className="space-y-2">
           {['Unlimited access', 'Priority support', 'Custom branding', 'API access'].map((feature) => (
             <li key={feature} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-              <CheckCircle2 className="w-4 h-4 text-green-500" />
+              <CheckCircle2 className="w-4 h-4 text-primary-500" />
               {feature}
             </li>
           ))}
@@ -488,7 +488,7 @@ function SubscriptionWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile
 
         {/* Payment methods */}
         <div className="flex gap-2">
-          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-violet-500 bg-violet-50 dark:bg-violet-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-violet-700 dark:text-violet-300">
+          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
             <CreditCard className="w-4 h-4" />
             Card
           </button>
@@ -501,13 +501,14 @@ function SubscriptionWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile
         </div>
 
         {/* Subscribe button */}
-        <button className="w-full py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors hover:opacity-90">
+        <button className="w-full py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors hover:opacity-90">
           <Zap className="w-4 h-4" />
           Subscribe Now
         </button>
 
-        <p className="text-xs text-center text-gray-500">
-          Cancel anytime. No commitment.
+        <p className="text-xs text-center text-gray-500 flex items-center justify-center gap-1">
+          <Lock className="w-3 h-3" />
+          Powered by Wiremi
         </p>
       </div>
     </div>
