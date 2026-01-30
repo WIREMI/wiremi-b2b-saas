@@ -100,77 +100,67 @@ const MOCK_QR_CODES = [
 type QRType = 'static' | 'dynamic'
 type QRStatus = 'active' | 'paused' | 'expired'
 
-// Elegant QR Code Design with Wiremi Logo
-function StyledQRCode({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+// Clean QR Code Design - Telegram style (no logo inside)
+function StyledQRCode({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
   const sizeClasses = {
-    sm: 'w-24 h-24',
-    md: 'w-32 h-32',
-    lg: 'w-48 h-48',
-  }
-
-  const logoSizeClasses = {
-    sm: 'w-8 h-8',
-    md: 'w-12 h-12',
-    lg: 'w-16 h-16',
-  }
-
-  const textSizeClasses = {
-    sm: 'text-sm',
-    md: 'text-lg',
-    lg: 'text-2xl',
+    sm: 'w-20 h-20',
+    md: 'w-28 h-28',
+    lg: 'w-40 h-40',
+    xl: 'w-64 h-64',
   }
 
   return (
     <div className={`${sizeClasses[size]} relative`}>
-      {/* QR Code Pattern Background */}
-      <div className="absolute inset-0 bg-white rounded-2xl overflow-hidden">
-        {/* Simulated QR pattern */}
+      {/* Clean QR Code Pattern - Telegram style */}
+      <div className="absolute inset-0 bg-white rounded-xl overflow-hidden p-2">
         <svg viewBox="0 0 100 100" className="w-full h-full">
-          {/* Position detection patterns - corners */}
+          {/* Position detection patterns - corners with rounded look */}
           {/* Top-left */}
-          <rect x="4" y="4" width="20" height="20" fill="#1a1a2e" rx="2" />
-          <rect x="7" y="7" width="14" height="14" fill="white" rx="1" />
-          <rect x="10" y="10" width="8" height="8" fill="#1a1a2e" rx="1" />
+          <rect x="2" y="2" width="22" height="22" fill="#1a1a2e" rx="3" />
+          <rect x="5" y="5" width="16" height="16" fill="white" rx="2" />
+          <rect x="8" y="8" width="10" height="10" fill="#1a1a2e" rx="2" />
 
           {/* Top-right */}
-          <rect x="76" y="4" width="20" height="20" fill="#1a1a2e" rx="2" />
-          <rect x="79" y="7" width="14" height="14" fill="white" rx="1" />
-          <rect x="82" y="10" width="8" height="8" fill="#1a1a2e" rx="1" />
+          <rect x="76" y="2" width="22" height="22" fill="#1a1a2e" rx="3" />
+          <rect x="79" y="5" width="16" height="16" fill="white" rx="2" />
+          <rect x="82" y="8" width="10" height="10" fill="#1a1a2e" rx="2" />
 
           {/* Bottom-left */}
-          <rect x="4" y="76" width="20" height="20" fill="#1a1a2e" rx="2" />
-          <rect x="7" y="79" width="14" height="14" fill="white" rx="1" />
-          <rect x="10" y="82" width="8" height="8" fill="#1a1a2e" rx="1" />
+          <rect x="2" y="76" width="22" height="22" fill="#1a1a2e" rx="3" />
+          <rect x="5" y="79" width="16" height="16" fill="white" rx="2" />
+          <rect x="8" y="82" width="10" height="10" fill="#1a1a2e" rx="2" />
 
-          {/* Data modules - scattered pattern */}
+          {/* Data modules - dense pattern for realistic look */}
           {[
-            [28, 4], [32, 4], [40, 4], [48, 4], [52, 4], [56, 4], [64, 4], [68, 4],
-            [28, 8], [36, 8], [44, 8], [56, 8], [60, 8], [68, 8],
-            [4, 28], [8, 28], [12, 32], [16, 28], [20, 32],
-            [76, 28], [80, 32], [84, 28], [88, 32], [92, 28],
-            [4, 56], [8, 52], [12, 60], [16, 56], [20, 52],
-            [76, 56], [80, 60], [84, 52], [88, 56], [92, 60],
-            [28, 92], [32, 88], [40, 92], [48, 88], [52, 92], [56, 88], [64, 92], [68, 88],
+            // Top row data
+            [28, 2], [32, 2], [36, 2], [44, 2], [48, 2], [56, 2], [60, 2], [68, 2], [72, 2],
+            [28, 6], [40, 6], [48, 6], [52, 6], [64, 6], [72, 6],
+            [28, 10], [32, 10], [44, 10], [52, 10], [56, 10], [60, 10], [68, 10],
+            [28, 14], [36, 14], [40, 14], [48, 14], [56, 14], [64, 14], [68, 14], [72, 14],
+            [28, 18], [32, 18], [40, 18], [44, 18], [52, 18], [60, 18], [72, 18],
+            // Middle rows
+            [2, 28], [6, 28], [10, 28], [14, 28], [18, 28], [28, 28], [36, 28], [44, 28], [52, 28], [60, 28], [68, 28], [76, 28], [80, 28], [84, 28], [88, 28], [92, 28],
+            [6, 32], [14, 32], [22, 32], [32, 32], [40, 32], [48, 32], [56, 32], [64, 32], [72, 32], [80, 32], [88, 32],
+            [2, 36], [10, 36], [18, 36], [28, 36], [36, 36], [44, 36], [52, 36], [60, 36], [68, 36], [84, 36], [92, 36],
+            [6, 40], [14, 40], [22, 40], [32, 40], [40, 40], [48, 40], [56, 40], [64, 40], [72, 40], [80, 40], [88, 40],
+            [2, 44], [10, 44], [18, 44], [28, 44], [36, 44], [52, 44], [60, 44], [68, 44], [76, 44], [84, 44], [92, 44],
+            [6, 48], [14, 48], [22, 48], [32, 48], [44, 48], [48, 48], [56, 48], [64, 48], [72, 48], [80, 48], [88, 48],
+            [2, 52], [10, 52], [18, 52], [28, 52], [36, 52], [40, 52], [52, 52], [60, 52], [68, 52], [84, 52], [92, 52],
+            [6, 56], [14, 56], [22, 56], [32, 56], [44, 56], [48, 56], [56, 56], [64, 56], [72, 56], [80, 56], [88, 56],
+            [2, 60], [10, 60], [18, 60], [28, 60], [36, 60], [52, 60], [60, 60], [68, 60], [76, 60], [84, 60], [92, 60],
+            [6, 64], [14, 64], [22, 64], [32, 64], [40, 64], [48, 64], [56, 64], [64, 64], [72, 64], [80, 64], [88, 64],
+            [2, 68], [10, 68], [18, 68], [28, 68], [36, 68], [44, 68], [52, 68], [60, 68], [68, 68], [84, 68], [92, 68],
+            [6, 72], [14, 72], [22, 72], [32, 72], [40, 72], [48, 72], [56, 72], [64, 72], [72, 72], [80, 72], [88, 72],
+            // Bottom row data
+            [28, 78], [36, 78], [44, 78], [52, 78], [60, 78], [68, 78], [76, 78], [84, 78], [92, 78],
+            [28, 82], [32, 82], [40, 82], [48, 82], [56, 82], [64, 82], [80, 82], [88, 82],
+            [28, 86], [36, 86], [44, 86], [52, 86], [60, 86], [72, 86], [84, 86], [92, 86],
+            [28, 90], [32, 90], [40, 90], [48, 90], [64, 90], [68, 90], [76, 90], [80, 90], [88, 90],
+            [28, 94], [36, 94], [52, 94], [56, 94], [60, 94], [72, 94], [84, 94], [92, 94],
           ].map(([x, y], i) => (
             <rect key={i} x={x} y={y} width="4" height="4" fill="#1a1a2e" rx="0.5" />
           ))}
-
-          {/* Gradient overlay for modern look */}
-          <defs>
-            <linearGradient id="qrGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.1" />
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.1" />
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width="100" height="100" fill="url(#qrGradient)" />
         </svg>
-      </div>
-
-      {/* Center Logo */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className={`${logoSizeClasses[size]} bg-gradient-to-br from-primary-400 via-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30 ring-4 ring-white`}>
-          <span className={`text-white font-black ${textSizeClasses[size]} tracking-tight`}>W</span>
-        </div>
       </div>
     </div>
   )
@@ -231,133 +221,94 @@ function QRPreviewModal({
           </button>
         </div>
 
-        {/* Preview Content */}
+        {/* Preview Content - Telegram-style large QR layout */}
         <div className="p-6 bg-gray-100 dark:bg-gray-800 overflow-auto max-h-[calc(90vh-80px)]">
-          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            {/* QR Code Display */}
-            <div className="flex flex-col items-center">
-              <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
-                <StyledQRCode size="lg" />
-              </div>
-              <p className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
-                <Scan className="w-4 h-4 inline mr-1" />
-                Scan with any camera app
-              </p>
-              <div className="mt-4 flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  icon={<Download className="w-4 h-4" />}
-                >
-                  Download
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  icon={<Printer className="w-4 h-4" />}
-                >
-                  Print
-                </Button>
-              </div>
-            </div>
+          <div className="max-w-2xl mx-auto">
+            {/* Large QR Code - Primary Focus */}
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 mb-6">
+              <div className="flex flex-col items-center">
+                {/* Large QR Code */}
+                <StyledQRCode size="xl" />
 
-            {/* Phone Preview */}
-            <div className="flex flex-col items-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 flex items-center gap-2">
-                <Smartphone className="w-4 h-4" />
-                Customer&apos;s phone will show:
-              </p>
-
-              {/* Phone Frame */}
-              <div className="relative">
-                {/* Phone outline */}
-                <div className="w-[280px] h-[560px] bg-gray-900 rounded-[40px] p-2 shadow-2xl">
-                  {/* Screen */}
-                  <div className="w-full h-full bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden">
-                    {/* Status bar */}
-                    <div className="h-8 bg-gray-100 dark:bg-gray-900 flex items-center justify-between px-6">
-                      <span className="text-xs text-gray-600 dark:text-gray-400">9:41</span>
-                      <div className="flex gap-1">
-                        <div className="w-4 h-2 bg-gray-400 rounded-sm" />
-                        <div className="w-4 h-2 bg-gray-400 rounded-sm" />
-                        <div className="w-6 h-3 bg-green-500 rounded-sm" />
-                      </div>
-                    </div>
-
-                    {/* Payment Screen Content */}
-                    <div className="p-4 space-y-4">
-                      {/* Payment Info */}
-                      <div className="text-center py-4">
-                        {isDonation && <Heart className="w-12 h-12 mx-auto text-primary-500 mb-2" />}
-                        {!isDonation && !isEvent && (
-                          <div className="w-12 h-12 mx-auto bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mb-2">
-                            <DollarSign className="w-6 h-6 text-primary-600" />
-                          </div>
-                        )}
-                        <h4 className="font-bold text-gray-900 dark:text-white text-lg">{qr.name}</h4>
-                        <p className="text-sm text-gray-500">{qr.description}</p>
-                      </div>
-
-                      {/* Amount */}
-                      <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 text-center">
-                        {qr.amount ? (
-                          <>
-                            <p className="text-xs text-gray-500 mb-1">Amount to pay</p>
-                            <p className="text-3xl font-bold text-primary-600">
-                              {formatCurrency(qr.amount, qr.currency)}
-                            </p>
-                          </>
-                        ) : (
-                          <>
-                            <p className="text-xs text-gray-500 mb-2">Enter amount</p>
-                            <div className="relative">
-                              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">$</span>
-                              <input
-                                type="text"
-                                placeholder="0.00"
-                                className="w-full text-center text-2xl font-bold py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
-                                readOnly
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-
-                      {/* Payment Methods */}
-                      <div className="space-y-2">
-                        <p className="text-xs text-gray-500">Pay with</p>
-                        <div className="grid grid-cols-2 gap-2">
-                          <button className="py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-xs font-medium text-primary-700 dark:text-primary-300">
-                            <CreditCard className="w-3 h-3" />
-                            Card
-                          </button>
-                          <button className="py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-300">
-                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
-                            </svg>
-                            PayPal
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Pay Button */}
-                      <button className="w-full py-3 bg-primary-500 text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
-                        <Lock className="w-3 h-3" />
-                        {qr.amount ? `Pay ${formatCurrency(qr.amount, qr.currency)}` : 'Continue to Pay'}
-                      </button>
-
-                      <p className="text-[10px] text-center text-gray-400 flex items-center justify-center gap-1">
-                        <Lock className="w-2.5 h-2.5" />
-                        Powered by Wiremi
-                      </p>
-                    </div>
-                  </div>
+                {/* QR Info */}
+                <div className="mt-6 text-center">
+                  <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{qr.name}</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{qr.description}</p>
+                  {qr.amount && (
+                    <p className="mt-3 text-2xl font-bold text-primary-600">
+                      {formatCurrency(qr.amount, qr.currency)}
+                    </p>
+                  )}
                 </div>
 
-                {/* Dynamic notch */}
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-full" />
+                {/* Scan instruction */}
+                <div className="mt-6 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                  <Scan className="w-4 h-4" />
+                  <span>Scan with your phone camera</span>
+                </div>
               </div>
             </div>
+
+            {/* Action buttons and details - Compact section */}
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* Actions */}
+              <div className="bg-white dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Download & Share</p>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    icon={<Download className="w-4 h-4" />}
+                    className="flex-1"
+                  >
+                    PNG
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    icon={<Download className="w-4 h-4" />}
+                    className="flex-1"
+                  >
+                    SVG
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    icon={<Printer className="w-4 h-4" />}
+                    className="flex-1"
+                  >
+                    Print
+                  </Button>
+                </div>
+              </div>
+
+              {/* Payment Preview Summary */}
+              <div className="bg-white dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Payment Options</p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1.5 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 rounded-lg text-xs font-medium flex items-center gap-1">
+                    <CreditCard className="w-3 h-3" />
+                    Card
+                  </span>
+                  <span className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-medium flex items-center gap-1">
+                    <Smartphone className="w-3 h-3" />
+                    Mobile
+                  </span>
+                  <span className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-medium">
+                    PayPal
+                  </span>
+                  <span className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-medium">
+                    Bank
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Powered by footer */}
+            <p className="mt-6 text-center text-xs text-gray-400 flex items-center justify-center gap-1">
+              <Lock className="w-3 h-3" />
+              Powered by Wiremi
+            </p>
           </div>
         </div>
       </motion.div>

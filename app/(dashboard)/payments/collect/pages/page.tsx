@@ -490,27 +490,43 @@ function EventTicketPreview({
   )
 }
 
-// Shared payment methods preview
+// Shared payment methods preview - scrollable
 function PaymentMethodsPreview() {
   return (
     <div className="space-y-2">
       <p className="text-sm text-gray-600 dark:text-gray-400">Payment method</p>
-      <div className="flex gap-2">
-        <button className="flex-1 py-2 px-3 rounded-lg border-2 border-primary-500 text-primary-600 flex items-center justify-center gap-2 text-sm font-medium">
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+        <button className="flex-shrink-0 py-2 px-4 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600 flex items-center justify-center gap-2 text-sm font-medium">
           <CreditCard className="w-4 h-4" />
           Card
         </button>
-        <button className="flex-1 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+        <button className="flex-shrink-0 py-2 px-4 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-primary-300">
+          <Smartphone className="w-4 h-4" />
+          Mobile Money
+        </button>
+        <button className="flex-shrink-0 py-2 px-4 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-primary-300">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
           </svg>
           PayPal
         </button>
-        <button className="flex-1 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+        <button className="flex-shrink-0 py-2 px-4 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-primary-300">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
           </svg>
-          Bank
+          Bank Transfer
+        </button>
+        <button className="flex-shrink-0 py-2 px-4 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-primary-300">
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 18a8 8 0 118-8 8 8 0 01-8 8zm.5-13h-1v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+          </svg>
+          USSD
+        </button>
+        <button className="flex-shrink-0 py-2 px-4 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-primary-300">
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11.944 17.97L4.58 13.62 11.943 24l7.37-10.38-7.372 4.35zM12.056 0L4.69 12.223l7.365 4.354 7.365-4.35L12.056 0z"/>
+          </svg>
+          Crypto
         </button>
       </div>
     </div>
@@ -724,7 +740,7 @@ export default function HostedPagesPage() {
                   key={page.id}
                   variant="interactive"
                   className="group cursor-pointer transition-all hover:shadow-xl dark:hover:shadow-primary/10"
-                  onClick={() => router.push(`/payments/collect/pages/${page.id}`)}
+                  onClick={() => setPreviewPage(page)}
                 >
                   {/* Preview Thumbnail */}
                   <div
@@ -821,7 +837,7 @@ export default function HostedPagesPage() {
                         icon={<Edit className="w-4 h-4" />}
                         onClick={(e) => {
                           e.stopPropagation()
-                          router.push(`/payments/collect/pages/${page.id}/edit`)
+                          setPreviewPage(page)
                         }}
                         className="flex-1"
                       >
@@ -860,41 +876,41 @@ export default function HostedPagesPage() {
         )}
 
         {/* Info Card */}
-        <Card className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-purple-200 dark:border-purple-800">
+        <Card className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-primary-200 dark:border-primary-800">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Globe className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-2">
-                Why Use Hosted Payment Pages?
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                Benefits of Hosted Payment Pages
               </h3>
-              <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-purple-600 dark:text-purple-400" />
-                  <span>
-                    <strong>No coding required</strong> - customize colors, logos, and content visually
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-primary-600 dark:text-primary-400" />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Visual customization without code
                   </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-purple-600 dark:text-purple-400" />
-                  <span>
-                    <strong>Hosted by Wiremi</strong> - no SSL certificates, no infrastructure management
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-primary-600 dark:text-primary-400" />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Fully managed hosting and SSL
                   </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-purple-600 dark:text-purple-400" />
-                  <span>
-                    <strong>Optimized for conversion</strong> - mobile-first, fast loading, multi-currency
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-primary-600 dark:text-primary-400" />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Mobile-optimized checkout flow
                   </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-purple-600 dark:text-purple-400" />
-                  <span>
-                    <strong>Built-in analytics</strong> - track visits, conversions, and revenue in real-time
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-primary-600 dark:text-primary-400" />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Real-time analytics and tracking
                   </span>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
           </div>
         </Card>

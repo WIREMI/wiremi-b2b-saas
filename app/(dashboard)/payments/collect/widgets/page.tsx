@@ -265,17 +265,24 @@ function ProductWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' }) 
           <p className="font-bold text-gray-900 dark:text-white">$99.99</p>
         </div>
 
-        {/* Payment methods */}
-        <div className="flex gap-2">
-          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
+        {/* Payment methods - scrollable */}
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
             <CreditCard className="w-4 h-4" />
             Card
           </button>
-          <button className="flex-1 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <Smartphone className="w-4 h-4" />
+            Mobile
+          </button>
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
               <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
             </svg>
             PayPal
+          </button>
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            Bank
           </button>
         </div>
 
@@ -361,17 +368,24 @@ function DonationWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile' })
           <span className="text-sm text-gray-700 dark:text-gray-300">Make this a monthly donation</span>
         </label>
 
-        {/* Payment methods */}
-        <div className="flex gap-2">
-          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
+        {/* Payment methods - scrollable */}
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
             <CreditCard className="w-4 h-4" />
             Card
           </button>
-          <button className="flex-1 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <Smartphone className="w-4 h-4" />
+            Mobile
+          </button>
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
               <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
             </svg>
             PayPal
+          </button>
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            Bank
           </button>
         </div>
 
@@ -486,17 +500,24 @@ function SubscriptionWidgetPreview({ viewMode }: { viewMode: 'desktop' | 'mobile
           readOnly
         />
 
-        {/* Payment methods */}
-        <div className="flex gap-2">
-          <button className="flex-1 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
+        {/* Payment methods - scrollable */}
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center gap-1.5 text-sm font-medium text-primary-700 dark:text-primary-300">
             <CreditCard className="w-4 h-4" />
             Card
           </button>
-          <button className="flex-1 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <Smartphone className="w-4 h-4" />
+            Mobile
+          </button>
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
               <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.192c-.672 0-1.18.452-1.285 1.074l-.006.032-.898 5.606-.006.032c-.104.624-.596 1.262-1.282 1.262h-.639z"/>
             </svg>
             PayPal
+          </button>
+          <button className="flex-shrink-0 py-2 px-3 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+            Bank
           </button>
         </div>
 
