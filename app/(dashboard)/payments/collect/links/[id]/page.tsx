@@ -28,6 +28,8 @@ import {
   Building,
   Bitcoin,
   Wallet,
+  Monitor,
+  Globe,
 } from 'lucide-react'
 import PageLayout from '@/components/layout/PageLayout'
 import { Button } from '@/components/ui/button'
@@ -75,6 +77,7 @@ export default function PaymentLinkDetailPage() {
   const params = useParams()
   const [copied, setCopied] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
+  const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop')
   const [activeTab, setActiveTab] = useState<'overview' | 'transactions' | 'analytics'>('overview')
 
   // Mock link data
@@ -142,6 +145,103 @@ export default function PaymentLinkDetailPage() {
         return null
     }
   }
+
+  // Payment preview component
+  const renderPaymentPreview = () => (
+    <>
+      {/* Merchant Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
+          <Link2 className="w-6 h-6 text-white" />
+        </div>
+        <div>
+          <div className="text-sm font-semibold text-gray-900 dark:text-white">
+            {link.name}
+          </div>
+          <div className="text-xs text-gray-500">Wiremi-powered payment</div>
+        </div>
+      </div>
+
+      {/* Description */}
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+        {link.description}
+      </p>
+
+      {/* Amount */}
+      <div className="mb-6">
+        {link.type === 'fixed' ? (
+          <div className="text-3xl font-bold text-gray-900 dark:text-white">
+            {formatCurrency(link.amount, link.currency)}
+          </div>
+        ) : (
+          <div className="p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600">
+            <input
+              type="text"
+              placeholder="Enter amount"
+              className="w-full text-2xl font-bold bg-transparent border-none focus:outline-none text-gray-900 dark:text-white"
+              disabled
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Payment Methods - All methods shown */}
+      <div className="space-y-2 mb-6">
+        {link.enabledMethods.card && (
+          <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer hover:border-primary-300 transition-colors">
+            <CreditCard className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <span className="text-sm font-medium text-gray-900 dark:text-white">Credit/Debit Card</span>
+            <span className="ml-auto text-xs text-gray-400">Visa, Mastercard, Amex</span>
+          </div>
+        )}
+        {link.enabledMethods.mobileMoney && (
+          <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer hover:border-primary-300 transition-colors">
+            <Smartphone className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <span className="text-sm font-medium text-gray-900 dark:text-white">Mobile Money</span>
+            <span className="ml-auto text-xs text-gray-400">M-Pesa, MTN, Airtel</span>
+          </div>
+        )}
+        {link.enabledMethods.bankTransfer && (
+          <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer hover:border-primary-300 transition-colors">
+            <Building className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <span className="text-sm font-medium text-gray-900 dark:text-white">Bank Transfer</span>
+            <span className="ml-auto text-xs text-gray-400">ACH, SWIFT, SEPA</span>
+          </div>
+        )}
+        {link.enabledMethods.crypto && (
+          <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer hover:border-primary-300 transition-colors">
+            <Bitcoin className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <span className="text-sm font-medium text-gray-900 dark:text-white">Cryptocurrency</span>
+            <span className="ml-auto text-xs text-gray-400">USDC, USDT</span>
+          </div>
+        )}
+        {link.enabledMethods.wallet && (
+          <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer hover:border-primary-300 transition-colors">
+            <Wallet className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <span className="text-sm font-medium text-gray-900 dark:text-white">Wiremi Wallet</span>
+          </div>
+        )}
+        {/* PayPal - always show as available */}
+        <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer hover:border-primary-300 transition-colors">
+          <Globe className="w-5 h-5 text-blue-600" />
+          <span className="text-sm font-medium text-gray-900 dark:text-white">PayPal</span>
+        </div>
+      </div>
+
+      {/* Pay Button */}
+      <Button className="w-full" size="lg">
+        Pay {link.type === 'fixed' ? formatCurrency(link.amount, link.currency) : 'Now'}
+      </Button>
+
+      {/* Footer */}
+      <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+        <div className="w-4 h-4 bg-primary-500 rounded-full flex items-center justify-center">
+          <CheckCircle2 className="w-2.5 h-2.5 text-white" />
+        </div>
+        <span>Secured by Wiremi</span>
+      </div>
+    </>
+  )
 
   return (
     <PageLayout maxWidth="wide">
@@ -582,113 +682,89 @@ export default function PaymentLinkDetailPage() {
         {/* Preview Modal */}
         {showPreview && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-auto shadow-2xl">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-auto shadow-2xl">
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white dark:bg-gray-900 p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+              <div className="sticky top-0 bg-white dark:bg-gray-900 p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between z-10">
                 <div className="flex items-center gap-3">
                   <Eye className="w-5 h-5 text-primary-500" />
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Payment Link Preview</h3>
                 </div>
-                <button
-                  onClick={() => setShowPreview(false)}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
+                <div className="flex items-center gap-2">
+                  {/* View Toggle */}
+                  <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                    <button
+                      onClick={() => setPreviewMode('desktop')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                        previewMode === 'desktop'
+                          ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                          : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                      }`}
+                    >
+                      <Monitor className="w-4 h-4" />
+                      Desktop
+                    </button>
+                    <button
+                      onClick={() => setPreviewMode('mobile')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                        previewMode === 'mobile'
+                          ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                          : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                      }`}
+                    >
+                      <Smartphone className="w-4 h-4" />
+                      Mobile
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => setShowPreview(false)}
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                  >
+                    <X className="w-5 h-5 text-gray-500" />
+                  </button>
+                </div>
               </div>
 
               {/* Preview Content - Simulates the payment page */}
-              <div className="p-6">
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                  {/* Merchant Header */}
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
-                      <Link2 className="w-6 h-6 text-white" />
+              <div className={`p-6 flex justify-center ${previewMode === 'mobile' ? 'bg-gray-100 dark:bg-gray-800' : ''}`}>
+                <div className={`transition-all duration-300 ${previewMode === 'mobile' ? 'w-[375px]' : 'w-full max-w-md'}`}>
+                  {/* Phone Frame for Mobile */}
+                  {previewMode === 'mobile' && (
+                    <div className="bg-gray-900 rounded-[2.5rem] p-3 shadow-2xl">
+                      {/* Notch */}
+                      <div className="flex justify-center mb-2">
+                        <div className="w-24 h-6 bg-black rounded-full" />
+                      </div>
+                      <div className="bg-white dark:bg-gray-900 rounded-[2rem] overflow-hidden">
+                        {/* Status Bar */}
+                        <div className="flex justify-between items-center px-6 py-2 text-xs font-medium text-gray-900 dark:text-white">
+                          <span>9:41</span>
+                          <div className="flex items-center gap-1">
+                            <span>●●●●</span>
+                            <span>WiFi</span>
+                            <span>100%</span>
+                          </div>
+                        </div>
+                        {/* Content */}
+                        <div className="p-4">
+                          {renderPaymentPreview()}
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                        {link.name}
-                      </div>
-                      <div className="text-xs text-gray-500">Wiremi-powered payment</div>
+                  )}
+
+                  {/* Desktop Preview */}
+                  {previewMode === 'desktop' && (
+                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                      {renderPaymentPreview()}
                     </div>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                    {link.description}
-                  </p>
-
-                  {/* Amount */}
-                  <div className="mb-6">
-                    {link.type === 'fixed' ? (
-                      <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                        {formatCurrency(link.amount, link.currency)}
-                      </div>
-                    ) : (
-                      <div className="p-4 bg-white dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600">
-                        <input
-                          type="text"
-                          placeholder="Enter amount"
-                          className="w-full text-2xl font-bold bg-transparent border-none focus:outline-none text-gray-900 dark:text-white"
-                          disabled
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Payment Methods */}
-                  <div className="space-y-2 mb-6">
-                    {link.enabledMethods.card && (
-                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                        <CreditCard className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">Credit/Debit Card</span>
-                      </div>
-                    )}
-                    {link.enabledMethods.mobileMoney && (
-                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                        <Smartphone className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">Mobile Money</span>
-                      </div>
-                    )}
-                    {link.enabledMethods.bankTransfer && (
-                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                        <Building className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">Bank Transfer</span>
-                      </div>
-                    )}
-                    {link.enabledMethods.crypto && (
-                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                        <Bitcoin className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">Cryptocurrency</span>
-                      </div>
-                    )}
-                    {link.enabledMethods.wallet && (
-                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                        <Wallet className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">Wallet Balance</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Pay Button */}
-                  <Button className="w-full" size="lg">
-                    Pay {link.type === 'fixed' ? formatCurrency(link.amount, link.currency) : 'Now'}
-                  </Button>
-
-                  {/* Footer */}
-                  <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-                    <div className="w-4 h-4 bg-primary-500 rounded-full flex items-center justify-center">
-                      <CheckCircle2 className="w-2.5 h-2.5 text-white" />
-                    </div>
-                    <span>Secured by Wiremi</span>
-                  </div>
+                  )}
                 </div>
               </div>
 
               {/* Modal Footer */}
               <div className="sticky bottom-0 bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700">
                 <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-                  This is a preview of how your payment link will appear to customers
+                  This is a preview of how your payment link will appear to customers on {previewMode === 'mobile' ? 'mobile devices' : 'desktop'}
                 </p>
               </div>
             </div>

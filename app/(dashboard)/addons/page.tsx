@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Package,
@@ -8,20 +8,16 @@ import {
   Check,
   Star,
   Users,
-  Building2,
   GraduationCap,
   Dumbbell,
   Hotel,
   Ticket,
-  Brain,
   CreditCard,
-  Globe,
-  FileText,
   Search,
-  Filter,
   Plus,
   CheckCircle,
   X,
+  MapPin,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageLayout from '@/components/layout/PageLayout'
@@ -29,7 +25,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
-type AddOnCategory = 'all' | 'industry' | 'payments' | 'operations' | 'analytics'
+type AddOnCategory = 'all' | 'industry' | 'payments' | 'operations'
 
 interface AddOn {
   id: string
@@ -37,7 +33,7 @@ interface AddOn {
   description: string
   icon: React.ElementType
   category: AddOnCategory
-  price: number
+  priceUSD: number
   billingPeriod: 'monthly' | 'yearly'
   features: string[]
   popular?: boolean
@@ -45,110 +41,88 @@ interface AddOn {
   comingSoon?: boolean
 }
 
+// Region-based currency conversion rates (approximate)
+const currencyData: Record<string, { symbol: string; code: string; rate: number }> = {
+  US: { symbol: '$', code: 'USD', rate: 1 },
+  GB: { symbol: '£', code: 'GBP', rate: 0.79 },
+  EU: { symbol: '€', code: 'EUR', rate: 0.92 },
+  NG: { symbol: '₦', code: 'NGN', rate: 1550 },
+  GH: { symbol: 'GH₵', code: 'GHS', rate: 15.5 },
+  KE: { symbol: 'KSh', code: 'KES', rate: 153 },
+  ZA: { symbol: 'R', code: 'ZAR', rate: 18.5 },
+  IN: { symbol: '₹', code: 'INR', rate: 83 },
+  AE: { symbol: 'د.إ', code: 'AED', rate: 3.67 },
+  SG: { symbol: 'S$', code: 'SGD', rate: 1.34 },
+  AU: { symbol: 'A$', code: 'AUD', rate: 1.53 },
+  CA: { symbol: 'C$', code: 'CAD', rate: 1.36 },
+  BR: { symbol: 'R$', code: 'BRL', rate: 4.97 },
+  MX: { symbol: 'MX$', code: 'MXN', rate: 17.15 },
+}
+
+// Premium add-ons only - Core features are included in the base plan
 const addOns: AddOn[] = [
-  {
-    id: 'hr-payroll',
-    name: 'HR & Payroll',
-    description: 'Complete HR management with employee records, payroll processing, and compliance tracking.',
-    icon: Users,
-    category: 'operations',
-    price: 49,
-    billingPeriod: 'monthly',
-    features: ['Employee management', 'Payroll processing', 'Time tracking', 'Benefits administration'],
-    popular: true,
-  },
   {
     id: 'corporate-cards',
     name: 'Corporate Cards',
-    description: 'Issue and manage corporate cards with spending controls and real-time tracking.',
+    description: 'Issue and manage corporate cards with spending controls, real-time tracking, and expense management.',
     icon: CreditCard,
     category: 'payments',
-    price: 29,
+    priceUSD: 50,
     billingPeriod: 'monthly',
-    features: ['Virtual & physical cards', 'Spending limits', 'Receipt capture', 'Fraud alerts'],
+    features: ['Virtual & physical cards', 'Spending limits & controls', 'Receipt capture & matching', 'Real-time fraud alerts', 'Employee card management'],
     installed: true,
+  },
+  {
+    id: 'hr-payroll',
+    name: 'HR & Payroll',
+    description: 'Complete HR management with employee records, automated payroll processing, and compliance tracking.',
+    icon: Users,
+    category: 'operations',
+    priceUSD: 149,
+    billingPeriod: 'monthly',
+    features: ['Employee management', 'Automated payroll', 'Time & attendance', 'Benefits administration', 'Compliance reporting'],
+    popular: true,
   },
   {
     id: 'education',
     name: 'Education Management',
-    description: 'Manage schools, students, fees, and academic operations all in one place.',
+    description: 'Comprehensive school management with student enrollment, fee collection, and academic operations.',
     icon: GraduationCap,
     category: 'industry',
-    price: 79,
+    priceUSD: 199,
     billingPeriod: 'monthly',
-    features: ['Student enrollment', 'Fee collection', 'Academic tracking', 'Parent portal'],
+    features: ['Student enrollment', 'Fee collection & billing', 'Academic tracking', 'Parent portal', 'Staff management'],
   },
   {
     id: 'fitness',
     name: 'Fitness & Gym',
-    description: 'Gym membership management, class scheduling, and member engagement tools.',
+    description: 'Complete gym management with membership handling, class scheduling, and member engagement tools.',
     icon: Dumbbell,
     category: 'industry',
-    price: 39,
+    priceUSD: 129,
     billingPeriod: 'monthly',
-    features: ['Member management', 'Class scheduling', 'Check-in system', 'Nutrition tracking'],
+    features: ['Member management', 'Class scheduling', 'Check-in system', 'Membership billing', 'Trainer scheduling'],
   },
   {
     id: 'hospitality',
-    name: 'Hospitality',
-    description: 'Hotel and restaurant management with reservations, billing, and guest services.',
+    name: 'Hospitality Suite',
+    description: 'Hotel and restaurant management with reservations, billing, room management, and guest services.',
     icon: Hotel,
     category: 'industry',
-    price: 99,
+    priceUSD: 249,
     billingPeriod: 'monthly',
-    features: ['Room management', 'Reservations', 'POS integration', 'Guest analytics'],
+    features: ['Room management', 'Reservations & booking', 'POS integration', 'Guest services', 'Housekeeping management'],
     popular: true,
   },
   {
     id: 'event-ticketing',
     name: 'Event Ticketing',
-    description: 'Create events, sell tickets, and manage attendees with built-in payment processing.',
+    description: 'Create and manage events, sell tickets, handle attendees, with built-in payment processing.',
     icon: Ticket,
     category: 'industry',
-    price: 59,
+    priceUSD: 149,
     billingPeriod: 'monthly',
-    features: ['Event creation', 'Ticket sales', 'QR check-in', 'Attendee management'],
-  },
-  {
-    id: 'ai-insights',
-    name: 'AI Insights',
-    description: 'Advanced analytics and AI-powered predictions for your business data.',
-    icon: Brain,
-    category: 'analytics',
-    price: 99,
-    billingPeriod: 'monthly',
-    features: ['Predictive analytics', 'Anomaly detection', 'Cash flow forecasting', 'AI assistant'],
-    popular: true,
-  },
-  {
-    id: 'multi-currency',
-    name: 'Multi-Currency',
-    description: 'Accept and manage payments in multiple currencies with automatic conversion.',
-    icon: Globe,
-    category: 'payments',
-    price: 19,
-    billingPeriod: 'monthly',
-    features: ['135+ currencies', 'Auto-conversion', 'FX rates', 'Currency wallets'],
-  },
-  {
-    id: 'invoicing',
-    name: 'Advanced Invoicing',
-    description: 'Professional invoicing with templates, recurring invoices, and payment tracking.',
-    icon: FileText,
-    category: 'operations',
-    price: 25,
-    billingPeriod: 'monthly',
-    features: ['Custom templates', 'Recurring invoices', 'Payment reminders', 'Invoice tracking'],
-  },
-  {
-    id: 'enterprise',
-    name: 'Enterprise Suite',
-    description: 'Advanced features for large organizations including multi-entity and audit trails.',
-    icon: Building2,
-    category: 'operations',
-    price: 199,
-    billingPeriod: 'monthly',
-    features: ['Multi-entity', 'Advanced permissions', 'Audit trails', 'Custom integrations'],
+    features: ['Event creation', 'Ticket sales & types', 'QR code check-in', 'Attendee management', 'Event analytics'],
   },
 ]
 
@@ -157,8 +131,29 @@ const categories = [
   { id: 'industry', label: 'Industry Solutions' },
   { id: 'payments', label: 'Payments' },
   { id: 'operations', label: 'Operations' },
-  { id: 'analytics', label: 'Analytics' },
 ]
+
+// Helper to detect user region (mock implementation - in production use geolocation API)
+function getUserRegion(): string {
+  // In production, this would use a geolocation API or user settings
+  // For now, default to US
+  if (typeof window !== 'undefined') {
+    const savedRegion = localStorage.getItem('wiremi_region')
+    if (savedRegion) return savedRegion
+  }
+  return 'US'
+}
+
+// Format price based on region
+function formatRegionalPrice(priceUSD: number, region: string): string {
+  const currency = currencyData[region] || currencyData['US']
+  const convertedPrice = Math.round(priceUSD * currency.rate)
+
+  // Format with proper thousand separators
+  const formattedPrice = convertedPrice.toLocaleString()
+
+  return `${currency.symbol}${formattedPrice}`
+}
 
 export default function AddonsPage() {
   const router = useRouter()
@@ -166,6 +161,18 @@ export default function AddonsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAddOn, setSelectedAddOn] = useState<AddOn | null>(null)
   const [requestedAddOns, setRequestedAddOns] = useState<string[]>([])
+  const [userRegion, setUserRegion] = useState('US')
+  const [showRegionSelector, setShowRegionSelector] = useState(false)
+
+  useEffect(() => {
+    setUserRegion(getUserRegion())
+  }, [])
+
+  const handleRegionChange = (region: string) => {
+    setUserRegion(region)
+    localStorage.setItem('wiremi_region', region)
+    setShowRegionSelector(false)
+  }
 
   const filteredAddOns = addOns.filter((addon) => {
     const matchesCategory = selectedCategory === 'all' || addon.category === selectedCategory
@@ -175,11 +182,13 @@ export default function AddonsPage() {
   })
 
   const installedCount = addOns.filter((a) => a.installed).length
-  const totalMonthly = addOns.filter((a) => a.installed).reduce((sum, a) => sum + a.price, 0)
+  const totalMonthlyUSD = addOns.filter((a) => a.installed).reduce((sum, a) => sum + a.priceUSD, 0)
 
   const handleRequestAddOn = (addonId: string) => {
     setRequestedAddOns((prev) => [...prev, addonId])
   }
+
+  const currentCurrency = currencyData[userRegion] || currencyData['US']
 
   return (
     <PageLayout maxWidth="full">
@@ -206,6 +215,32 @@ export default function AddonsPage() {
             </p>
           </div>
           <div className="flex items-center gap-4">
+            {/* Region Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setShowRegionSelector(!showRegionSelector)}
+                className="flex items-center gap-2 px-3 py-2 text-[13px] bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                <MapPin className="w-4 h-4 text-gray-500" />
+                <span className="text-gray-700 dark:text-gray-300">{currentCurrency.code}</span>
+              </button>
+              {showRegionSelector && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50 max-h-64 overflow-y-auto">
+                  {Object.entries(currencyData).map(([code, data]) => (
+                    <button
+                      key={code}
+                      onClick={() => handleRegionChange(code)}
+                      className={`w-full px-4 py-2 text-left text-[13px] hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+                        userRegion === code ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400' : 'text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {data.symbol} {data.code}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="h-10 w-px bg-gray-200 dark:bg-gray-700" />
             <div className="text-right">
               <p className="text-xs text-gray-500">Current add-ons</p>
               <p className="text-lg font-semibold text-gray-900 dark:text-white">{installedCount} installed</p>
@@ -213,7 +248,7 @@ export default function AddonsPage() {
             <div className="h-10 w-px bg-gray-200 dark:bg-gray-700" />
             <div className="text-right">
               <p className="text-xs text-gray-500">Monthly total</p>
-              <p className="text-lg font-semibold text-teal-600 dark:text-teal-400">${totalMonthly}/mo</p>
+              <p className="text-lg font-semibold text-teal-600 dark:text-teal-400">{formatRegionalPrice(totalMonthlyUSD, userRegion)}/mo</p>
             </div>
           </div>
         </div>
@@ -324,7 +359,7 @@ export default function AddonsPage() {
                 {/* Price and Action */}
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700/50">
                   <div>
-                    <span className="text-xl font-bold text-gray-900 dark:text-white">${addon.price}</span>
+                    <span className="text-xl font-bold text-gray-900 dark:text-white">{formatRegionalPrice(addon.priceUSD, userRegion)}</span>
                     <span className="text-[13px] text-gray-500">/mo</span>
                   </div>
                   {addon.installed ? (
@@ -457,9 +492,12 @@ export default function AddonsPage() {
                 {/* Price */}
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                    ${selectedAddOn.price}
+                    {formatRegionalPrice(selectedAddOn.priceUSD, userRegion)}
                   </span>
                   <span className="text-gray-500">/month</span>
+                  {userRegion !== 'US' && (
+                    <span className="text-sm text-gray-400">(${selectedAddOn.priceUSD} USD)</span>
+                  )}
                 </div>
 
                 {/* Features */}
@@ -515,7 +553,7 @@ export default function AddonsPage() {
                       setSelectedAddOn(null)
                     }}
                   >
-                    Request Add-on - ${selectedAddOn.price}/mo
+                    Request Add-on - {formatRegionalPrice(selectedAddOn.priceUSD, userRegion)}/mo
                   </Button>
                 )}
               </div>
